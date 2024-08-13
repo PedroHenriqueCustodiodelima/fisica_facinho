@@ -1,7 +1,7 @@
 <?php
 include("conexao.php");
 
-$message = ''; // Variável para armazenar mensagens
+$message = ''; 
 
 if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['confirmar_senha'])) {
 
@@ -26,15 +26,12 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
         $email = $conn->real_escape_string($email);
         $senha = $conn->real_escape_string($senha);
         $nome = $conn->real_escape_string($nome);
-
-        // Verifica se o e-mail já está registrado
         $sql_check = "SELECT * FROM usuario WHERE gmail='$email'";
         $result_check = $conn->query($sql_check);
 
         if ($result_check->num_rows > 0) {
             $message = "O e-mail já está registrado. Por favor, use um e-mail diferente.";
         } else {
-            // Insere os dados na tabela usuario
             $sql_insert = "INSERT INTO usuario (nome, gmail, senha) VALUES ('$nome', '$email', '$senha')";
             if ($conn->query($sql_insert) === TRUE) {
                 $message = "Dados inseridos com sucesso!";
@@ -46,13 +43,12 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
     <title>Cadastro</title>
 </head>
 <body>

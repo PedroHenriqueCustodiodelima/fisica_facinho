@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+
+.texto-branco {
+color: white;
+}
+
+body {
+font-family: "Lato", sans-serif;
+margin: 0;
+overflow-x: hidden;
+background-color: #011846; 
+}
+
+header {
+width: 100vw;
+background-color: #011846; 
+display: flex;
+color: white;
+}
+
+header h1 {
+margin-left: 2em;
+}
+
+.login-caixa {
+width: 100vw;
+height: 100vh;
+background-color: #011846;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.esquerda {
+margin-left: -5vw;
+width: 50vw;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
+.esquerda > h1 {
+font-size: 3vw;
+color: #77ffc0;
+}
+
+.esquerda-imagem {
+width: 25vw;
+}
+
+.direita {
+width: 50vw;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.card-login {
+background: rgba(3, 103, 166, 0.35);
+width: 60%;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+padding: 30px 25px;
+border-radius: 20px;
+box-shadow: 0px 10px 40px #00000056;
+}
+
+.card-login > h1 {
+font-family: "Lato", sans-serif;
+color: #ffffff;
+font-weight: 800;
+margin: 0;
+}
+
+form {
+width: 100%;
+box-sizing: border-box;
+}
+
+.campo-il {
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+margin: 20px 0px;
+}
+
+.campo-il > input {
+width: 100%;
+border: none;
+border-radius: 10px;
+padding: 15px;
+background: rgba(217, 217, 217, 0.2);
+color: white;
+font-size: 12pt;
+box-shadow: 0px 10px 40px #00000056;
+outline: none;
+box-sizing: border-box;
+}
+
+.campo-il > label {
+color: white;
+margin-bottom: 10px;
+}
+
+.campo-il > input::placeholder {
+color: white;
+}
+
+.btn-login {
+width: 100%;
+padding: 16px 0px;
+margin-top: 20px;
+border: none;
+border-radius: 8px;
+outline: none;
+text-transform: uppercase;
+font-weight: 800;
+letter-spacing: 3px;
+color: #ffffff;
+background-color: #359830;
+cursor: pointer;
+}
+
+.btn-login:hover {
+transition: 0.3s;
+background-color: #048042;
+}
+
+.campo-il {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.campo-il input {
+    width: 100%;
+    padding: 15px;
+    padding-right: 40px; 
+    box-sizing: border-box;
+}
+
+.campo-il svg {
+    position: absolute;
+    right: 15px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    fill: #ffffff; 
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
