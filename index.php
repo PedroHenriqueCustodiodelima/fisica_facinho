@@ -48,16 +48,20 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.css">
     <title>Cadastro</title>
 </head>
 <body>
     <header>
         <h1>Física Online</h1>
+        <nav>
+            <a href="login.php" class="nav-button">Login</a>
+            <a href="index.php" class="nav-button">Cadastro</a>
+        </nav>
     </header>
     <div class="login-caixa">
         <div class="esquerda">
-            <h1>Falta pouco para você inicar na sua jornada de aprendizado.<h1 class="coralt">Finalize o seu cadastro</h1></h1>
+            <h1>Falta pouco para você iniciar na sua jornada de aprendizado. Finalize o seu cadastro</h1>
             <img src="img/Notebook-pana 1.png" class="esquerda-imagem" alt="">
         </div>
         <div class="direita">
@@ -65,7 +69,7 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
                 <h1>CADASTRO</h1>
                 <form method="POST" action="">
                     <?php if (!empty($message)) : ?>
-                        <div class="message-box">
+                        <div id="popupMessage" class="popup <?php echo strpos($message, 'sucesso') !== false ? '' : 'error'; ?>">
                             <?php echo htmlspecialchars($message); ?>
                         </div>
                     <?php endif; ?>
@@ -90,5 +94,18 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
             </div>
         </div>
     </div>
+    <script>
+        // JavaScript para exibir o pop-up e escondê-lo automaticamente
+        window.onload = function() {
+            const popup = document.getElementById('popupMessage');
+            if (popup) {
+                popup.classList.add('show');
+                setTimeout(function() {
+                    popup.classList.remove('show');
+                }, 3000); // Tempo em milissegundos (3 segundos)
+            }
+        }
+    </script>
 </body>
 </html>
+
