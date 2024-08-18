@@ -1,6 +1,8 @@
 <?php
 include("conexao.php");
 
+session_start();
+
 $message = ''; 
 
 if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['confirmar_senha'])) {
@@ -34,7 +36,9 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
         } else {
             $sql_insert = "INSERT INTO usuario (nome, gmail, senha) VALUES ('$nome', '$email', '$senha')";
             if ($conn->query($sql_insert) === TRUE) {
-                $message = "Dados inseridos com sucesso!";
+                $_SESSION['nome'] = $nome; // Armazena o nome do usuário na sessão
+                header("Location: inicio.php"); // Redireciona para a página de início
+                exit(); // Termina o script para evitar a execução adicional de código
             } else {
                 $message = "Erro ao inserir os dados: " . $conn->error;
             }
@@ -108,4 +112,3 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
     </script>
 </body>
 </html>
-
