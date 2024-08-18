@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0c2545;
+    color: branco;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que o body ocupe toda a altura da janela */
+  }
+  
+  header {
+    background-color: #004382;
+    padding: 20px;
+    text-align: left;
+  }
+
+  
+  .conteudo-cabecalho h1 {
+    margin: 0;
+    color: #ffcd38;
+  }
+  
+  .container {
+    display: flex;
+  
+    flex: 1; /* Faz o container ocupar o espaço restante entre o header e o footer */
+  
+    margin: 20px;
+  }
+  
+  aside {
+    width: 15vw;
+    background-color: #004382;
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+  }
+  
+  .perfil {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .perfil img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    margin: 10px 0;
+    padding: 10px;
+  
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+  
+  }
+  
+  nav ul li:hover {
+    transition: 0.5s;
+    background-color: #063463ea;
+  }
+  
+  nav ul li a{
+    color: white;
+    text-decoration: none;
+  }
+  
+  nav ul li img{
+    margin-right: 0.5em;
+  }
+  
+
+  main{
+    color: whitesmoke;
+    margin: 0 auto;
+  }
+  .container-opcao {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.opcao-imagem img {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.opcao-nome {
+    margin-left: 20px;
+}
+
+.opcao-nome h2 {
+    font-size: 24px;
+}
+
+
+
+
+  footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #004382;
+    color: white;
+    margin-top: auto; /* Empurra o footer para o final da página */
+  }
+  

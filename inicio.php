@@ -15,7 +15,7 @@ if (!isset($_SESSION['nome'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Física Online</title>
-  <link rel="stylesheet" href="inicio.css">
+  <link rel="stylesheet" href="css/inicio.css">
 </head>
 
 <body>
