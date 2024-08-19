@@ -1,45 +1,59 @@
 <?php
+include("conexao.php");
+
 session_start();
-require 'conexao.php'; // Assumindo que você tem um arquivo para conexão com o banco de dados
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['nome']) || !isset($_SESSION['id_usuario'])) {
-    header("Location: login.php");
-    exit();
-}
+$message = ''; 
 
-$idUsuario = $_SESSION['id_usuario']; // Supondo que o ID do usuário é armazenado na sessão
+// Define o fuso horário para São Paulo (horário de Brasília)
+date_default_timezone_set('America/Sao_Paulo');
 
-// Define o caminho padrão para a imagem de perfil
-$imagemPerfil = "img/usu.png";
+$usuario_id = $_SESSION['usuario_id'];
 
-// Verifica se uma imagem foi carregada via POST
+// Verifica se o formulário de upload de imagem foi enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
-    $imagem = $_FILES['imagem']['tmp_name'];
-    $imagemData = addslashes(file_get_contents($imagem)); // Convertendo a imagem para BLOB
-
-    // Atualiza a imagem no banco de dados na coluna `foto`
-    $query = "UPDATE usuario SET foto = '$imagemData' WHERE id = '$idUsuario'";
-    mysqli_query($conexao, $query);
-}
-
-// Carrega a imagem do banco de dados
-$query = "SELECT foto FROM usuario WHERE id = '$idUsuario'";
-$result = mysqli_query($conexao, $query);
-
-if ($row = mysqli_fetch_assoc($result)) {
-    if ($row['foto']) {
-        $imagemPerfil = 'data:image/jpeg;base64,' . base64_encode($row['foto']);
+    $imagem = $_FILES['imagem'];
+    
+    // Verifica se há erros no upload
+    if ($imagem['error'] === UPLOAD_ERR_OK) {
+        $imagemTmpName = $imagem['tmp_name'];
+        $imagemNome = basename($imagem['name']);
+        $imagemDestino = 'foto_usuario/' . $imagemNome;
+        
+        // Move o arquivo para o diretório de uploads
+        if (move_uploaded_file($imagemTmpName, $imagemDestino)) {
+            // Atualiza o caminho da imagem no banco de dados
+            $stmt = $conn->prepare("UPDATE usuarios SET foto = ? WHERE id = ?");
+            $stmt->bind_param("si", $imagemDestino, $usuario_id);
+            $stmt->execute();
+            $stmt->close();
+            
+            // Atualiza o caminho da imagem na variável de sessão para refletir a mudança
+            $_SESSION['foto'] = $imagemDestino;
+            $imagemPerfil = $imagemDestino;
+        } else {
+            $message = "Erro ao mover o arquivo para o diretório de uploads.";
+        }
+    } else {
+        $message = "Erro no upload do arquivo.";
     }
 }
-?>
 
+// Recupera o caminho da imagem de perfil do usuário
+$stmt = $conn->prepare("SELECT foto FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$usuario = $result->fetch_assoc();
+$imagemPerfil = $usuario['foto'] ?? 'img/default-avatar.png'; // Caminho da imagem padrão se não houver imagem
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Física Online</title>
+  <title>Configurações</title>
   <link rel="stylesheet" href="css/configuracoes.css">
 </head>
 <body>
@@ -52,7 +66,7 @@ if ($row = mysqli_fetch_assoc($result)) {
   <div class="container">
     <aside>
       <div class="perfil">
-        <img src="img/usuario.png" alt="Avatar">
+        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="200px" height="200px">
         <p>Olá, <?php echo htmlspecialchars($_SESSION['nome']); ?>!</p> 
       </div>
       <nav>
@@ -72,10 +86,10 @@ if ($row = mysqli_fetch_assoc($result)) {
         <div class="opcao-imagem">
             <form action="" method="post" enctype="multipart/form-data">
                 <label for="upload-imagem" class="imagem-label">
-                    <img id="preview-imagem" src="<?php echo $imagemPerfil; ?>" alt="Imagem" width="200px" height="200px" style="cursor: pointer;">
+                    <img id="preview-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Imagem" width="200px" height="200px" style="cursor: pointer;">
                 </label>
                 <input type="file" id="upload-imagem" name="imagem" accept="image/*" style="display: none;">
-                <button type="submit">Salvar Imagem</button>
+                <button type="submit">Salvar</button>
             </form>
         </div>
         <div class="opcao-nome">
@@ -91,6 +105,10 @@ document.getElementById('upload-imagem').addEventListener('change', function(eve
     reader.onload = function() {
         const output = document.getElementById('preview-imagem');
         output.src = reader.result;
+
+        // Atualiza o avatar também
+        const avatar = document.getElementById('avatar-imagem');
+        avatar.src = reader.result;
     }
     reader.readAsDataURL(event.target.files[0]);
 });
@@ -101,4 +119,3 @@ document.getElementById('upload-imagem').addEventListener('change', function(eve
   </footer>
 </body>
 </html>
-

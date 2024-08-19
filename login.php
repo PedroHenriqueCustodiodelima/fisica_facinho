@@ -1,38 +1,54 @@
 <?php
 session_start();
-include("conexao.php");
 
-$email = isset($_POST['email']) ? trim($_POST['email']) : '';
-$senha = isset($_POST['senha']) ? trim($_POST['senha']) : '';
+// Inclui o arquivo de conexão com o banco de dados
+require_once 'conexao.php';
 
-if (isset($_POST['email']) && isset($_POST['senha'])) {
+// Verifica se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
 
-    if (strlen($email) == 0) {
-        $_SESSION['loginErro'] = 'Por favor, preencha o campo de email.';
-    } 
-    else if (strlen($senha) == 0) {
-        $_SESSION['loginErro'] = 'Por favor, preencha o campo de senha.';
-    } 
-    else {
-        $email = $conn->real_escape_string($email);
-        $senha = $conn->real_escape_string($senha);
+    // Verifica as credenciais do usuário (exemplo simplificado)
+    $stmt = $conn->prepare("SELECT id, nome FROM usuarios WHERE email = ? AND senha = ?");
+    $stmt->bind_param("ss", $email, $senha);
+    $stmt->execute();
+    $stmt->store_result();
+    
+    if ($stmt->num_rows > 0) {
+        // O usuário é válido
+        $stmt->bind_result($usuarioId, $nome);
+        $stmt->fetch();
+        
+        // Registra a nova sessão
+        $token = bin2hex(random_bytes(16));
+        $ipUsuario = $_SERVER['REMOTE_ADDR'];
+        $navegador = $_SERVER['HTTP_USER_AGENT'];
 
-        $sql_select = "SELECT * FROM usuario WHERE gmail='$email' AND senha='$senha'";
-        $result = $conn->query($sql_select);
-
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            $_SESSION['nome'] = $user['nome']; 
-            unset($_SESSION['loginErro']); 
-
-            header("Location: inicio.php");
-            exit();
-        } else {
-            $_SESSION['loginErro'] = 'Email ou senha incorretos.';
-        }
+        // Insere a nova sessão
+        $stmt = $conn->prepare("INSERT INTO sessoes (id_usuario, token_sessao, data_inicio, ip_address, user_agent) VALUES (?, ?, NOW(), ?, ?)");
+        $stmt->bind_param("isss", $usuarioId, $token, $ipUsuario, $navegador);
+        $stmt->execute();
+        $sessionId = $stmt->insert_id; // Obtém o ID da nova sessão
+        $stmt->close();
+        
+        // Armazena o ID da sessão e o nome do usuário na variável de sessão
+        $_SESSION['usuario_id'] = $usuarioId;
+        $_SESSION['session_id'] = $sessionId;
+        $_SESSION['nome'] = $nome; // Armazena o nome do usuário
+        
+        // Redireciona para a página inicial
+        header("Location: inicio.php");
+        exit();
+    } else {
+        // Credenciais inválidas
+        $_SESSION['loginErro'] = "Email ou senha inválidos.";
     }
 }
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -60,7 +76,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
                 <form method="POST" action="">
                     <div class="campo-il">
                         <label for="email">Email:</label>
-                        <input type="email" name="email" placeholder="Digite o seu email" value="<?php echo htmlspecialchars($email, ENT_QUOTES); ?>" required>
+                        <input type="email" name="email" placeholder="Digite o seu email" value="<?php echo isset($email) ? htmlspecialchars($email, ENT_QUOTES) : ''; ?>" required>
                     </div>
                     <div class="campo-il">
                         <label for="senha">Senha:</label>
@@ -70,7 +86,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
                         <svg id="toggleSenhaVisivel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="senha-icon" style="display: none;">
                             <path fill="#ffffff" d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z"/>
                         </svg>
-                        <input type="password" id="senha" name="senha" placeholder="Digite a sua senha" value="<?php echo htmlspecialchars($senha, ENT_QUOTES); ?>" required>
+                        <input type="password" id="senha" name="senha" placeholder="Digite a sua senha" value="<?php echo isset($senha) ? htmlspecialchars($senha, ENT_QUOTES) : ''; ?>" required>
                     </div>
                     <button class="btn-login" type="submit">Logar</button>
                 </form>
@@ -82,7 +98,7 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     </div>
     <script>
         window.onload = function() {
-            const popup = document.getElementById('errorPopup');  
+            const popup = document.getElementById('errorPopup');
             <?php if (isset($_SESSION['loginErro'])): ?>
                 popup.classList.add('show');
                 setTimeout(() => {
@@ -90,17 +106,19 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
                 }, 3000); 
                 <?php unset($_SESSION['loginErro']); ?>
             <?php endif; ?>
-            
         }
+        
         const toggleSenhaOculto = document.getElementById('toggleSenhaOculto');
         const toggleSenhaVisivel = document.getElementById('toggleSenhaVisivel');
         const senhaInput = document.getElementById('senha');
+
         toggleSenhaOculto.addEventListener('click', function() {
             const tipo = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
             senhaInput.setAttribute('type', tipo);
             toggleSenhaOculto.style.display = tipo === 'text' ? 'none' : 'block';
             toggleSenhaVisivel.style.display = tipo === 'text' ? 'block' : 'none';
         });
+
         toggleSenhaVisivel.addEventListener('click', function() {
             const tipo = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
             senhaInput.setAttribute('type', tipo);
