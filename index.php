@@ -67,5 +67,11 @@ include("funcoes_php/funcoes_index.php");
             }
         }
     </script>
+    <?php if (!empty($message)) : ?>
+    <div id="popupMessage" class="popup <?php echo strpos($message, 'sucesso') !== false ? '' : 'error'; ?>">
+        <?php echo htmlspecialchars($message); ?>
+    </div>
+<?php endif; ?>
+
 </body>
 </html>

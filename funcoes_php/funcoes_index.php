@@ -1,5 +1,8 @@
 <?php
 include("conexao.php");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php'; // Caminho para o autoload do Composer
 
 session_start();
 
@@ -63,6 +66,40 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
                 $_SESSION['usuario_id'] = $usuarioId;
                 $_SESSION['session_id'] = $sessionId;
                 $_SESSION['nome'] = $nome;
+
+                // Função para enviar o e-mail de confirmação
+                function enviarEmailConfirmacao($destinatario, $nome) {
+                    $mail = new PHPMailer(true);
+
+                    try {
+                        // Configurações do servidor SMTP
+                        $mail->isSMTP();
+                        $mail->Host       = 'smtp.seuservidor.com'; // Endereço do servidor SMTP
+                        $mail->SMTPAuth   = true;
+                        $mail->Username   = 'fisicafacinho@gmail.com'; // Seu e-mail
+                        $mail->Password   = 'v g e ur r r k y j f i m o i o z'; // Sua senha
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                        $mail->Port       = 587;
+
+                        // Remetente e destinatário
+                        $mail->setFrom('fisicafacinho@gmail.com', 'Física Online');
+                        $mail->addAddress($destinatario, $nome);
+
+                        // Conteúdo do e-mail
+                        $mail->isHTML(true);
+                        $mail->Subject = 'Confirmação de Cadastro';
+                        $mail->Body    = "<h1>Bem-vindo, $nome!</h1><p>Obrigado por se cadastrar em nossa plataforma.</p>";
+                        $mail->AltBody = "Bem-vindo, $nome!\nObrigado por se cadastrar em nossa plataforma.";
+
+                        $mail->send();
+                        return 'E-mail de confirmação enviado com sucesso.';
+                    } catch (Exception $e) {
+                        return "Não foi possível enviar o e-mail. Erro: {$mail->ErrorInfo}";
+                    }
+                }
+
+                // Enviar e-mail de confirmação
+                $message = enviarEmailConfirmacao($email, $nome);
 
                 // Redireciona para a página inicial
                 header("Location: inicio.php");
