@@ -2,13 +2,12 @@
 include("conexao.php");
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require 'vendor/autoload.php'; // Caminho para o autoload do Composer
+require 'vendor/autoload.php'; // Autoload do Composer
 
 session_start();
 
 $message = ''; 
 
-// Define o fuso horário para São Paulo (horário de Brasília)
 date_default_timezone_set('America/Sao_Paulo');
 
 if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['confirmar_senha'])) {
@@ -49,57 +48,39 @@ if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) &&
             if ($conn->query($sql_insert) === TRUE) {
                 // Recupera o ID do novo usuário
                 $usuarioId = $conn->insert_id;
-                
-                // Registra a nova sessão
-                $token = bin2hex(random_bytes(16));
-                $ipUsuario = $_SERVER['REMOTE_ADDR'];
-                $navegador = $_SERVER['HTTP_USER_AGENT'];
-
-                // Insere a nova sessão
-                $stmt = $conn->prepare("INSERT INTO sessoes (id_usuario, token_sessao, data_inicio, ip_address, user_agent) VALUES (?, ?, NOW(), ?, ?)");
-                $stmt->bind_param("isss", $usuarioId, $token, $ipUsuario, $navegador);
-                $stmt->execute();
-                $sessionId = $stmt->insert_id; // Obtém o ID da nova sessão
-                $stmt->close();
 
                 // Armazena o ID da sessão e o nome do usuário na variável de sessão
                 $_SESSION['usuario_id'] = $usuarioId;
-                $_SESSION['session_id'] = $sessionId;
                 $_SESSION['nome'] = $nome;
 
                 // Função para enviar o e-mail de confirmação
-                function enviarEmailConfirmacao($destinatario, $nome) {
+                function enviarEmailConfirmacao($email, $nome) {
                     $mail = new PHPMailer(true);
-
                     try {
-                        // Configurações do servidor SMTP
                         $mail->isSMTP();
-                        $mail->Host       = 'smtp.seuservidor.com'; // Endereço do servidor SMTP
+                        $mail->Host       = 'smtp.gmail.com'; 
                         $mail->SMTPAuth   = true;
-                        $mail->Username   = 'fisicafacinho@gmail.com'; // Seu e-mail
-                        $mail->Password   = 'v g e ur r r k y j f i m o i o z'; // Sua senha
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                        $mail->Port       = 587;
+                        $mail->Username   = 'fisicafacinho@gmail.com';
+                        $mail->Password   = 'klwr ccgp eoia ustb';
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                        $mail->Port       = 465;
+                        $mail->setFrom('fisicafacinho@gmail.com', 'Fisica facinho');
+                        $mail->addAddress($email, $nome);
 
-                        // Remetente e destinatário
-                        $mail->setFrom('fisicafacinho@gmail.com', 'Física Online');
-                        $mail->addAddress($destinatario, $nome);
-
-                        // Conteúdo do e-mail
                         $mail->isHTML(true);
-                        $mail->Subject = 'Confirmação de Cadastro';
-                        $mail->Body    = "<h1>Bem-vindo, $nome!</h1><p>Obrigado por se cadastrar em nossa plataforma.</p>";
-                        $mail->AltBody = "Bem-vindo, $nome!\nObrigado por se cadastrar em nossa plataforma.";
-
+                        $mail->Subject = 'Registro de Usuário';
+                        $body = "Mensagem do Fisica online <br>
+                                 Nome: ". $nome."<br>
+                                 E-mail: ". $email."<br>";
+                        $mail->Body    = $body;
                         $mail->send();
-                        return 'E-mail de confirmação enviado com sucesso.';
                     } catch (Exception $e) {
-                        return "Não foi possível enviar o e-mail. Erro: {$mail->ErrorInfo}";
+                        echo "A mensagem não pode ser enviada. Erro: {$mail->ErrorInfo}";
                     }
                 }
 
                 // Enviar e-mail de confirmação
-                $message = enviarEmailConfirmacao($email, $nome);
+                enviarEmailConfirmacao($email, $nome);
 
                 // Redireciona para a página inicial
                 header("Location: inicio.php");
