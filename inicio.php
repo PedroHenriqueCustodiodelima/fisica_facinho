@@ -33,7 +33,7 @@ include("funcoes_php/funcoes_inicio.php");
           </li>
           <li>
             <img src="img/livro.png" alt="" width="30px">
-            <a href="#">Conteúdos</a>
+            <a href="conteudos.php">Conteúdos</a>
           </li>
           <li>
             <img src="livro.png" alt="" width="30px">
