@@ -56,14 +56,13 @@ include("funcoes_php/funcoes_index.php");
         </div>
     </div>
     <script>
-        // JavaScript para exibir o pop-up e escondê-lo automaticamente
         window.onload = function() {
             const popup = document.getElementById('popupMessage');
             if (popup) {
                 popup.classList.add('show');
                 setTimeout(function() {
                     popup.classList.remove('show');
-                }, 3000); // Tempo em milissegundos (3 segundos)
+                }, 2000); 
             }
         }
     </script>

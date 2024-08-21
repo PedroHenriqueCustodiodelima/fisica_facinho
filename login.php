@@ -61,7 +61,7 @@ include("funcoes_php/funcoes_login.php");
                 popup.classList.add('show');
                 setTimeout(() => {
                     popup.classList.remove('show');
-                }, 3000); 
+                }, 2000); 
                 <?php unset($_SESSION['loginErro']); ?>
             <?php endif; ?>
         }
