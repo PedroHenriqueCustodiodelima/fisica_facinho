@@ -14,7 +14,7 @@ class Authenticate
     {
         session_unset();
         session_destroy();
-        header('Location: ' . filter_var('http://localhost:3006', FILTER_SANITIZE_URL));
+        header('Location: ' . filter_var('http://localhost:3006/login.php', FILTER_SANITIZE_URL));
         exit();
     }
 }

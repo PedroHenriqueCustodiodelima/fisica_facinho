@@ -14,7 +14,7 @@ class GoogleClient
         $this->client = new Google_Client();
         $this->client->setClientId('795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com');
         $this->client->setClientSecret('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');
-        $this->client->setRedirectUri('http://localhost:3006');
+        $this->client->setRedirectUri('http://localhost:3006/login.php'); // Ajuste para o seu URI
         $this->client->addScope('email');
         $this->client->addScope('profile');
     }
@@ -22,6 +22,7 @@ class GoogleClient
     public function init()
     {
         if (isset($_GET['code'])) {
+            // Trocar o código de autorização por um token de acesso
             $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
             header('Location: ' . filter_var($this->client->getRedirectUri(), FILTER_SANITIZE_URL));
