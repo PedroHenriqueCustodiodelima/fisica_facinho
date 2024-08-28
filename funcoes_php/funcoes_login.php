@@ -7,9 +7,9 @@ require_once 'conexao.php';
 // Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $senha = $_POST['password']; // Alterado para corresponder ao nome do campo
 
-    // Verifica as credenciais do usuário (exemplo simplificado)
+    // Verifica as credenciais do usuário
     $stmt = $conn->prepare("SELECT id, nome FROM usuarios WHERE email = ? AND senha = ?");
     $stmt->bind_param("ss", $email, $senha);
     $stmt->execute();
@@ -43,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Credenciais inválidas
         $_SESSION['loginErro'] = "Email ou senha inválidos.";
+        header("Location: login.php"); // Redireciona para a página de login para exibir a mensagem
+        exit();
     }
 }
 ?>
