@@ -10,8 +10,9 @@ include("funcoes_php/funcoes_login.php");
     <title>Página Simples</title>
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Adiciona o link para o SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Adiciona o link para a biblioteca do Google Sign-In -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
     <header>
@@ -35,7 +36,7 @@ include("funcoes_php/funcoes_login.php");
                 
                 <button class="login-button" type="submit">Entrar</button>
             </form>
-            <button class="google-login">
+            <button class="google-login" id="googleSignInBtn">
                 <i class="fa-brands fa-google"></i>
                 Entrar com o Google
             </button>
@@ -66,7 +67,6 @@ include("funcoes_php/funcoes_login.php");
                 eyeSlashIcon.style.display = 'none';
             });
 
-            // Verifica se há mensagem de erro para exibir
             <?php if (isset($_SESSION['loginErro'])): ?>
                 Swal.fire({
                     title: 'Erro no login',
@@ -77,6 +77,43 @@ include("funcoes_php/funcoes_login.php");
                     <?php unset($_SESSION['loginErro']); ?>
                 });
             <?php endif; ?>
+
+            gapi.load('auth2', function() {
+                console.log('Google API loaded'); // Depuração
+                const auth2 = gapi.auth2.init({
+                    client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',
+                });
+
+                const googleSignInBtn = document.getElementById('googleSignInBtn');
+                googleSignInBtn.addEventListener('click', function() {
+                    console.log('Google Sign-In button clicked'); // Depuração
+                    auth2.signIn().then(function(googleUser) {
+                        const id_token = googleUser.getAuthResponse().id_token;
+                        
+                        fetch('verify_google_token.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: 'id_token=' + id_token,
+                        }).then(response => response.json())
+                          .then(data => {
+                              if (data.success) {
+                                  window.location.href = 'inicio.php'; // Redireciona após login
+                              } else {
+                                  Swal.fire({
+                                      title: 'Erro',
+                                      text: 'Não foi possível fazer login com o Google.',
+                                      icon: 'error',
+                                      confirmButtonText: 'OK'
+                                  });
+                              }
+                          });
+                    }).catch(error => {
+                        console.error('Erro ao autenticar com o Google', error); // Depuração
+                    });
+                });
+            });
         });
     </script>
 </body>
