@@ -2,75 +2,147 @@
 include("funcoes_php/funcoes_index.php");
 ?>
 
-
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Cadastro</title>
+    <title>Página de Cadastro</title>
+    <link rel="stylesheet" href="css/tarefas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
     <header>
-        <h1>Física Online</h1>
-        <nav>
-            <a href="login.php" class="nav-button">Login</a>
-            <a href="index.php" class="nav-button">Cadastro</a>
-        </nav>
+        <img src="img/logo.png" alt="Logo">
     </header>
-    <div class="login-caixa">
-        <div class="esquerda">
-            <h1>Falta pouco para você iniciar na sua jornada de aprendizado. Finalize o seu cadastro</h1>
-            <img src="img/Notebook-pana 1.png" class="esquerda-imagem" alt="">
-        </div>
-        <div class="direita">
-            <div class="card-login">
-                <h1>CADASTRO</h1>
-                <form method="POST" action="">
-                    <?php if (!empty($message)) : ?>
-                        <div id="popupMessage" class="popup <?php echo strpos($message, 'sucesso') !== false ? '' : 'error'; ?>">
-                            <?php echo htmlspecialchars($message); ?>
-                        </div>
-                    <?php endif; ?>
-                    <div class="campo-il">
-                        <label for="nome">Nome:</label>
-                        <input type="text" name="nome" placeholder="Digite o seu nome" value="<?php echo isset($nome) ? htmlspecialchars($nome) : ''; ?>" required>
-                    </div>
-                    <div class="campo-il">
-                        <label for="email">Email:</label>
-                        <input type="email" name="email" placeholder="Digite o seu email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>" required>
-                    </div>
-                    <div class="campo-il">
-                        <label for="senha">Senha:</label>
-                        <input type="password" name="senha" placeholder="Digite a sua senha" value="<?php echo isset($senha) ? htmlspecialchars($senha) : ''; ?>" required>
-                    </div>
-                    <div class="campo-il">
-                        <label for="confirmar_senha">Confirmar Senha:</label>
-                        <input type="password" name="confirmar_senha" placeholder="Confirme a sua senha" value="<?php echo isset($confirmar_senha) ? htmlspecialchars($confirmar_senha) : ''; ?>" required>
-                    </div>
-                    <button class="btn-login" type="submit">Cadastrar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <script>
-        window.onload = function() {
-            const popup = document.getElementById('popupMessage');
-            if (popup) {
-                popup.classList.add('show');
-                setTimeout(function() {
-                    popup.classList.remove('show');
-                }, 2000); 
-            }
-        }
-    </script>
-    <?php if (!empty($message)) : ?>
-    <div id="popupMessage" class="popup <?php echo strpos($message, 'sucesso') !== false ? '' : 'error'; ?>">
-        <?php echo htmlspecialchars($message); ?>
-    </div>
-<?php endif; ?>
 
+    <main>
+        <div class="register-form">
+            <h2>Crie sua conta para começar sua jornada de aprendizado</h2>
+            <form action="" method="POST">
+                <div class="input-group">
+                    <input type="text" id="name" name="name" placeholder="Digite aqui seu Nome" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Digite aqui seu Email" required>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Digite aqui sua senha" required>
+                    <i class="fa-solid fa-eye" id="togglePassword"></i>
+                    <i class="fa-solid fa-eye-slash" id="togglePasswordSlash" style="display: none;"></i>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required>
+                    <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
+                    <i class="fa-solid fa-eye-slash" id="toggleConfirmPasswordSlash" style="display: none;"></i>
+                </div>      
+                <button class="register-button" type="submit">Cadastrar</button>
+
+                <button class="google-login" id="googleSignInBtn">
+                    <i class="fa-brands fa-google"></i>
+                    Entrar com o Google
+                </button>
+
+            </form>
+            <p class="login-link">Já tem uma conta? <a href="login.php">Faça login</a></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>IFRN CAMPUS NATAL CENTRAL</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('password');
+            const confirmPasswordField = document.getElementById('confirmPassword');
+            const eyeIcon = document.getElementById('togglePassword');
+            const eyeSlashIcon = document.getElementById('togglePasswordSlash');
+            const eyeIconConfirm = document.getElementById('toggleConfirmPassword');
+            const eyeSlashIconConfirm = document.getElementById('toggleConfirmPasswordSlash');
+
+            eyeIcon.addEventListener('click', function() {
+                passwordField.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeSlashIcon.style.display = 'inline';
+            });
+
+            eyeSlashIcon.addEventListener('click', function() {
+                passwordField.type = 'password';
+                eyeIcon.style.display = 'inline';
+                eyeSlashIcon.style.display = 'none';
+            });
+
+            eyeIconConfirm.addEventListener('click', function() {
+                confirmPasswordField.type = 'text';
+                eyeIconConfirm.style.display = 'none';
+                eyeSlashIconConfirm.style.display = 'inline';
+            });
+
+            eyeSlashIconConfirm.addEventListener('click', function() {
+                confirmPasswordField.type = 'password';
+                eyeIconConfirm.style.display = 'inline';
+                eyeSlashIconConfirm.style.display = 'none';
+            });
+
+            <?php if (!empty($message)): ?>
+                Swal.fire({
+                    title: 'Erro no cadastro',
+                    text: '<?php echo $message; ?>',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            <?php endif; ?>
+
+            gapi.load('auth2', function() {
+                const auth2 = gapi.auth2.init({
+                    client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',
+                });
+
+                const googleSignInBtn = document.getElementById('googleSignInBtn');
+                if (googleSignInBtn) {
+                    googleSignInBtn.addEventListener('click', function() {
+                        auth2.signIn().then(function(googleUser) {
+                            const id_token = googleUser.getAuthResponse().id_token;
+                            
+                            fetch('verify_google_token.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                                body: 'id_token=' + id_token,
+                            }).then(response => response.json()).then(data => {
+                                if (data.success) {
+                                    window.location.href = 'inicio.php';
+                                } else {
+                                    Swal.fire({
+                                        title: 'Erro',
+                                        text: data.message,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            }).catch(error => {
+                                Swal.fire({
+                                    title: 'Erro',
+                                    text: 'Erro ao autenticar com Google. Tente novamente.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            });
+                        });
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

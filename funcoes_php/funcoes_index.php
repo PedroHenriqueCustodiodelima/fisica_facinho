@@ -10,12 +10,11 @@ $message = '';
 
 date_default_timezone_set('America/Sao_Paulo');
 
-if (isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['confirmar_senha'])) {
-
-    $nome = trim($_POST['nome']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nome = trim($_POST['name']);
     $email = trim($_POST['email']);
-    $senha = trim($_POST['senha']);
-    $confirmar_senha = trim($_POST['confirmar_senha']);
+    $senha = trim($_POST['password']);
+    $confirmar_senha = trim($_POST['confirmPassword']);
 
     if (strlen($nome) == 0) {
         $message = "Por favor, preencha o campo de nome.";
