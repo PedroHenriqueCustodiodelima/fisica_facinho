@@ -1,5 +1,5 @@
 <?php
-include("funcoes_php/funcoes_index.php");
+include("funcoes_php/funcoes_cadastro_prof.php");
 ?>
 
 <!DOCTYPE html>
@@ -7,8 +7,8 @@ include("funcoes_php/funcoes_index.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Cadastro</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Cadastrar Professor</title>
+    <link rel="stylesheet" href="css/tarefas.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -20,37 +20,43 @@ include("funcoes_php/funcoes_index.php");
 
     <main>
         <div class="register-form">
-            <h2>Crie sua conta para começar sua jornada de aprendizado</h2>
-            <form action="" method="POST">
+            <h2>Cadastrar novo professor</h2>
+            <form action="funcoes_php/funcoes_cadastro_prof.php" method="POST">
+                <!-- Campos do formulário permanecem os mesmos -->
                 <div class="input-group">
-                    <input type="text" id="name" name="name" placeholder="Digite aqui seu Nome" required>
+                    <input type="text" id="name" name="name" placeholder="Digite o nome do professor" required>
                     <i class="fa-solid fa-user"></i>
                 </div>
-                
+
                 <div class="input-group">
-                    <input type="email" id="email" name="email" placeholder="Digite aqui seu Email" required>
+                    <input type="email" id="email" name="email" placeholder="Digite o email do professor" required>
                     <i class="fa-solid fa-envelope"></i>
                 </div>
-                
+
                 <div class="input-group">
-                    <input type="password" id="password" name="password" placeholder="Digite aqui sua senha" required>
+                    <input type="date" id="data_nascimento" name="data_nascimento" placeholder="Data de Nascimento" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Digite uma senha" required>
                     <i class="fa-solid fa-eye" id="togglePassword"></i>
                     <i class="fa-solid fa-eye-slash" id="togglePasswordSlash" style="display: none;"></i>
                 </div>
-                
+
                 <div class="input-group">
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme a senha" required>
                     <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
                     <i class="fa-solid fa-eye-slash" id="toggleConfirmPasswordSlash" style="display: none;"></i>
-                </div>      
+                </div>
+
                 <button class="register-button" type="submit">Cadastrar</button>
 
                 <button class="google-login" id="googleSignInBtn">
                     <i class="fa-brands fa-google"></i>
                     Entrar com o Google
                 </button>
-
             </form>
+
             <p class="login-link">Já tem uma conta? <a href="login.php">Faça login</a></p>
         </div>
     </main>
@@ -108,17 +114,18 @@ include("funcoes_php/funcoes_index.php");
                 });
 
                 const googleSignInBtn = document.getElementById('googleSignInBtn');
+
                 if (googleSignInBtn) {
                     googleSignInBtn.addEventListener('click', function() {
                         auth2.signIn().then(function(googleUser) {
                             const id_token = googleUser.getAuthResponse().id_token;
-                            
+
                             fetch('verify_google_token.php', {
                                 method: 'POST',
                                 headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'Content-Type': 'application/json'
                                 },
-                                body: 'id_token=' + id_token,
+                                body: JSON.stringify({ id_token: id_token })
                             }).then(response => response.json()).then(data => {
                                 if (data.success) {
                                     window.location.href = 'inicio.php';
