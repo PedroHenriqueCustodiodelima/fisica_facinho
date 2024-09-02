@@ -1,3 +1,4 @@
+/* corpo da página*/
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -8,6 +9,12 @@ body {
   flex-direction: column;
   min-height: 100vh; 
 }
+
+
+
+
+/* cabeçalho */
+
 header {
   background-color: #001A4E;
   padding: 10px;
@@ -17,15 +24,13 @@ header {
 header img {
   height: 50px;
 }
-footer {
-  background-color: #001A4E;
-  padding: 2px;
-  text-align: center;
-  color: white;
-}
-footer p{
-  margin-top: 15px;
-}  
+
+
+
+
+
+/* navegadores da página */
+
 .conteudo-cabecalho h1 {
   margin: 0;
   color: #ffcd38;
@@ -78,10 +83,23 @@ nav ul li a{
 nav ul li img{
   margin-right: 0.5em;
 }
+
+
+
+
+
+/* main */
+
 main {
   color: whitesmoke;
   margin: 0 auto;
 }
+
+
+
+
+
+/* cabeçalho de edição com nome, foto, botão de editar e data do usuario no site */
 .container-opcao {
   display: flex;
   flex-direction: column;
@@ -139,11 +157,13 @@ main {
   margin-left: 560px;
   border-radius: 50%;
 }
-.linha-separadora {
-  width: 100%;
-  border: 1px solid #ccc; 
-  margin: 20px 0; 
-}
+
+
+
+
+
+/* div de gráficos e acertos */
+
 .caixas {
   display: flex;
   gap: 19px; 
@@ -212,6 +232,13 @@ main {
 .opcao-nome h2 {
     font-size: 24px;
 }
+
+
+
+
+
+/* modal de editar */
+
 .modal-header {
   background-color: #001A4E; 
   color: #ffffff; 
@@ -259,3 +286,18 @@ main {
   display: block;
   margin-bottom: 5px; 
 }
+
+
+
+
+/* footer */
+
+footer {
+  background-color: #001A4E;
+  padding: 2px;
+  text-align: center;
+  color: white;
+}
+footer p{
+  margin-top: 15px;
+}  
