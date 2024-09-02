@@ -1,206 +1,166 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #0c2545;
-    color: branco;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Garante que o body ocupe toda a altura da janela */
-  }
-  
-  header {
-    background-color: #004382;
-    padding: 20px;
-    text-align: left;
-  }
-  
-  header h1 img{
-  }
-  
-  .conteudo-cabecalho h1 {
-    margin: 0;
-    color: #ffcd38;
-  }
-  
-  .container {
-    display: flex;
-  
-    flex: 1; /* Faz o container ocupar o espaço restante entre o header e o footer */
-  
-    margin: 20px;
-  }
-  
-  aside {
-    width: 15vw;
-    background-color: #004382;
-    padding: 20px;
-    border-radius: 10px;
-    margin-right: 20px;
-  }
-  
-  .perfil {
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .perfil img {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 10px;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  nav ul li {
-    margin: 10px 0;
-    padding: 10px;
-  
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    display: flex;
-    align-items: center;
-  
-  }
-  
-  nav ul li:hover {
-    transition: 0.5s;
-    background-color: #063463ea;
-  }
-  
-  nav ul li a{
-    color: white;
-    text-decoration: none;
-  }
-  
-  nav ul li img{
-    margin-right: 0.5em;
-  }
-  
-  main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza horizontalmente os itens dentro do main */
-  }
-  
-  main h1 {
-    text-align: center;
-    color: #ffc107;
-  
-  }
-  
-  .opcao-ano {
-    width: 70vw;
-    height: 15vh;
-    background-color: #004b87;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-  }
-  
-  .opcao-ano h3 {
-    color: #ffc107;
-    margin-top: 10px;
-    font-size: 50px;
-    margin-bottom: 0.5em;
-  }
-  
-  .primeiro-ano {
-    transition: 0.5s;
-    background-color: #005691;
-  
-    background-image: url('prano.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .segundo-ano {
-    transition: 0.5s;
-    background-color: #6b2d5c;
-  
-    background-image: url('prano.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .desc {
-    margin: 0;
-    display: flex;
-    align-items: center; /* Alinha verticalmente o parágrafo e o link ao centro */
-    justify-content: center;
-    text-align: left;
-    color: white;
-  }
-  
-  .desc p {
-    margin: 0; /* Remove a margem padrão do parágrafo */
-    flex: 1; /* Faz o parágrafo ocupar todo o espaço disponível */
-  }
-  
-  .terceiro-ano {
-    transition: 0.5s;
-    background-color: #4c9464;
-  
-    background-image: url('prano.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .opcao-ano a {
-    color: #ffc107;
-    text-decoration: none;
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    padding: 5px 10px;
-    background-color: #002147;
-    border-radius: 5px;
-  }
-  
-  footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #004382;
-    color: white;
-    margin-top: auto; /* Empurra o footer para o final da página */
-  }
-  
-  a{
-    text-decoration: none;
-  }
-  
-  
-  .primeiro-ano:hover {
-    transition: 0.8s;
-    background-color: #042f4d;
-    padding: 35px;
-  }
-  
-  
-  .segundo-ano:hover {
-    transition: 0.8s;
-    background-color: #3a1832;
-    padding: 35px;
-  }
-  
-  
-  .terceiro-ano:hover {
-    transition: 0.8s;
-    transform: 1s;
-    background-color: #254730;
-  
-    padding: 35px;
-  }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #0c2545;
+  color: branco;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+} 
+header {
+  background-color: #004382;
+  padding: 20px;
+  text-align: left;
+}
+.conteudo-cabecalho h1 {
+  margin: 0;
+  color: #ffcd38;
+}
+.container {
+  display: flex;
+  flex: 1; 
+  margin: 20px;
+}
+aside {
+  width: 15vw;
+  background-color: #004382;
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+.perfil {
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.perfil img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+nav ul li {
+  margin: 10px 0;
+  padding: 10px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}  
+nav ul li:hover {
+  transition: 0.5s;
+  background-color: #063463ea;
+}
+nav ul li a{
+  color: white;
+  text-decoration: none;
+}
+nav ul li img{
+  margin-right: 0.5em;
+}
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente os itens dentro do main */
+}
+main h1 {
+  text-align: center;
+  color: #ffc107;
+}
+.opcao-ano {
+  width: 70vw;
+  height: 15vh;
+  background-color: #004b87;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  position: relative;
+  text-align: center;
+} 
+.opcao-ano h3 {
+  color: #ffc107;
+  margin-top: 10px;
+  font-size: 50px;
+  margin-bottom: 0.5em;
+}
+.primeiro-ano {
+  transition: 0.5s;
+  background-color: #005691;
+  background-image: url('prano.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.segundo-ano {
+  transition: 0.5s;
+  background-color: #6b2d5c;
+  background-image: url('prano.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.desc {
+  margin: 0;
+  display: flex;
+  align-items: center; /* Alinha verticalmente o parágrafo e o link ao centro */
+  justify-content: center;
+  text-align: left;
+  color: white;
+}
+ .desc p {
+  margin: 0; /* Remove a margem padrão do parágrafo */
+  flex: 1; /* Faz o parágrafo ocupar todo o espaço disponível */
+ }
+
+.terceiro-ano {
+  transition: 0.5s;
+  background-color: #4c9464;
+  background-image: url('prano.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.opcao-ano a {
+  color: #ffc107;
+  text-decoration: none;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 5px 10px;
+  background-color: #002147;
+  border-radius: 5px;
+}
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #004382;
+  color: white;
+  margin-top: auto; /* Empurra o footer para o final da página */
+}
+a{
+  text-decoration: none;
+}
+.primeiro-ano:hover {
+  transition: 0.8s;
+  background-color: #042f4d;
+  padding: 35px;
+} 
+.segundo-ano:hover {
+  transition: 0.8s;
+  background-color: #3a1832;
+  padding: 35px;
+}
+.terceiro-ano:hover {
+  transition: 0.8s;
+  transform: 1s;
+  background-color: #254730;
+  padding: 35px;
+}
