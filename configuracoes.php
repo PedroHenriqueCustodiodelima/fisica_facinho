@@ -9,17 +9,14 @@ include("funcoes_php/funcoes_confi.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configurações</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="css/configuracoes.css">
-  <style>
-
-
-
-  </style>
 </head>
 <body>
   <header>
     <div class="conteudo-cabecalho d-flex justify-content-between align-items-center">
-      <h1><img src="img/fisicon.svg" width="200px"></h1>
+      <h1><img src="img/logo.png" width="200px"></h1>
     </div>
   </header>
 
@@ -40,38 +37,49 @@ include("funcoes_php/funcoes_confi.php");
         </ul>
       </nav>
     </aside>
-
     <main>
-  <div class="container-opcao">
-    <div class="perfil">
-      <img id="avatar-imagem-main" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar">
-      <p><span id="usuario-nome-main"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarPerfilModal">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="width: 24px; height: 24px;">
-          <path fill="#ffffff" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l293.1 0c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1l-91.4 0zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z"/>
-        </svg>
-      </button>
-    </div>
-    <hr class="linha-separadora">
-    <div class="caixas">
-      <div class="caixa caixa-esquerda"></div>
-      <div class="caixa caixa-direita">
-
+      <div class="container-opcao">
+        <div class="perfil">
+          <img id="avatar-imagem-main" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar">
+          <p>
+            <span id="usuario-nome-main" class="usuario-nome-main"><?php echo htmlspecialchars($usuario['nome']); ?></span>
+            <span class="data-criacao">Conosco desde <?php echo htmlspecialchars($usuario['data_criacao_formatada']); ?></span>
+          </p>
+        </div>
+        <button type="button" class="editar" data-toggle="modal" data-target="#editarPerfilModal">
+          <i class="fa-solid fa-pen" style="width: 24px; height: 24px; color: #ffffff;"></i>
+        </button>
+        <div class="caixas">
+          <div class="caixa caixa-esquerda">
+            <canvas id="grafico-esquerda"></canvas>
+          </div>
+          <div class="caixas-direita">
+            <div class="caixa caixa-direita-superior">
+              <div class="texto-centralizado">
+                <span class="numero">50</span>
+                <span class="descricao">Acertos</span>
+              </div>
+            </div>
+            <div class="caixa caixa-direita-inferior">
+              <div class="texto-centralizado">
+                <span class="numero_1">50</span>
+                <span class="descricao_1">Erradas</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</main>
-
-
-
-  </div>
+    </main>
+</div>
   
-
 <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+        <div class="modal-header-left">
+          <img src="img/logo.png" alt="Logo" class="modal-logo">
+          <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+        </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -89,6 +97,10 @@ include("funcoes_php/funcoes_confi.php");
             <label for="nome">Nome</label>
             <input type="text" class="form-control" id="nome" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>">
           </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>">
+          </div>
           <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
       </div>
@@ -97,29 +109,18 @@ include("funcoes_php/funcoes_confi.php");
 </div>
 
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script>
-    document.getElementById('upload-imagem').addEventListener('change', function(event) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            const output = document.getElementById('preview-imagem');
-            output.src = reader.result;
+<footer>
+  <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+</footer>
 
-            const avatar = document.getElementById('avatar-imagem-main');
-            avatar.src = reader.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    });
 
-    document.getElementById('preview-imagem').addEventListener('click', function() {
-        document.getElementById('upload-imagem').click();
-    });
-  </script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="js/confi.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-  <footer>
-    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-  </footer>
 </body>
 </html>
