@@ -15,10 +15,12 @@ include("funcoes_php/funcoes_login.php");
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
+    <!-- cabeçalho do site com a logo -->
     <header>
         <img src="img/logo.png" alt="Logo">
     </header>
 
+    <!-- formulário de login com email e senha -->
     <main>
         <div class="login-form">
             <h2>Faça seu login para começar a sua aventura de aprendizado na física</h2>
@@ -44,12 +46,15 @@ include("funcoes_php/funcoes_login.php");
         </div>
     </main>
 
+
+    <!-- footer -->
     <footer>
         <p>IFRN CAMPUS NATAL CENTRAL</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // código para exibir senha ou não 
         document.addEventListener('DOMContentLoaded', function() {
             const passwordField = document.getElementById('password');
             const eyeIcon = document.getElementById('togglePassword');
@@ -67,6 +72,9 @@ include("funcoes_php/funcoes_login.php");
                 eyeSlashIcon.style.display = 'none';
             });
 
+
+            // mensagem de erro em polpap caso alguma credêncial esteja incorreta
+
             <?php if (isset($_SESSION['loginErro'])): ?>
                 Swal.fire({
                     title: 'Erro no login',
@@ -78,15 +86,19 @@ include("funcoes_php/funcoes_login.php");
                 });
             <?php endif; ?>
 
+
+
+            // login com o google, porém não está funcionando 
+
             gapi.load('auth2', function() {
-                console.log('Google API loaded'); // Depuração
+                console.log('Google API loaded'); 
                 const auth2 = gapi.auth2.init({
                     client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',
                 });
 
                 const googleSignInBtn = document.getElementById('googleSignInBtn');
                 googleSignInBtn.addEventListener('click', function() {
-                    console.log('Google Sign-In button clicked'); // Depuração
+                    console.log('Google Sign-In button clicked'); 
                     auth2.signIn().then(function(googleUser) {
                         const id_token = googleUser.getAuthResponse().id_token;
                         
@@ -99,7 +111,7 @@ include("funcoes_php/funcoes_login.php");
                         }).then(response => response.json())
                           .then(data => {
                               if (data.success) {
-                                  window.location.href = 'inicio.php'; // Redireciona após login
+                                  window.location.href = 'inicio.php'; 
                               } else {
                                   Swal.fire({
                                       title: 'Erro',
@@ -110,7 +122,7 @@ include("funcoes_php/funcoes_login.php");
                               }
                           });
                     }).catch(error => {
-                        console.error('Erro ao autenticar com o Google', error); // Depuração
+                        console.error('Erro ao autenticar com o Google', error); 
                     });
                 });
             });

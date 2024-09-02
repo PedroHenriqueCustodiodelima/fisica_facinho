@@ -1,3 +1,4 @@
+// código para selecionar a imagem de perfil do usuário
 document.getElementById('upload-imagem').addEventListener('change', function(event) {
     const reader = new FileReader();
     reader.onload = function() {
@@ -13,6 +14,8 @@ document.getElementById('upload-imagem').addEventListener('change', function(eve
 });
 
 
+
+// código do gráfico
 document.addEventListener('DOMContentLoaded', function () {
     var ctxEsquerda = document.getElementById('grafico-esquerda').getContext('2d');
     var graficoEsquerda = new Chart(ctxEsquerda, {

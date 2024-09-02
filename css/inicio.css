@@ -69,7 +69,7 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza horizontalmente os itens dentro do main */
+  align-items: center; 
 }
 main h1 {
   text-align: center;
@@ -110,14 +110,14 @@ main h1 {
 .desc {
   margin: 0;
   display: flex;
-  align-items: center; /* Alinha verticalmente o parágrafo e o link ao centro */
+  align-items: center; 
   justify-content: center;
   text-align: left;
   color: white;
 }
  .desc p {
-  margin: 0; /* Remove a margem padrão do parágrafo */
-  flex: 1; /* Faz o parágrafo ocupar todo o espaço disponível */
+  margin: 0;
+  flex: 1; 
  }
 
 .terceiro-ano {
@@ -143,7 +143,7 @@ footer {
   padding: 10px;
   background-color: #004382;
   color: white;
-  margin-top: auto; /* Empurra o footer para o final da página */
+  margin-top: auto; 
 }
 a{
   text-decoration: none;

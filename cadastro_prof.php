@@ -22,7 +22,6 @@ include("funcoes_php/funcoes_cadastro_prof.php");
         <div class="register-form">
             <h2>Cadastrar novo professor</h2>
             <form action="funcoes_php/funcoes_cadastro_prof.php" method="POST">
-                <!-- Campos do formulário permanecem os mesmos -->
                 <div class="input-group">
                     <input type="text" id="name" name="name" placeholder="Digite o nome do professor" required>
                     <i class="fa-solid fa-user"></i>

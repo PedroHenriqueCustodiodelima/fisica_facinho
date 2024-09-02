@@ -14,10 +14,12 @@ include("funcoes_php/funcoes_index.php");
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
+    <!-- cabeçalho com a logo -->
     <header>
         <img src="img/logo.png" alt="Logo">
     </header>
-
+    
+    <!-- main com o formulario de cadastro com o nome, email, senha e confirmar senha, junto com os botões de cadastrar -->
     <main>
         <div class="register-form">
             <h2>Crie sua conta para começar sua jornada de aprendizado</h2>
@@ -51,16 +53,19 @@ include("funcoes_php/funcoes_index.php");
                 </button>
 
             </form>
+            <!-- ir para login -->
             <p class="login-link">Já tem uma conta? <a href="login.php">Faça login</a></p>
         </div>
     </main>
 
+    <!-- footer -->
     <footer>
         <p>IFRN CAMPUS NATAL CENTRAL</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // código para o campos de senha, e click do icon de ver senha ou não
         document.addEventListener('DOMContentLoaded', function() {
             const passwordField = document.getElementById('password');
             const confirmPasswordField = document.getElementById('confirmPassword');
@@ -93,6 +98,9 @@ include("funcoes_php/funcoes_index.php");
                 eyeSlashIconConfirm.style.display = 'none';
             });
 
+
+
+            // polpap de erro caso não passe na verificação
             <?php if (!empty($message)): ?>
                 Swal.fire({
                     title: 'Erro no cadastro',
@@ -102,6 +110,8 @@ include("funcoes_php/funcoes_index.php");
                 });
             <?php endif; ?>
 
+
+            // código para logar com o google, porém não está funcionando 😥
             gapi.load('auth2', function() {
                 const auth2 = gapi.auth2.init({
                     client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',

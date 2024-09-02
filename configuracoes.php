@@ -1,3 +1,4 @@
+<!-- incluindo todas as funções da pagina de funções -->
 <?php
 include("funcoes_php/funcoes_confi.php");
 ?>
@@ -14,6 +15,8 @@ include("funcoes_php/funcoes_confi.php");
   <link rel="stylesheet" href="css/configuracoes.css">
 </head>
 <body>
+
+  <!-- cabeçalho do nosso site -->
   <header>
     <div class="conteudo-cabecalho d-flex justify-content-between align-items-center">
       <h1><img src="img/logo.png" width="200px"></h1>
@@ -21,6 +24,7 @@ include("funcoes_php/funcoes_confi.php");
   </header>
 
   <div class="container">
+    <!-- menu lateral padrão -->
     <aside>
       <div class="perfil_aside">
         <img id="avatar-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
@@ -37,6 +41,8 @@ include("funcoes_php/funcoes_confi.php");
         </ul>
       </nav>
     </aside>
+
+    <!-- parte do gráfico e das caixas de erros e acertos nas configurações -->
     <main>
       <div class="container-opcao">
         <div class="perfil">
@@ -72,6 +78,9 @@ include("funcoes_php/funcoes_confi.php");
     </main>
 </div>
   
+
+<!-- modal para editar os dados -->
+
 <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -109,11 +118,12 @@ include("funcoes_php/funcoes_confi.php");
 </div>
 
 
+<!-- footer -->
 <footer>
   <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
 </footer>
 
-
+<!-- caminhos de bibliotecas ou para a pagina js para pegar os codigo em javascript -->
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
