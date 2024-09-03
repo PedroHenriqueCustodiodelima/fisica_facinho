@@ -76,7 +76,7 @@ nav ul li {
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  text-align: left; /* Alinha o texto à esquerda */
+  text-align: left; 
 }
 
 nav ul li:hover {

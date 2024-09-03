@@ -1,16 +1,15 @@
 <?php
-// funcoes_confi.php
 
 include("conexao.php");
 session_start();
 
-// Define o fuso horário para São Paulo (horário de Brasília)
+
 date_default_timezone_set('America/Sao_Paulo');
 
 $message = ''; 
 $usuario_id = $_SESSION['usuario_id'];
 
-// Função para salvar a imagem do perfil
+
 function salvarImagemPerfil($conn, $usuario_id) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
         $imagem = $_FILES['imagem'];
@@ -40,7 +39,7 @@ function salvarImagemPerfil($conn, $usuario_id) {
     return $_SESSION['foto'] ?? 'img/default-avatar.png';
 }
 
-// Função para atualizar o nome do usuário
+
 function atualizarNomeUsuario($conn, $usuario_id) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
         $novoNome = $_POST['nome'];
@@ -52,7 +51,7 @@ function atualizarNomeUsuario($conn, $usuario_id) {
         $_SESSION['nome'] = $novoNome;
     }
 }
-// Função para verificar se o e-mail já está cadastrado
+
 function emailExiste($conn, $email) {
     $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -68,7 +67,7 @@ function atualizarEmailUsuario($conn, $usuario_id) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         $novoEmail = $_POST['email'];
 
-        // Verifica se o e-mail já está cadastrado
+      
         if (emailExiste($conn, $novoEmail)) {
             global $message;
             $message = "Este e-mail já está em uso. Por favor, escolha outro.";
@@ -93,7 +92,7 @@ function obterDadosUsuario($conn, $usuario_id) {
     $usuario = $result->fetch_assoc();
     $stmt->close();
     
-    // Converte o timestamp para um formato legível
+   
     if (isset($usuario['data_criacao'])) {
         $usuario['data_criacao_formatada'] = date('d/m/Y', strtotime($usuario['data_criacao']));
     } else {
@@ -103,7 +102,7 @@ function obterDadosUsuario($conn, $usuario_id) {
     return $usuario;
 }
 
-// Executa as funções conforme a necessidade
+
 salvarImagemPerfil($conn, $usuario_id);
 atualizarNomeUsuario($conn, $usuario_id);
 atualizarEmailUsuario($conn, $usuario_id);
