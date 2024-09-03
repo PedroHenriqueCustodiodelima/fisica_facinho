@@ -35,11 +35,13 @@ header img {
   margin: 0;
   color: #ffcd38;
 }
+
 .container {
   display: flex;
   flex: 1; 
   margin: 20px;
 }
+
 aside {
   width: 15vw;
   background-color: #001A4E;
@@ -47,41 +49,56 @@ aside {
   border-radius: 10px;
   margin-right: 20px;
 }
+
 .perfil_aside {
   color: white;
   text-align: center;
   margin-bottom: 20px;
 } 
+
 .perfil_aside img {
   border-radius: 50%;
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
 }
+
 nav ul {
   list-style-type: none;
   padding: 0;
 }
+
 nav ul li {
+  display: flex;
+  align-items: center;
   margin: 10px 0;
   padding: 10px;
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center;
-  display: flex;
-  align-items: center;
+  text-align: left; /* Alinha o texto à esquerda */
 }
+
 nav ul li:hover {
   transition: 0.5s;
-  background-color: #47515aea;
+  background-color: #b6b6b6ea;
 }
-nav ul li a{
+
+nav ul li a {
+  display: flex;
+  align-items: center;
   color: white;
   text-decoration: none;
-} 
-nav ul li img{
-  margin-right: 0.5em;
+}
+
+nav ul li a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+nav ul li i {
+  font-size: 24px; /* Ajuste conforme necessário */
+  margin-right: 10px; /* Ajuste conforme necessário */
 }
 
 

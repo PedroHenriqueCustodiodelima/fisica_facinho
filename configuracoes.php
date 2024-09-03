@@ -32,12 +32,12 @@ include("funcoes_php/funcoes_confi.php");
       </div>
       <nav>
         <ul>
-          <li><img src="img/livro.png" alt="" width="30px"><a href="#">Desempenho</a></li>
-          <li><img src="img/livro.png" alt="" width="30px"><a href="#">Conteúdos</a></li>
-          <li><img src="livro.png" alt="" width="30px"><a href="#">Tarefas</a></li>
-          <li><img src="img/livro.png" alt="" width="30px"><a href="#">Missões</a></li>
-          <li><img src="img/livro.png" alt="" width="30px"><a href="#">Configurações</a></li>
-          <li><img src="img/livro.png" alt="" width="30px"><a href="logout.php">Sair</a></li>
+          <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="#">Desempenho</a></li>
+          <li><i class="fa-solid fa-book" style="color: white; width: 30px; height: 30px;"></i><a href="#">Conteúdos</a></li>
+          <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="#">Tarefas</a></li>
+          <li><i class="fa-solid fa-clipboard" style="color: white; width: 30px; height: 30px;"></i><a href="#">Missões</a></li>
+          <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="#">Configurações</a></li>
+          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: white; width: 30px; height: 30px;"></i><a href="logout.php">Sair</a></li>
         </ul>
       </nav>
     </aside>

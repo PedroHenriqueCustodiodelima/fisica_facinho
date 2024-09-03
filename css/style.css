@@ -122,3 +122,24 @@ main {
 .login-link a:hover {
     text-decoration: underline;
 }
+.password-requirements {
+    margin-top: 10px;
+    font-size: 10px;
+}
+
+.password-requirements ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.password-requirements li {
+    margin-bottom: 5px;
+}
+
+.password-requirements .valid {
+    color: green;
+}
+
+.password-requirements .invalid {
+    color: red;
+}
