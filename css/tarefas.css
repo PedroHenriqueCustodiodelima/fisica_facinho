@@ -74,7 +74,7 @@ footer {
     color: white;
     border-radius: 5px;
     cursor: pointer;
-    text-align: left; /* Alinha o texto à esquerda */
+    text-align: left; 
   }
   
   nav ul li:hover {
@@ -95,16 +95,16 @@ footer {
   }
   
   nav ul li i {
-    font-size: 24px; /* Ajuste conforme necessário */
-    margin-right: 10px; /* Ajuste conforme necessário */
+    font-size: 24px; 
+    margin-right: 10px; 
   }
   
   
+/* botão de responder */
 
 
 
-
-  .btn-responder {
+.btn-responder {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 10px;
@@ -129,25 +129,27 @@ footer {
 .btn-responder {
     margin-top: 10px;
 }
-/* Estilo para o botão de "Ver Resolução" */
+
+
+/* botão de resolução */
 .btn-resolucao {
-    background-color: #1a95dd; /* Cor de fundo azul */
-    color: white; /* Cor do texto branca */
-    border: none; /* Remove a borda padrão */
-    padding: 5px 10px; /* Espaçamento interno */
-    margin-top: 10px; /* Espaçamento superior */
-    border-radius: 20px; /* Bordas arredondadas */
-    cursor: pointer; /* Cursor em forma de mão ao passar sobre o botão */
-    font-size: 12px; /* Tamanho da fonte */
+    background-color: #1a95dd; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    margin-top: 10px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-size: 12px; 
     transition: background-color 0.3s ease; 
 }
 
 .btn-resolucao:hover {
-    background-color: #0056b3; /* Cor de fundo mais escura ao passar o mouse */
+    background-color: #0056b3; 
 }
 
 .btn-resolucao:focus {
-    outline: none; /* Remove o contorno ao focar */
+    outline: none; 
 }
 
 
@@ -161,7 +163,7 @@ footer {
     border-radius: 8px;
     background-color: transparent;
     box-shadow: none;
-    width: 280px; /* Largura reduzida */
+    width: 280px; 
 }
 
 .register-form h2 {
@@ -177,9 +179,9 @@ footer {
 }
 
 .input-group input {
-    width: 100%; /* Ajusta a largura do input para 100% do container */
+    width: 100%; 
     padding: 10px;
-    padding-right: 40px; /* Espaço para o ícone */
+    padding-right: 40px; 
     border: 1px solid #ccc;
     border-radius: 16px;
     box-sizing: border-box;
@@ -190,7 +192,7 @@ footer {
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
-    color: #001A4E; /* Cor do ícone */
+    color: #001A4E; 
     cursor: pointer;
 }
 
@@ -203,7 +205,7 @@ footer {
     border-radius: 16px;
     cursor: pointer;
     margin-bottom: 15px;
-    font-size: 14px; /* Tamanho do texto reduzido */
+    font-size: 14px; 
 }
 
 .register-button:hover {
@@ -222,12 +224,12 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px; /* Tamanho do texto reduzido */
+    font-size: 14px; 
 }
 
 .google-login i {
-    margin-right: 10px; /* Espaço entre o ícone e o texto */
-    font-size: 18px; /* Tamanho do ícone */
+    margin-right: 10px; 
+    font-size: 18px; 
 }
 
 .google-login:hover {
@@ -241,7 +243,7 @@ footer {
 
 .login-link a {
     color: #001A4E;
-    font-size: 14px; /* Tamanho do texto reduzido */
+    font-size: 14px; 
 }
 
 .login-link a:hover {
@@ -276,7 +278,7 @@ footer {
 main {
     flex: 1;
     display: flex;
-    flex-direction: column; /* Coloca uma questão abaixo da outra */
+    flex-direction: column; 
     justify-content: flex-start;
     align-items: center;
     padding: 20px;
@@ -288,7 +290,7 @@ main {
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-bottom: 20px; /* Espaço entre as questões */
+    margin-bottom: 20px; 
     width: 100%;
     max-width: 600px;
 }
