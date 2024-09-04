@@ -19,7 +19,9 @@ include("funcoes_php/funcoes_inicio.php");
   <!-- cabeçalho do nosso site -->
   <header>
     <div class="conteudo-cabecalho d-flex justify-content-between align-items-center">
-      <h1><img src="img/logo.png" width="200px"></h1>
+    <a href="inicio.php">
+        <img src="img/logo.png" width="200px" alt="Logo">
+    </a>
     </div>
   </header>
 
@@ -36,7 +38,7 @@ include("funcoes_php/funcoes_inicio.php");
         <ul>
           <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="#">Desempenho</a></li>
           <li><i class="fa-solid fa-book" style="color: white; width: 30px; height: 30px;"></i><a href="#">Conteúdos</a></li>
-          <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="#">Tarefas</a></li>
+          <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="tarefas.php">Tarefas</a></li>
           <li><i class="fa-solid fa-clipboard" style="color: white; width: 30px; height: 30px;"></i><a href="#">Missões</a></li>
           <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="configuracoes.php">Configurações</a></li>
           <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: white; width: 30px; height: 30px;"></i><a href="logout.php">Sair</a></li>

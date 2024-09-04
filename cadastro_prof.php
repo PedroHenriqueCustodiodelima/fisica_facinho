@@ -8,7 +8,7 @@ include("funcoes_php/funcoes_cadastro_prof.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Professor</title>
-    <link rel="stylesheet" href="css/tarefas.css">
+    <link rel="stylesheet" href="css/cadastro_prof.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
@@ -51,7 +51,7 @@ include("funcoes_php/funcoes_cadastro_prof.php");
                         <li id="special" class="invalid">Pelo menos um caractere especial</li>
                     </ul>
                 </div>
-                
+
                 <div class="input-group">
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme a senha" required>
                     <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>

@@ -24,12 +24,137 @@ footer {
     color: white;
 }
 
-main {
-    flex: 1;
+
+
+
+
+.conteudo-cabecalho h1 {
+    margin: 0;
+    color: #ffcd38;
+  }
+  
+  .container {
     display: flex;
-    justify-content: center;
+    flex: 1; 
+    margin: 20px;
+  }
+  
+  aside {
+    width: 15vw;
+    background-color: #001A4E;
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+    height: 80vh;
+  }
+  
+  .perfil_aside {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+  } 
+  
+  .perfil_aside img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: flex;
     align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left; /* Alinha o texto à esquerda */
+  }
+  
+  nav ul li:hover {
+    transition: 0.5s;
+    background-color: #b6b6b6ea;
+  }
+  
+  nav ul li a {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+  }
+  
+  nav ul li a:hover {
+    color: white;
+    text-decoration: none;
+  }
+  
+  nav ul li i {
+    font-size: 24px; /* Ajuste conforme necessário */
+    margin-right: 10px; /* Ajuste conforme necessário */
+  }
+  
+  
+
+
+
+
+  .btn-responder {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
 }
+.btn-responder:hover {
+    background-color: #0056b3;
+}
+
+
+
+.question-container {
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.btn-responder {
+    margin-top: 10px;
+}
+/* Estilo para o botão de "Ver Resolução" */
+.btn-resolucao {
+    background-color: #1a95dd; /* Cor de fundo azul */
+    color: white; /* Cor do texto branca */
+    border: none; /* Remove a borda padrão */
+    padding: 5px 10px; /* Espaçamento interno */
+    margin-top: 10px; /* Espaçamento superior */
+    border-radius: 20px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor em forma de mão ao passar sobre o botão */
+    font-size: 12px; /* Tamanho da fonte */
+    transition: background-color 0.3s ease; 
+}
+
+.btn-resolucao:hover {
+    background-color: #0056b3; /* Cor de fundo mais escura ao passar o mouse */
+}
+
+.btn-resolucao:focus {
+    outline: none; /* Remove o contorno ao focar */
+}
+
+
+
+
+
+
 
 .register-form {
     padding: 20px;
@@ -142,4 +267,59 @@ main {
 
 .password-requirements .invalid {
     color: red;
+}
+
+
+
+
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Coloca uma questão abaixo da outra */
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.question-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* Espaço entre as questões */
+    width: 100%;
+    max-width: 600px;
+}
+
+.question-container h3 {
+    margin-top: 0;
+    color: #001A4E;
+    font-size: 18px;
+}
+
+.question-container p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.question-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.question-container li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.question-container li label {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.question-container input[type="radio"] {
+    margin-right: 10px;
 }
