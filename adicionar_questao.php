@@ -11,13 +11,26 @@ require_once 'conexao.php';
 
 // Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nivel = $_POST['nivel']; // Obtém o nível da questão
     $enunciado = $_POST['enunciado'];
     $explicacao = $_POST['explicacao'];
     $alternativas = $_POST['alternativa'];
     $correta = $_POST['correta']; // índice da alternativa correta
 
+    // Define a tabela de questões e alternativas com base no nível
+    $tabela_questoes = "questoes_nivel" . $nivel;
+    $tabela_alternativas = "alternativas";
+
+    // Verifica se a tabela de questões existe
+    if (!in_array($tabela_questoes, ['questoes_nivel1', 'questoes_nivel2', 'questoes_nivel3'])) {
+        die("Tabela de questões inválida.");
+    }
+
     // Insere a questão no banco de dados
-    $stmt = $conn->prepare("INSERT INTO questoes_nivel1 (enunciado, explicacao) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO $tabela_questoes (enunciado, explicacao) VALUES (?, ?)");
+    if (!$stmt) {
+        die("Erro na preparação da consulta de questões: " . $conn->error);
+    }
     $stmt->bind_param("ss", $enunciado, $explicacao);
     $stmt->execute();
     $questao_id = $stmt->insert_id; // Obtém o ID da nova questão inserida
@@ -25,7 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Insere as alternativas no banco de dados
     foreach ($alternativas as $indice => $texto_alternativa) {
         $correta_flag = ($indice == $correta) ? 1 : 0; // Verifica se essa alternativa é a correta
-        $stmt = $conn->prepare("INSERT INTO alternativas (questao_id, texto, correta) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO $tabela_alternativas (questao_id, texto, correta) VALUES (?, ?, ?)");
+        if (!$stmt) {
+            die("Erro na preparação da consulta de alternativas: " . $conn->error);
+        }
         $stmt->bind_param("isi", $questao_id, $texto_alternativa, $correta_flag);
         $stmt->execute();
     }
@@ -35,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->close();
 
     // Redireciona ou exibe uma mensagem de sucesso
-    echo "Questão adicionada com sucesso!";
+    echo "Questão de Nível $nivel adicionada com sucesso!";
 }
 ?>
 
@@ -49,6 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h1>Adicionar Nova Questão</h1>
     <form action="adicionar_questao.php" method="POST">
+        <label for="nivel">Escolha o Nível da Questão:</label><br>
+        <select id="nivel" name="nivel" required>
+            <option value="1">Nível 1</option>
+            <option value="2">Nível 2</option>
+            <option value="3">Nível 3</option>
+        </select><br><br>
+
         <label for="enunciado">Enunciado da Questão:</label><br>
         <textarea id="enunciado" name="enunciado" rows="4" cols="50" required></textarea><br><br>
 
