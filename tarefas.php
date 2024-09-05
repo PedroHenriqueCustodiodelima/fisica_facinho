@@ -50,34 +50,38 @@ include("funcoes_php/funcoes_tarefas.php");
 
     <!-- parte do gráfico e das caixas de erros e acertos nas configurações -->
     <main>
-    <?php
-    // Gera o HTML para a questão e alternativas
-    if (!empty($questao_data)) {
-        $enunciado = $questao_data['enunciado'];
-        $explicacao = $questao_data['explicacao'];
-        $alternativas = $questao_data['alternativas'];
+      <?php
+          if (!empty($questoes_data)) {
+              foreach ($questoes_data as $index => $questao_data) {
+                  $enunciado = $questao_data['enunciado'];
+                  $explicacao = $questao_data['explicacao'];
+                  $alternativas = $questao_data['alternativas'];
 
-        echo "<form action='responder_questao.php' method='post' class='question-form'>";
-        echo "<div class='question-container'>";
-        echo "<h3>Questão: $enunciado</h3>";
-        echo "<ul>";
+                  // Usando $index para criar IDs únicos
+                  echo "<form action='responder_questao.php' method='post' class='question-form'>";
+                  echo "<div class='question-container'>";
+                  echo "<h3>Questão $index: $enunciado</h3>";
+                  echo "<ul>";
 
-        foreach ($alternativas as $alternativa) {
-            $alt_id = $alternativa['id'];
-            $alt_texto = $alternativa['texto'];
-            echo "<li><input type='radio' name='alternativa' value='$alt_id' id='q1$alt_id'><label for='q1$alt_id'>$alt_texto</label></li>";
-        }
+                  foreach ($alternativas as $alternativa) {
+                      $alt_id = $alternativa['id'];
+                      $alt_texto = $alternativa['texto'];
+                      echo "<li><input type='radio' name='alternativa' value='$alt_id' id='q1$alt_id'><label for='q1$alt_id'>$alt_texto</label></li>";
+                  }
 
-        echo "</ul>";
-        echo "<button type='submit' class='btn-responder'>Responder</button>";
-        echo "<button type='button' id='btn-resolucao' class='btn-resolucao'>Ver Resolução</button>";
-        echo "<div id='resolucao' class='resolucao' style='display: none;'><p><strong>Resolução:</strong> $explicacao</p></div>";
-        echo "</div>";
-        echo "</form>";
-    } else {
-        echo "<div class='question-container'>Nenhuma questão encontrada.</div>";
-    }
-    ?>
+                  echo "</ul>";
+                  echo "<button type='submit' class='btn-responder'>Responder</button>";
+                  // Botão de ver resolução com ID único baseado no índice
+                  echo "<button type='button' id='btn-resolucao-$index' class='btn-resolucao'>Ver Resolução</button>";
+                  echo "<div id='resolucao-$index' class='resolucao' style='display: none;'><p><strong>Resolução:</strong> $explicacao</p></div>";
+                  echo "</div>";
+                  echo "</form>";
+              }
+          } else {
+              echo "<div class='question-container'>Nenhuma questão encontrada.</div>";
+          }
+        ?>
+
 </main>
 
 
@@ -96,6 +100,8 @@ include("funcoes_php/funcoes_tarefas.php");
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="js/tarefas.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
 
 </body>
 </html>

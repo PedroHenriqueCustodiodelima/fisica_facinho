@@ -31,27 +31,36 @@ if ($usuario) {
 }
 
 // Consulta para obter a questão, alternativas e explicação
-$questao_sql = "SELECT id, enunciado, explicacao FROM questoes LIMIT 1";
+// Consulta para obter todas as questões e suas alternativas
+$questao_sql = "SELECT id, enunciado, explicacao FROM questoes_nivel1";
 $questao_result = $conn->query($questao_sql);
 
-$questao_data = [];
+$questoes_data = [];  // Inicializa um array para armazenar todas as questões
+
 if ($questao_result->num_rows > 0) {
-    $questao = $questao_result->fetch_assoc();
-    $questao_id = $questao['id'];
-    $enunciado = $questao['enunciado'];
-    $explicacao = $questao['explicacao'];
-    
-    // Consulta para pegar as alternativas da questão
-    $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
-    $alternativas_result = $conn->query($alternativas_sql);
-    
-    // Armazena dados da questão e alternativas
-    $questao_data['enunciado'] = $enunciado;
-    $questao_data['explicacao'] = $explicacao;
-    $questao_data['alternativas'] = [];
-    
-    while ($alternativa = $alternativas_result->fetch_assoc()) {
-        $questao_data['alternativas'][] = $alternativa;
+    // Itera sobre todas as questões
+    while ($questao = $questao_result->fetch_assoc()) {
+        $questao_id = $questao['id'];
+        $enunciado = $questao['enunciado'];
+        $explicacao = $questao['explicacao'];
+
+        // Consulta para pegar as alternativas de cada questão
+        $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
+        $alternativas_result = $conn->query($alternativas_sql);
+
+        // Armazena os dados de cada questão e suas alternativas
+        $questao_data = [
+            'enunciado' => $enunciado,
+            'explicacao' => $explicacao,
+            'alternativas' => []
+        ];
+
+        while ($alternativa = $alternativas_result->fetch_assoc()) {
+            $questao_data['alternativas'][] = $alternativa;
+        }
+
+        // Adiciona a questão e suas alternativas ao array de todas as questões
+        $questoes_data[] = $questao_data;
     }
 }
 
@@ -63,5 +72,6 @@ $conn->close();
 return [
     'imagemPerfil' => $imagemPerfil,
     'nomeUsuario' => $nomeUsuario,
-    'questao_data' => $questao_data
+    'questoes_data' => $questoes_data  // Agora estamos retornando todas as questões
 ];
+
