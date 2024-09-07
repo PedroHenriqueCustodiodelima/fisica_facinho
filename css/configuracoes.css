@@ -17,15 +17,15 @@ body {
 
 header {
   background-color: #001A4E;
-  padding: 10px;
+  padding: 10px 20px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
+
 header img {
   height: 50px;
 }
-
-
 
 
 
@@ -76,7 +76,7 @@ nav ul li {
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  text-align: left; 
+  text-align: left; /* Alinha o texto à esquerda */
 }
 
 nav ul li:hover {
@@ -114,6 +114,30 @@ main {
 
 
 
+/* Ajustando o estilo da imagem e nome no header */
+.perfil-header {
+  display: flex;
+  align-items: center;
+}
+
+.perfil-header span {
+  color: #ffffff;
+  margin-right: 10px;
+  font-size: 16px;
+}
+.perfil-header p {
+  color: #ffffff;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.perfil-header img {
+  border: #f0f0f0;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
 
 
 /* cabeçalho de edição com nome, foto, botão de editar e data do usuario no site */

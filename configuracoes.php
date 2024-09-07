@@ -17,28 +17,28 @@ include("funcoes_php/funcoes_confi.php");
 <body>
 
   <!-- cabeçalho do nosso site -->
-  <header>
-    <div class="conteudo-cabecalho d-flex justify-content-between align-items-center">
+  <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
+    <!-- Foto do usuário e nome no lado direito -->
+    <!-- Foto do usuário e nome no lado direito -->
+    <div class="perfil-header d-flex align-items-center">
+      <img id="avatar-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
+      <p>Olá, <span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span>!</p>
     </div>
   </header>
 
   <div class="container">
     <!-- menu lateral padrão -->
     <aside>
-      <div class="perfil_aside">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
-        <p>Olá, <span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span>!</p>
-      </div>
       <nav>
         <ul>
           <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="#">Desempenho</a></li>
           <li><i class="fa-solid fa-book" style="color: white; width: 30px; height: 30px;"></i><a href="#">Conteúdos</a></li>
           <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="tarefas.php">Tarefas</a></li>
           <li><i class="fa-solid fa-clipboard" style="color: white; width: 30px; height: 30px;"></i><a href="#">Missões</a></li>
-          <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="#">Configurações</a></li>
+          <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="configuracoes.php">Configurações</a></li>
           <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: white; width: 30px; height: 30px;"></i><a href="logout.php">Sair</a></li>
         </ul>
       </nav>

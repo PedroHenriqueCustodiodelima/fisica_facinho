@@ -45,7 +45,7 @@ footer {
     padding: 20px;
     border-radius: 10px;
     margin-right: 20px;
-    height: 80vh;
+    height: 90vh;
   }
   
   .perfil_aside {
@@ -158,121 +158,6 @@ footer {
 
 
 
-.register-form {
-    padding: 20px;
-    border-radius: 8px;
-    background-color: transparent;
-    box-shadow: none;
-    width: 280px; 
-}
-
-.register-form h2 {
-    margin-bottom: 20px;
-    text-align: left;
-    color: #001A4E;
-    font-size: 16px;
-}
-
-.input-group {
-    position: relative;
-    margin-bottom: 15px;
-}
-
-.input-group input {
-    width: 100%; 
-    padding: 10px;
-    padding-right: 40px; 
-    border: 1px solid #ccc;
-    border-radius: 16px;
-    box-sizing: border-box;
-}
-
-.input-group i {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: #001A4E; 
-    cursor: pointer;
-}
-
-.register-button {
-    width: 100%;
-    background-color: #001A4E;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    margin-bottom: 15px;
-    font-size: 14px; 
-}
-
-.register-button:hover {
-    background-color: #004080;
-}
-
-.google-login {
-    width: 100%;
-    background-color: white;
-    color: #001A4E;
-    border: 2px solid #001A4E;
-    padding: 10px;
-    border-radius: 16px;
-    cursor: pointer;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px; 
-}
-
-.google-login i {
-    margin-right: 10px; 
-    font-size: 18px; 
-}
-
-.google-login:hover {
-    background-color: #f0f0f0;
-}
-
-.login-link {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.login-link a {
-    color: #001A4E;
-    font-size: 14px; 
-}
-
-.login-link a:hover {
-    text-decoration: underline;
-}
-.password-requirements {
-    margin-top: 10px;
-    font-size: 10px;
-}
-
-.password-requirements ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.password-requirements li {
-    margin-bottom: 5px;
-}
-
-.password-requirements .valid {
-    color: green;
-}
-
-.password-requirements .invalid {
-    color: red;
-}
-
-
-
 
 
 main {
@@ -285,6 +170,13 @@ main {
     overflow-y: auto;
 }
 
+
+/* Quando o radio está selecionado */
+.question-container input[type="radio"]:checked + label {
+    background-color: #001A4E;
+    border-color: #0f2758;
+    color: white;
+}
 .question-container {
     background-color: white;
     border-radius: 8px;
@@ -315,13 +207,66 @@ main {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .question-container li label {
-    margin-left: 10px;
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s, border-color 0.3s;
     font-size: 16px;
+    cursor: pointer;
+}
+
+.question-container li:hover label {
+    background-color: #e6f7ff;
+    border-color: #0099ff;
 }
 
 .question-container input[type="radio"] {
-    margin-right: 10px;
+    display: none;
+}
+
+/* Contêiner flexível para os botões */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Botão Responder */
+.btn-responder {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Botão Ver Resolução */
+.btn-resolucao {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo ao passar o mouse nos botões */
+.btn-responder:hover {
+    background-color: #218838;
+}
+
+.btn-resolucao:hover {
+    background-color: #0069d9;
 }

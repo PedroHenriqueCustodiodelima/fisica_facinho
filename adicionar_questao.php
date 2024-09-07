@@ -19,11 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Define a tabela de questões e alternativas com base no nível
     $tabela_questoes = "questoes_nivel" . $nivel;
-    $tabela_alternativas = "alternativas";
+    $tabela_alternativas = "alternativas" . ($nivel > 1 ? "_$nivel" : '');
 
     // Verifica se a tabela de questões existe
     if (!in_array($tabela_questoes, ['questoes_nivel1', 'questoes_nivel2', 'questoes_nivel3'])) {
         die("Tabela de questões inválida.");
+    }
+
+    // Verifica se a tabela de alternativas é válida
+    if (!in_array($tabela_alternativas, ['alternativas', 'alternativas_2', 'alternativas_3'])) {
+        die("Tabela de alternativas inválida.");
     }
 
     // Insere a questão no banco de dados
@@ -61,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Questão</title>
+    <link rel="stylesheet" href="css/add.css">
+
 </head>
 <body>
     <h1>Adicionar Nova Questão</h1>

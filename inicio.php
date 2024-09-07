@@ -17,23 +17,22 @@ include("funcoes_php/funcoes_inicio.php");
 <body>
 
   <!-- cabeçalho do nosso site -->
-  <header>
-    <div class="conteudo-cabecalho d-flex justify-content-between align-items-center">
+  <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
-    </div>
+    <!-- Foto do usuário e nome no lado direito -->
+    <!-- Foto do usuário e nome no lado direito -->
+<div class="perfil-header d-flex align-items-center">
+  <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+  <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
+</div>
+
   </header>
 
   <div class="container">
     <!-- menu lateral padrão -->
     <aside>
-      <div class="perfil_aside">
-          <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="200px" height="200px">
-          <p>Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
-      </div>
-
-
       <nav>
         <ul>
           <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="#">Desempenho</a></li>
