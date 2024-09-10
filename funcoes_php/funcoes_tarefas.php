@@ -30,9 +30,42 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-// Consulta para obter a questão, alternativas e explicação
-// Consulta para obter todas as questões e suas alternativas
-$questao_sql = "SELECT id, enunciado, explicacao FROM questoes_nivel1";
+// Obtém o nível do filtro, se definido
+$nivel = isset($_GET['nivel']) ? intval($_GET['nivel']) : 1;
+
+// Define a tabela com base no nível
+switch ($nivel) {
+    case 1:
+        $tabela = 'questoes_nivel1';
+        break;
+    case 2:
+        $tabela = 'questoes_nivel2';
+        break;
+    case 3:
+        $tabela = 'questoes_nivel3';
+        break;
+    default:
+        $tabela = 'questoes_nivel1';
+}
+
+// Define o número de questões por página
+$questoes_por_pagina = 3;
+
+// Obtém o número da página atual
+$pagina_atual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
+$pagina_atual = ($pagina_atual > 0) ? $pagina_atual : 1;
+
+// Calcula o offset
+$offset = ($pagina_atual - 1) * $questoes_por_pagina;
+
+// Consulta para obter o número total de questões
+$total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela";
+$total_questoes_result = $conn->query($total_questoes_sql);
+$total_questoes_row = $total_questoes_result->fetch_assoc();
+$total_questoes = $total_questoes_row['total'];
+
+// Consulta para obter as questões e suas alternativas para a página atual
+$questao_sql = "SELECT id, enunciado, explicacao FROM $tabela LIMIT $offset, $questoes_por_pagina";
 $questao_result = $conn->query($questao_sql);
 
 $questoes_data = [];  // Inicializa um array para armazenar todas as questões
@@ -68,10 +101,15 @@ if ($questao_result->num_rows > 0) {
 $stmt->close();
 $conn->close();
 
+// Calcula o número total de páginas
+$total_paginas = ceil($total_questoes / $questoes_por_pagina);
+
 // Retorna os dados
 return [
     'imagemPerfil' => $imagemPerfil,
     'nomeUsuario' => $nomeUsuario,
-    'questoes_data' => $questoes_data  // Agora estamos retornando todas as questões
+    'questoes_data' => $questoes_data,  // Agora estamos retornando todas as questões
+    'pagina_atual' => $pagina_atual,
+    'total_paginas' => $total_paginas
 ];
-
+?>

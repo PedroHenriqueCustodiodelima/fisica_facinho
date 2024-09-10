@@ -16,7 +16,19 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+header {
+    background-color: #001A4E;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header img {
+    height: 50px;
+  }
+  
+  
 /* Título do formulário */
 h1 {
     text-align: center;
@@ -86,3 +98,14 @@ input[type="submit"]:hover {
 .error {
     color: #f44336;
 }
+/* footer */
+
+footer {
+    background-color: #001A4E;
+    padding: 2px;
+    text-align: center;
+    color: white;
+  }
+  footer p{
+    margin-top: 15px;
+  }  

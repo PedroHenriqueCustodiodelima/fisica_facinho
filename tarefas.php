@@ -1,4 +1,4 @@
-<!-- incluindo todas as funções da pagina de funções -->
+
 <?php
 include("funcoes_php/funcoes_tarefas.php");
 ?>
@@ -16,7 +16,6 @@ include("funcoes_php/funcoes_tarefas.php");
 </head>
 <body>
 
-  <!-- cabeçalho do nosso site -->
   <header>
     <div class="conteudo-cabecalho d-flex justify-content-between align-items-center">
     <h1>
@@ -28,7 +27,6 @@ include("funcoes_php/funcoes_tarefas.php");
   </header>
 
   <div class="container">
-    <!-- menu lateral padrão -->
     <aside>
       <div class="perfil_aside">
           <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="200px" height="200px">
@@ -48,8 +46,17 @@ include("funcoes_php/funcoes_tarefas.php");
       </nav>
     </aside>
 
-    <!-- parte do gráfico e das caixas de erros e acertos nas configurações -->
     <main>
+      <form action="tarefas.php" method="get" class="form-inline mb-4">
+        <label for="nivel" class="mr-2">Filtrar por nível:</label>
+        <select name="nivel" id="nivel" class="form-control mr-2">
+          <option value="1" <?php if ($nivel == 1) echo 'selected'; ?>>Nível 1</option>
+          <option value="2" <?php if ($nivel == 2) echo 'selected'; ?>>Nível 2</option>
+          <option value="3" <?php if ($nivel == 3) echo 'selected'; ?>>Nível 3</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+      </form>
+
       <?php
           if (!empty($questoes_data)) {
               foreach ($questoes_data as $index => $questao_data) {
@@ -57,7 +64,6 @@ include("funcoes_php/funcoes_tarefas.php");
                   $explicacao = $questao_data['explicacao'];
                   $alternativas = $questao_data['alternativas'];
 
-                  // Usando $index para criar IDs únicos
                   echo "<form action='responder_questao.php' method='post' class='question-form'>";
                   echo "<div class='question-container'>";
                   echo "<h3>Questão $index: $enunciado</h3>";
@@ -71,7 +77,6 @@ include("funcoes_php/funcoes_tarefas.php");
 
                   echo "</ul>";
                   echo "<button type='submit' class='btn-responder'>Responder</button>";
-                  // Botão de ver resolução com ID único baseado no índice
                   echo "<button type='button' id='btn-resolucao-$index' class='btn-resolucao'>Ver Resolução</button>";
                   echo "<div id='resolucao-$index' class='resolucao' style='display: none;'><p><strong>Resolução:</strong> $explicacao</p></div>";
                   echo "</div>";
@@ -80,19 +85,38 @@ include("funcoes_php/funcoes_tarefas.php");
           } else {
               echo "<div class='question-container'>Nenhuma questão encontrada.</div>";
           }
-        ?>
+      ?>
 
-</main>
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item <?php if ($pagina_atual <= 1) echo 'disabled'; ?>">
+            <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual - 1; ?>" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+            <li class="page-item <?php if ($i == $pagina_atual) echo 'active'; ?>">
+              <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+          <?php endfor; ?>
+
+          <li class="page-item <?php if ($pagina_atual >= $total_paginas) echo 'disabled'; ?>">
+            <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual + 1; ?>" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </main>
 
 
   </div>
   
-  <!-- footer -->
   <footer>
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
   </footer>
 
-  <!-- caminhos de bibliotecas ou para a pagina js para pegar os códigos em javascript -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
