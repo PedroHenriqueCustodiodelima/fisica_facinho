@@ -9,6 +9,30 @@ if (!isset($_SESSION['usuario_id'])) {
 
 require_once 'conexao.php';
 
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Recupera o ID do usuário da sessão
+$usuario_id = $_SESSION['usuario_id'];
+
+// Inicializa variáveis
+$imagemPerfil = 'img/default-avatar.png';
+$nomeUsuario = 'Usuário';
+
+// Consulta para obter a foto e o nome do usuário
+$stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$usuario = $result->fetch_assoc();
+
+// Atualiza as variáveis com base no resultado da consulta
+if ($usuario) {
+    $imagemPerfil = $usuario['foto'] ?? $imagemPerfil;
+    $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
+}
 // Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nivel = $_POST['nivel']; // Obtém o nível da questão

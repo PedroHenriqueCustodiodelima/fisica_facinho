@@ -22,12 +22,24 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  header img {
-    height: 50px;
-  }
-  
+}
+
+.perfil-header {
+    display: flex;
+    align-items: center;
+}
+
+.perfil-header img {
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.perfil-header p {
+    color: white;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
   
 /* Título do formulário */
 h1 {
