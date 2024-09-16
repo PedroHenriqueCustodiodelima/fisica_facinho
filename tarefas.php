@@ -47,67 +47,52 @@ include("funcoes_php/funcoes_tarefas.php");
     </aside>
 
     <main>
-      <form action="tarefas.php" method="get" class="form-inline mb-4">
-        <label for="nivel" class="mr-2">Filtrar por nível:</label>
-        <select name="nivel" id="nivel" class="form-control mr-2">
-          <option value="1" <?php if ($nivel == 1) echo 'selected'; ?>>Nível 1</option>
-          <option value="2" <?php if ($nivel == 2) echo 'selected'; ?>>Nível 2</option>
-          <option value="3" <?php if ($nivel == 3) echo 'selected'; ?>>Nível 3</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-      </form>
 
-      <?php
-          if (!empty($questoes_data)) {
-              foreach ($questoes_data as $index => $questao_data) {
-                  $enunciado = $questao_data['enunciado'];
-                  $explicacao = $questao_data['explicacao'];
-                  $alternativas = $questao_data['alternativas'];
+        <?php if (!empty($questoes_data)): ?>
+            <?php $index = 1; ?>
+            <?php foreach ($questoes_data as $questao_data): ?>
+                <form action="tarefas.php?pagina=<?php echo $pagina_atual; ?>" method="post" class="question-form">
+                    <div class="question-container">
+                        <h3>Questão <?php echo $index; ?>: <?php echo $questao_data['enunciado']; ?></h3>
+                        <ul>
+                            <?php foreach ($questao_data['alternativas'] as $alternativa): ?>
+                                <li>
+                                    <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" id="q1<?php echo $alternativa['id']; ?>">
+                                    <label for="q1<?php echo $alternativa['id']; ?>"><?php echo $alternativa['texto']; ?></label>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <input type="hidden" name="questao_id" value="<?php echo $questao_data['id']; ?>">
+                        <input type="hidden" name="nivel" value="<?php echo $nivel; ?>">
+                        <button type="submit" class="btn-responder">Responder</button>
+                    </div>
+                </form>
+                <?php $index++; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="question-container">Nenhuma questão encontrada.</div>
+        <?php endif; ?>
 
-                  echo "<form action='responder_questao.php' method='post' class='question-form'>";
-                  echo "<div class='question-container'>";
-                  echo "<h3>Questão $index: $enunciado</h3>";
-                  echo "<ul>";
-
-                  foreach ($alternativas as $alternativa) {
-                      $alt_id = $alternativa['id'];
-                      $alt_texto = $alternativa['texto'];
-                      echo "<li><input type='radio' name='alternativa' value='$alt_id' id='q1$alt_id'><label for='q1$alt_id'>$alt_texto</label></li>";
-                  }
-
-                  echo "</ul>";
-                  echo "<button type='submit' class='btn-responder'>Responder</button>";
-                  echo "<button type='button' id='btn-resolucao-$index' class='btn-resolucao'>Ver Resolução</button>";
-                  echo "<div id='resolucao-$index' class='resolucao' style='display: none;'><p><strong>Resolução:</strong> $explicacao</p></div>";
-                  echo "</div>";
-                  echo "</form>";
-              }
-          } else {
-              echo "<div class='question-container'>Nenhuma questão encontrada.</div>";
-          }
-      ?>
-
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item <?php if ($pagina_atual <= 1) echo 'disabled'; ?>">
-            <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual - 1; ?>" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-
-          <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-            <li class="page-item <?php if ($i == $pagina_atual) echo 'active'; ?>">
-              <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-            </li>
-          <?php endfor; ?>
-
-          <li class="page-item <?php if ($pagina_atual >= $total_paginas) echo 'disabled'; ?>">
-            <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual + 1; ?>" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+        <!-- Paginação -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item <?php if ($pagina_atual <= 1) echo 'disabled'; ?>">
+                    <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual - 1; ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                    <li class="page-item <?php if ($i == $pagina_atual) echo 'active'; ?>">
+                        <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+                <li class="page-item <?php if ($pagina_atual >= $total_paginas) echo 'disabled'; ?>">
+                    <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual + 1; ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </main>
 
 
@@ -125,6 +110,7 @@ include("funcoes_php/funcoes_tarefas.php");
   <script src="js/tarefas.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
 
 
 </body>

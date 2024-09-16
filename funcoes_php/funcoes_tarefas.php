@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// Inclui o arquivo de conexão com o banco de dados
 require_once 'conexao.php';
 
 // Verifica se o usuário está autenticado
@@ -12,6 +10,32 @@ if (!isset($_SESSION['usuario_id'])) {
 
 // Recupera o ID do usuário da sessão
 $usuario_id = $_SESSION['usuario_id'];
+
+// Função para registrar uma tentativa no banco de dados
+function registrarTentativa($conn, $usuario_id, $questao_id, $alternativa_id, $nivel) {
+    // Verifica se a alternativa está correta
+    $stmt = $conn->prepare("SELECT correta FROM alternativas WHERE id = ?");
+    $stmt->bind_param("i", $alternativa_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $alternativa = $result->fetch_assoc();
+
+    // Verifica se a resposta está correta
+    $correta = $alternativa['correta'] ? 1 : 0;
+
+    // Insere a tentativa no banco de dados
+    $stmt = $conn->prepare("
+        INSERT INTO tentativas_usuarios (id_usuario, id_questao, id_alternativa, correta, nivel, data_tentativa) 
+        VALUES (?, ?, ?, ?, ?, NOW())
+    ");
+    $stmt->bind_param("iiiis", $usuario_id, $questao_id, $alternativa_id, $correta, $nivel);
+
+    if ($stmt->execute()) {
+        return $correta; // Retorna se a tentativa foi correta ou não
+    } else {
+        return false; // Falha ao salvar a tentativa
+    }
+}
 
 // Inicializa variáveis
 $imagemPerfil = 'img/default-avatar.png';
@@ -24,7 +48,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $usuario = $result->fetch_assoc();
 
-// Atualiza as variáveis com base no resultado da consulta
 if ($usuario) {
     $imagemPerfil = $usuario['foto'] ?? $imagemPerfil;
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
@@ -68,10 +91,9 @@ $total_questoes = $total_questoes_row['total'];
 $questao_sql = "SELECT id, enunciado, explicacao FROM $tabela LIMIT $offset, $questoes_por_pagina";
 $questao_result = $conn->query($questao_sql);
 
-$questoes_data = [];  // Inicializa um array para armazenar todas as questões
+$questoes_data = [];
 
 if ($questao_result->num_rows > 0) {
-    // Itera sobre todas as questões
     while ($questao = $questao_result->fetch_assoc()) {
         $questao_id = $questao['id'];
         $enunciado = $questao['enunciado'];
@@ -81,8 +103,8 @@ if ($questao_result->num_rows > 0) {
         $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
         $alternativas_result = $conn->query($alternativas_sql);
 
-        // Armazena os dados de cada questão e suas alternativas
         $questao_data = [
+            'id' => $questao_id,
             'enunciado' => $enunciado,
             'explicacao' => $explicacao,
             'alternativas' => []
@@ -92,9 +114,32 @@ if ($questao_result->num_rows > 0) {
             $questao_data['alternativas'][] = $alternativa;
         }
 
-        // Adiciona a questão e suas alternativas ao array de todas as questões
         $questoes_data[] = $questao_data;
     }
+}
+
+// Verifica se o formulário foi submetido
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtém os dados do formulário
+    $questao_id = $_POST['questao_id'];
+    $alternativa_id = $_POST['alternativa'];
+    $nivel = $_POST['nivel'];  // Pega o nível da questão
+
+    // Registra a tentativa
+    $correta = registrarTentativa($conn, $usuario_id, $questao_id, $alternativa_id, $nivel);
+
+    // Redireciona com uma animação baseada no sucesso da resposta
+    if ($correta) {
+        // Exibe animação de sucesso
+        echo "<script>alert('Resposta correta!');</script>";
+    } else {
+        // Exibe animação de erro
+        echo "<script>alert('Resposta incorreta!');</script>";
+    }
+
+    // Redireciona de volta à página de questões
+    header("Location: tarefas.php?nivel={$nivel}&pagina={$pagina_atual}");
+    exit();
 }
 
 // Fecha a conexão
@@ -104,12 +149,4 @@ $conn->close();
 // Calcula o número total de páginas
 $total_paginas = ceil($total_questoes / $questoes_por_pagina);
 
-// Retorna os dados
-return [
-    'imagemPerfil' => $imagemPerfil,
-    'nomeUsuario' => $nomeUsuario,
-    'questoes_data' => $questoes_data,  // Agora estamos retornando todas as questões
-    'pagina_atual' => $pagina_atual,
-    'total_paginas' => $total_paginas
-];
 ?>

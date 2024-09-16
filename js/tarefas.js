@@ -21,12 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.status === 'success') {
                     button.style.backgroundColor = 'lightgreen'; 
                     button.innerText = 'Resposta correta!';
-                    
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: { y: 0.6 }
-                    });
+
+                    // Verifica se a função confetti está disponível e chama-a
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    } else {
+                        console.error('Função confetti não encontrada.');
+                    }
 
                 } else {
                     button.style.backgroundColor = 'lightcoral';  
