@@ -43,8 +43,6 @@ include("funcoes_php/funcoes_confi.php");
         </ul>
       </nav>
     </aside>
-
-    <!-- parte do gráfico e das caixas de erros e acertos nas configurações -->
     <main>
       <div class="container-opcao">
         <div class="perfil">
@@ -64,13 +62,13 @@ include("funcoes_php/funcoes_confi.php");
           <div class="caixas-direita">
             <div class="caixa caixa-direita-superior">
               <div class="texto-centralizado">
-                <span class="numero">50</span>
+                <span class="numero"><?php echo $contagemRespostas['corretas']; ?></span>
                 <span class="descricao">Acertos</span>
               </div>
             </div>
             <div class="caixa caixa-direita-inferior">
               <div class="texto-centralizado">
-                <span class="numero_1">50</span>
+                <span class="numero_1"><?php echo $contagemRespostas['erradas']; ?></span>
                 <span class="descricao_1">Erradas</span>
               </div>
             </div>
@@ -80,7 +78,53 @@ include("funcoes_php/funcoes_confi.php");
     </main>
 </div>
   
+<script>
+  // código do gráfico
+document.addEventListener('DOMContentLoaded', function () {
+    var ctxEsquerda = document.getElementById('grafico-esquerda').getContext('2d');
+    var graficoEsquerda = new Chart(ctxEsquerda, {
+        type: 'pie', 
+        data: {
+            labels: ['Acertos', 'Erradas'], 
+            datasets: [{
+                label: 'Respostas',
+                data: [
+                    <?php echo $contagemRespostas['corretas']; ?>,
+                    <?php echo $contagemRespostas['erradas']; ?>
+                ], 
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)', // Cor para acertos
+                    'rgba(255, 99, 132, 0.2)'  // Cor para erradas
+                ], 
+                borderColor: [
+                    'rgba(75, 192, 192, 1)', // Borda para acertos
+                    'rgba(255, 99, 132, 1)'  // Borda para erradas
+                ], 
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top', 
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                },
+                datalabels: {
+                    display: false 
+                }
+            }
+        }
+    });
+});
 
+</script>
 <!-- modal para editar os dados -->
 
 <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">

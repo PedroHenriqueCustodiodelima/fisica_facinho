@@ -102,6 +102,30 @@ function obterDadosUsuario($conn, $usuario_id) {
     return $usuario;
 }
 
+function contarRespostas($conn, $usuario_id) {
+    // Conta o número de respostas corretas
+    $stmt = $conn->prepare("SELECT COUNT(*) AS total_corretas FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 1");
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $total_corretas = $row['total_corretas'];
+    $stmt->close();
+
+    // Conta o número de respostas erradas
+    $stmt = $conn->prepare("SELECT COUNT(*) AS total_erradas FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 0");
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $total_erradas = $row['total_erradas'];
+    $stmt->close();
+
+    return ['corretas' => $total_corretas, 'erradas' => $total_erradas];
+}
+
+$contagemRespostas = contarRespostas($conn, $usuario_id);
+
 
 salvarImagemPerfil($conn, $usuario_id);
 atualizarNomeUsuario($conn, $usuario_id);
