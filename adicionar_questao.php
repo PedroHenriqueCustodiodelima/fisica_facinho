@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Verifica se o usuário está autenticado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
@@ -9,64 +8,55 @@ if (!isset($_SESSION['usuario_id'])) {
 
 require_once 'conexao.php';
 
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
-    exit();
-}
 
-// Recupera o ID do usuário da sessão
 $usuario_id = $_SESSION['usuario_id'];
 
-// Inicializa variáveis
+
 $imagemPerfil = 'img/default-avatar.png';
 $nomeUsuario = 'Usuário';
 
-// Consulta para obter a foto e o nome do usuário
+
 $stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $usuario = $result->fetch_assoc();
 
-// Atualiza as variáveis com base no resultado da consulta
 if ($usuario) {
     $imagemPerfil = $usuario['foto'] ?? $imagemPerfil;
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
-// Verifica se o formulário foi enviado
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nivel = $_POST['nivel']; // Obtém o nível da questão
+    $nivel = $_POST['nivel']; 
     $enunciado = $_POST['enunciado'];
     $explicacao = $_POST['explicacao'];
     $alternativas = $_POST['alternativa'];
-    $correta = $_POST['correta']; // índice da alternativa correta
+    $correta = $_POST['correta']; 
 
-    // Define a tabela de questões e alternativas com base no nível
+
     $tabela_questoes = "questoes_nivel" . $nivel;
     $tabela_alternativas = "alternativas" . ($nivel > 1 ? "_$nivel" : '');
 
-    // Verifica se a tabela de questões existe
+
     if (!in_array($tabela_questoes, ['questoes_nivel1', 'questoes_nivel2', 'questoes_nivel3'])) {
         die("Tabela de questões inválida.");
     }
 
-    // Verifica se a tabela de alternativas é válida
     if (!in_array($tabela_alternativas, ['alternativas', 'alternativas_2', 'alternativas_3'])) {
         die("Tabela de alternativas inválida.");
     }
 
-    // Insere a questão no banco de dados
     $stmt = $conn->prepare("INSERT INTO $tabela_questoes (enunciado, explicacao) VALUES (?, ?)");
     if (!$stmt) {
         die("Erro na preparação da consulta de questões: " . $conn->error);
     }
     $stmt->bind_param("ss", $enunciado, $explicacao);
     $stmt->execute();
-    $questao_id = $stmt->insert_id; // Obtém o ID da nova questão inserida
+    $questao_id = $stmt->insert_id; 
 
-    // Insere as alternativas no banco de dados
     foreach ($alternativas as $indice => $texto_alternativa) {
-        $correta_flag = ($indice == $correta) ? 1 : 0; // Verifica se essa alternativa é a correta
+        $correta_flag = ($indice == $correta) ? 1 : 0; 
         $stmt = $conn->prepare("INSERT INTO $tabela_alternativas (questao_id, texto, correta) VALUES (?, ?, ?)");
         if (!$stmt) {
             die("Erro na preparação da consulta de alternativas: " . $conn->error);
@@ -75,11 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
     }
 
-    // Fecha a conexão
     $stmt->close();
     $conn->close();
 
-    // Redireciona ou exibe uma mensagem de sucesso
     echo "Questão de Nível $nivel adicionada com sucesso!";
 }
 ?>
@@ -98,8 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
-    <!-- Foto do usuário e nome no lado direito -->
-    <!-- Foto do usuário e nome no lado direito -->
 <div class="perfil-header d-flex align-items-center">
   <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
   <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
@@ -108,9 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </header>
 
   <div class="container">
-    <!-- menu lateral padrão -->
-
-    <!-- parte do gráfico e das caixas de erros e acertos nas configurações -->
     <main>
     <h1>Adicionar Nova Questão</h1>
     <form action="adicionar_questao.php" method="POST">

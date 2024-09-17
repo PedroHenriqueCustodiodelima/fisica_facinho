@@ -11,16 +11,12 @@ include("funcoes_php/funcoes_login.php");
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- Adiciona o link para a biblioteca do Google Sign-In -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
-    <!-- cabeçalho do site com a logo -->
     <header>
         <img src="img/logo.png" alt="Logo">
     </header>
-
-    <!-- formulário de login com email e senha -->
     <main>
         <div class="login-form">
             <h2>Faça seu login para começar a sua aventura de aprendizado na física</h2>
@@ -55,7 +51,6 @@ include("funcoes_php/funcoes_login.php");
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // código para exibir senha ou não 
         document.addEventListener('DOMContentLoaded', function() {
             const passwordField = document.getElementById('password');
             const eyeIcon = document.getElementById('togglePassword');
@@ -72,10 +67,6 @@ include("funcoes_php/funcoes_login.php");
                 eyeIcon.style.display = 'inline';
                 eyeSlashIcon.style.display = 'none';
             });
-
-
-            // mensagem de erro em polpap caso alguma credêncial esteja incorreta
-
             <?php if (isset($_SESSION['loginErro'])): ?>
                 Swal.fire({
                     title: 'Erro no login',
@@ -86,11 +77,6 @@ include("funcoes_php/funcoes_login.php");
                     <?php unset($_SESSION['loginErro']); ?>
                 });
             <?php endif; ?>
-
-
-
-            // login com o google, porém não está funcionando 
-
             gapi.load('auth2', function() {
                 console.log('Google API loaded'); 
                 const auth2 = gapi.auth2.init({

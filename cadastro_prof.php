@@ -75,8 +75,6 @@ include("funcoes_php/funcoes_cadastro_prof.php");
     <footer>
         <p>IFRN CAMPUS NATAL CENTRAL</p>
     </footer>
-
-    <!-- Link para o arquivo JavaScript externo -->
     <script src="js/prof.js"></script>
 </body>
 </html>

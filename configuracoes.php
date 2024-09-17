@@ -16,13 +16,10 @@ include("funcoes_php/funcoes_confi.php");
 </head>
 <body>
 
-  <!-- cabeçalho do nosso site -->
   <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
-    <!-- Foto do usuário e nome no lado direito -->
-    <!-- Foto do usuário e nome no lado direito -->
     <div class="perfil-header d-flex align-items-center">
       <img id="avatar-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
       <p>Olá, <span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span>!</p>
@@ -30,7 +27,6 @@ include("funcoes_php/funcoes_confi.php");
   </header>
 
   <div class="container">
-    <!-- menu lateral padrão -->
     <aside>
       <nav>
         <ul>
@@ -79,7 +75,6 @@ include("funcoes_php/funcoes_confi.php");
 </div>
   
 <script>
-  // código do gráfico
 document.addEventListener('DOMContentLoaded', function () {
     var ctxEsquerda = document.getElementById('grafico-esquerda').getContext('2d');
     var graficoEsquerda = new Chart(ctxEsquerda, {
@@ -93,12 +88,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     <?php echo $contagemRespostas['erradas']; ?>
                 ], 
                 backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)', // Cor para acertos
-                    'rgba(255, 99, 132, 0.2)'  // Cor para erradas
+                    'rgba(75, 192, 192, 0.2)', 
+                    'rgba(255, 99, 132, 0.2)'  
                 ], 
                 borderColor: [
-                    'rgba(75, 192, 192, 1)', // Borda para acertos
-                    'rgba(255, 99, 132, 1)'  // Borda para erradas
+                    'rgba(75, 192, 192, 1)', 
+                    'rgba(255, 99, 132, 1)' 
                 ], 
                 borderWidth: 1
             }]
@@ -125,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 </script>
-<!-- modal para editar os dados -->
 
 <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -163,13 +157,10 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-
-<!-- footer -->
 <footer>
   <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
 </footer>
 
-<!-- caminhos de bibliotecas ou para a pagina js para pegar os codigo em javascript -->
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

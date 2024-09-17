@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!-- Mensagem de erro -->
+
 <?php if (!empty($message)) : ?>
     <div class="error-message">
         <?php echo htmlspecialchars($message); ?>

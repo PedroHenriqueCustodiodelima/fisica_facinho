@@ -22,7 +22,6 @@ class GoogleClient
     public function init()
     {
         if (isset($_GET['code'])) {
-            // Trocar o código de autorização por um token de acesso
             $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
             $_SESSION['access_token'] = $this->client->getAccessToken();
             header('Location: ' . filter_var($this->client->getRedirectUri(), FILTER_SANITIZE_URL));

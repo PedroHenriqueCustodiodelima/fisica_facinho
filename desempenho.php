@@ -17,14 +17,10 @@ include("funcoes_php/funcoes_desempenho.php");
   <script src="js/desempenho.js"></script>
 </head>
 <body>
-
-  <!-- cabeçalho do nosso site -->
   <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
-    <!-- Foto do usuário e nome no lado direito -->
-    <!-- Foto do usuário e nome no lado direito -->
 <div class="perfil-header d-flex align-items-center">
   <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
   <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
@@ -33,7 +29,6 @@ include("funcoes_php/funcoes_desempenho.php");
   </header>
 
   <div class="container">
-    <!-- menu lateral padrão -->
     <aside>
       <nav>
         <ul>
@@ -73,21 +68,16 @@ include("funcoes_php/funcoes_desempenho.php");
     <?php else: ?>
         <p style="text-align: center;">Nenhuma tentativa encontrada para o usuário.</p>
     <?php endif; ?>
-    
-    <!-- Canvas para o gráfico -->
     <div style="width: 80%; margin: 30px auto;">
         <canvas id="myBarChart"></canvas>
     </div>
 </main>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Obtém os dados da tabela
         const questoes = <?php echo json_encode(array_column($dados_questoes, 'id_questao')); ?>;
         const tentativas = <?php echo json_encode(array_column($dados_questoes, 'total_tentativas')); ?>;
         const acertos = <?php echo json_encode(array_column($dados_questoes, 'total_acertos')); ?>;
         const erros = <?php echo json_encode(array_column($dados_questoes, 'total_erros')); ?>;
-
-        // Configura o gráfico de barras
         const ctx = document.getElementById('myBarChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
@@ -147,13 +137,9 @@ include("funcoes_php/funcoes_desempenho.php");
 
 
   </div>
-  
-  <!-- footer -->
   <footer>
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
   </footer>
-
-  <!-- caminhos de bibliotecas ou para a pagina js para pegar os códigos em javascript -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

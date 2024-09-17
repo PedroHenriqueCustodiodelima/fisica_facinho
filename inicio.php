@@ -1,4 +1,3 @@
-<!-- incluindo todas as funções da pagina de funções -->
 <?php
 include("funcoes_php/funcoes_inicio.php");
 ?>
@@ -16,13 +15,10 @@ include("funcoes_php/funcoes_inicio.php");
 </head>
 <body>
 
-  <!-- cabeçalho do nosso site -->
   <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
-    <!-- Foto do usuário e nome no lado direito -->
-    <!-- Foto do usuário e nome no lado direito -->
 <div class="perfil-header d-flex align-items-center">
   <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
   <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
@@ -31,7 +27,6 @@ include("funcoes_php/funcoes_inicio.php");
   </header>
 
   <div class="container">
-    <!-- menu lateral padrão -->
     <aside>
       <nav>
         <ul>
@@ -44,19 +39,14 @@ include("funcoes_php/funcoes_inicio.php");
         </ul>
       </nav>
     </aside>
-
-    <!-- parte do gráfico e das caixas de erros e acertos nas configurações -->
     <main>
       
     </main>
   </div>
   
-  <!-- footer -->
   <footer>
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
   </footer>
-
-  <!-- caminhos de bibliotecas ou para a pagina js para pegar os códigos em javascript -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

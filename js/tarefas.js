@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     forms.forEach((form, index) => {
         const btnResolucao = document.getElementById(`btn-resolucao-${index}`);
         const resolucao = document.getElementById(`resolucao-${index}`);
-
-        // Lida com a submissão do formulário via AJAX
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -21,8 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.status === 'success') {
                     button.style.backgroundColor = 'lightgreen'; 
                     button.innerText = 'Resposta correta!';
-
-                    // Verifica se a função confetti está disponível e chama-a
                     if (typeof confetti === 'function') {
                         confetti({
                             particleCount: 100,
@@ -46,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro:', error));
         });
 
-        // Lida com o botão de ver resolução
         btnResolucao.addEventListener('click', function() {
             if (resolucao.style.display === 'none') {
                 resolucao.style.display = 'block';

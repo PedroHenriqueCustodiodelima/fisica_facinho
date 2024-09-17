@@ -73,7 +73,6 @@ include("funcoes_php/funcoes_tarefas.php");
             <div class="question-container">Nenhuma questão encontrada.</div>
         <?php endif; ?>
 
-        <!-- Paginação -->
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li class="page-item <?php if ($pagina_atual <= 1) echo 'disabled'; ?>">

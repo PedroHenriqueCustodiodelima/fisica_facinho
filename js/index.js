@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         togglePasswordVisibility(confirmPasswordField, eyeIconConfirm, eyeSlashIconConfirm);
     });
 
-    // Validação da senha
     function validatePassword() {
         const length = document.getElementById('length');
         const uppercase = document.getElementById('uppercase');
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     passwordField.addEventListener('input', validatePassword);
 
-    // Código para login com Google
     gapi.load('auth2', function() {
         const auth2 = gapi.auth2.init({
             client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',

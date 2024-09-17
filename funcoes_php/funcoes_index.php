@@ -33,26 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $senha = $conn->real_escape_string($senha);
         $nome = $conn->real_escape_string($nome);
 
-        // Verifica se o e-mail já está registrado
         $sql_check = "SELECT * FROM usuarios WHERE email='$email'";
         $result_check = $conn->query($sql_check);
 
         if ($result_check->num_rows > 0) {
             $message = "O e-mail já está registrado. Por favor, use um e-mail diferente.";
         } else {
-            // Insere o novo usuário na tabela com a senha em texto simples
-            $data_criacao = date('Y-m-d H:i:s'); // Data e hora atual
+            $data_criacao = date('Y-m-d H:i:s'); 
             $sql_insert = "INSERT INTO usuarios (nome, email, senha, data_criacao) VALUES ('$nome', '$email', '$senha', '$data_criacao')";
 
             if ($conn->query($sql_insert) === TRUE) {
-                // Recupera o ID do novo usuário
+
                 $usuarioId = $conn->insert_id;
 
-                // Armazena o ID da sessão e o nome do usuário na variável de sessão
                 $_SESSION['usuario_id'] = $usuarioId;
                 $_SESSION['nome'] = $nome;
-
-                // Função para enviar o e-mail de confirmação
                 function enviarEmailConfirmacao($email, $nome) {
                     $mail = new PHPMailer(true);
                     try {
@@ -77,13 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         echo "A mensagem não pode ser enviada. Erro: {$mail->ErrorInfo}";
                     }
                 }
-
-                // Enviar e-mail de confirmação
                 enviarEmailConfirmacao($email, $nome);
 
-                // Redireciona para a página inicial
                 header("Location: inicio.php");
-                exit(); // Termina o script para evitar a execução adicional de código
+                exit(); 
             } else {
                 $message = "Erro ao inserir os dados: " . $conn->error;
             }

@@ -103,7 +103,7 @@ function obterDadosUsuario($conn, $usuario_id) {
 }
 
 function contarRespostas($conn, $usuario_id) {
-    // Conta o número de respostas corretas
+
     $stmt = $conn->prepare("SELECT COUNT(*) AS total_corretas FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 1");
     $stmt->bind_param("i", $usuario_id);
     $stmt->execute();
@@ -112,7 +112,7 @@ function contarRespostas($conn, $usuario_id) {
     $total_corretas = $row['total_corretas'];
     $stmt->close();
 
-    // Conta o número de respostas erradas
+
     $stmt = $conn->prepare("SELECT COUNT(*) AS total_erradas FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 0");
     $stmt->bind_param("i", $usuario_id);
     $stmt->execute();

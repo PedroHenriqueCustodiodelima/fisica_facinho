@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
     const toggleConfirmPasswordSlash = document.getElementById('toggleConfirmPasswordSlash');
 
-    // Função para mostrar/ocultar a senha
     function togglePasswordVisibility() {
         if (password.type === 'password') {
             password.type = 'text';
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleConfirmPassword.addEventListener('click', toggleConfirmPasswordVisibility);
     toggleConfirmPasswordSlash.addEventListener('click', toggleConfirmPasswordVisibility);
 
-    // Validação da senha
     function validatePassword() {
         const length = document.getElementById('length');
         const uppercase = document.getElementById('uppercase');
@@ -64,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     password.addEventListener('input', validatePassword);
 
-    // Configuração do Google Sign-In
     gapi.load('auth2', function() {
         const auth2 = gapi.auth2.init({
             client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',
