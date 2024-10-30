@@ -194,7 +194,7 @@ main {
   padding: 0; 
   cursor: pointer;
   position: absolute; 
-  bottom: 330px; 
+  bottom: 460px; 
   margin-left: 560px;
   border-radius: 50%;
 }
@@ -211,7 +211,7 @@ main {
   margin-top: 80px; 
 }
 .caixa {
-  background-color: #f0f0f0;
+  background-color: #c7c7c7;
   padding: 10px;
   margin: 5px;
   border-radius: 8px;
@@ -226,7 +226,7 @@ main {
 }
 .caixa-direita-superior,
 .caixa-direita-inferior {
-  background-color: #f0f0f0;
+  background-color: #c7c7c7;
   padding: 10px;
   margin-bottom: 10px; 
   border-radius: 8px;
