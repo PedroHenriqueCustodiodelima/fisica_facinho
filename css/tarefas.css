@@ -28,78 +28,7 @@ footer {
 
 
 
-.conteudo-cabecalho h1 {
-    margin: 0;
-    color: #ffcd38;
-  }
-  
-  .container {
-    display: flex;
-    flex: 1; 
-    margin: 20px;
-  }
-  
-  aside {
-    width: 15vw;
-    background-color: #001A4E;
-    padding: 20px;
-    border-radius: 10px;
-    margin-right: 20px;
-    height: 90vh;
-  }
-  
-  .perfil_aside {
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-  } 
-  
-  .perfil_aside img {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 10px;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  nav ul li {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    padding: 10px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: left; 
-  }
-  
-  nav ul li:hover {
-    transition: 0.5s;
-    background-color: #b6b6b6ea;
-  }
-  
-  nav ul li a {
-    display: flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-  }
-  
-  nav ul li a:hover {
-    color: white;
-    text-decoration: none;
-  }
-  
-  nav ul li i {
-    font-size: 24px; 
-    margin-right: 10px; 
-  }
-  
-  
+
 /* botão de responder */
 
 
@@ -133,7 +62,7 @@ footer {
 
 /* botão de resolução */
 .btn-resolucao {
-    background-color: #1a95dd; 
+    background-color: #001f3f; 
     color: white; 
     border: none; 
     padding: 5px 10px; 
@@ -145,19 +74,12 @@ footer {
 }
 
 .btn-resolucao:hover {
-    background-color: #0056b3; 
+    background-color: #001f3f; 
 }
 
 .btn-resolucao:focus {
     outline: none; 
 }
-
-
-
-
-
-
-
 
 
 main {
@@ -224,7 +146,7 @@ main {
 
 .question-container li:hover label {
     background-color: #e6f7ff;
-    border-color: #0099ff;
+    border-color: #001f3f;
 }
 
 .question-container input[type="radio"] {
@@ -253,7 +175,7 @@ main {
 /* Botão Ver Resolução */
 .btn-resolucao {
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: #001f3f;
     color: white;
     border: none;
     border-radius: 4px;
@@ -268,5 +190,19 @@ main {
 }
 
 .btn-resolucao:hover {
-    background-color: #0069d9;
+    background-color: #001f3f;
 }
+.custom-link:hover {
+    color: #001f3f;
+    background: none; 
+  }
+  
+  .custom-link span {
+    margin-left: 10px; 
+  }
+  
+  .voltar-container {
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+  }
+  

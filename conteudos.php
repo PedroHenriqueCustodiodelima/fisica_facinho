@@ -19,26 +19,18 @@ include("funcoes_php/funcoes_inicio.php");
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
-<div class="perfil-header d-flex align-items-center">
-  <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-  <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
-</div>
-
+    <div class="perfil-header d-flex align-items-center">
+      <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+      <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+    </div>
   </header>
 
   <div class="container">
-    <aside>
-      <nav>
-        <ul>
-          <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="desempenho.php">Desempenho</a></li>
-          <li><i class="fa-solid fa-book" style="color: white; width: 30px; height: 30px;"></i><a href="conteudos.php">Conteúdos</a></li>
-          <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="tarefas.php">Tarefas</a></li>
-          <li><i class="fa-solid fa-clipboard" style="color: white; width: 30px; height: 30px;"></i><a href="missoes.php">Missões</a></li>
-          <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="configuracoes.php">Configurações</a></li>
-          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: white; width: 30px; height: 30px;"></i><a href="logout.php">Sair</a></li>
-        </ul>
-      </nav>
-    </aside>
+    <div class="voltar-container mb-4">
+    <a href="inicio.php" class="custom-link mb-3">
+        <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+      </a>
+    </div>
     <main>
       
     </main>

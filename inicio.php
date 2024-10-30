@@ -1,7 +1,6 @@
 <?php
 include("funcoes_php/funcoes_inicio.php");
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -14,39 +13,112 @@ include("funcoes_php/funcoes_inicio.php");
   <link rel="stylesheet" href="css/inicio.css">
 </head>
 <body>
-
-  <header class="d-flex justify-content-between align-items-center">
-    <a href="inicio.php">
+  <div class="page-container">
+    <header class="d-flex justify-content-between align-items-center">
+      <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
-    </a>
-<div class="perfil-header d-flex align-items-center">
-  <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-  <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
-</div>
+      </a>
+      <div class="perfil-header d-flex align-items-center">
+        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+        <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+      </div>
+    </header>
 
-  </header>
-
-  <div class="container">
-    <aside>
-      <nav>
-        <ul>
-          <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="desempenho.php">Desempenho</a></li>
-          <li><i class="fa-solid fa-book" style="color: white; width: 30px; height: 30px;"></i><a href="conteudos.php">Conteúdos</a></li>
-          <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="tarefas.php">Tarefas</a></li>
-          <li><i class="fa-solid fa-clipboard" style="color: white; width: 30px; height: 30px;"></i><a href="missoes.php">Missões</a></li>
-          <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="configuracoes.php">Configurações</a></li>
-          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: white; width: 30px; height: 30px;"></i><a href="logout.php">Sair</a></li>
-        </ul>
-      </nav>
-    </aside>
-    <main>
-      
-    </main>
+    <main class="container">
+    <div class="container mt-5">
+    <div class="row justify-content-center">
+      <!-- Card Desempenho -->
+      <div class="col-md-4 mb-3">
+        <a href="desempenho.php" class="card-link">
+          <div class="card desempenho-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-chart-simple" style="font-size: 2rem;"></i>
+            </div>
+            <div class="text-part">
+              <h5 class="card-title">Desempenho</h5>
+              <p class="card-text">Acompanhe seu desempenho.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Card Conteúdos -->
+      <div class="col-md-4 mb-3">
+        <a href="conteudos.php" class="card-link">
+          <div class="card conteudos-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-book" style="font-size: 2rem;"></i>
+            </div>
+            <div class="text-part">
+              <h5 class="card-title">Conteúdos</h5>
+              <p class="card-text">Veja seus conteúdos.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Card Tarefas -->
+      <div class="col-md-4 mb-3">
+        <a href="tarefas.php" class="card-link">
+          <div class="card tarefas-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-list-check" style="font-size: 2rem;"></i>
+            </div>
+            <div class="text-part">
+              <h5 class="card-title">Tarefas</h5>
+              <p class="card-text">Gerencie suas tarefas.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Card Missões -->
+      <div class="col-md-4 mb-3">
+        <a href="missoes.php" class="card-link">
+          <div class="card missoes-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-clipboard" style="font-size: 2rem;"></i>
+            </div>
+            <div class="text-part">
+              <h5 class="card-title">Missões</h5>
+              <p class="card-text">Complete suas missões.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Card Configurações -->
+      <div class="col-md-4 mb-3">
+        <a href="configuracoes.php" class="card-link">
+          <div class="card configuracoes-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-gear" style="font-size: 2rem;"></i>
+            </div>
+            <div class="text-part">
+              <h5 class="card-title">Configurações</h5>
+              <p class="card-text">Ajuste suas configurações.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Card Sair -->
+      <div class="col-md-4 mb-3">
+        <a href="logout.php" class="card-link">
+          <div class="card sair-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 2rem;"></i>
+            </div>
+            <div class="text-part">
+              <h5 class="card-title">Sair</h5>
+              <p class="card-text">Encerrar sessão.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
-  
-  <footer>
-    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-  </footer>
+    </main>
+
+    <footer>
+      <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+    </footer>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
