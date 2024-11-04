@@ -11,7 +11,7 @@ include("funcoes_php/funcoes_confi.php");
   <title>Configurações</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="css/configuracoes.css">
 </head>
 <body>
@@ -27,18 +27,11 @@ include("funcoes_php/funcoes_confi.php");
   </header>
 
   <div class="container">
-    <aside>
-      <nav>
-        <ul>
-          <li><i class="fa-solid fa-chart-simple" style="color: white; width: 30px; height: 30px;"></i><a href="desempenho.php">Desempenho</a></li>
-          <li><i class="fa-solid fa-book" style="color: white; width: 30px; height: 30px;"></i><a href="conteudos.php">Conteúdos</a></li>
-          <li><i class="fa-solid fa-list-check" style="color: white; width: 30px; height: 30px;"></i><a href="tarefas.php">Tarefas</a></li>
-          <li><i class="fa-solid fa-clipboard" style="color: white; width: 30px; height: 30px;"></i><a href="missoes.php">Missões</a></li>
-          <li><i class="fa-solid fa-gear" style="color: white; width: 30px; height: 30px;"></i><a href="configuracoes.php">Configurações</a></li>
-          <li><i class="fa-solid fa-arrow-right-from-bracket" style="color: white; width: 30px; height: 30px;"></i><a href="logout.php">Sair</a></li>
-        </ul>
-      </nav>
-    </aside>
+  <div class="voltar-container mb-4">
+        <a href="inicio.php" class="custom-link">
+            <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+        </a>
+    </div>
     <main>
       <div class="container-opcao">
         <div class="perfil">
@@ -72,7 +65,7 @@ include("funcoes_php/funcoes_confi.php");
         </div>
       </div>
     </main>
-</div>
+  </div>
   
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -118,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
 </script>
 
 <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">

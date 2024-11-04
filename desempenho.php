@@ -31,97 +31,181 @@ include("funcoes_php/funcoes_desempenho.php");
       <a href="inicio.php" class="custom-link mb-3">
         <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
       </a>
-      <h2 style="text-align: center;">Desempenho do Usuário</h2>
-      <?php if ($dados_questoes): ?>
-          <table class="table">
-              <thead>
-                  <tr>
-                      <th>Questão</th>
-                      <th>Total de Tentativas</th>
-                      <th>Total de Acertos</th>
-                      <th>Total de Erros</th>
-                  </tr>
-              </thead>
-              <tbody>
-              <?php foreach ($dados_questoes as $questao): ?>
-                  <tr>
-                      <td><?php echo htmlspecialchars($questao['id_questao']); ?></td>
-                      <td><?php echo htmlspecialchars($questao['total_tentativas']); ?></td>
-                      <td><?php echo htmlspecialchars($questao['total_acertos']); ?></td>
-                      <td><?php echo htmlspecialchars($questao['total_erros']); ?></td>
-                  </tr>
-              <?php endforeach; ?>
-              </tbody>
-          </table>
-      <?php else: ?>
-          <p style="text-align: center;">Nenhuma tentativa encontrada para o usuário.</p>
-      <?php endif; ?>
-      <div style="width: 80%; margin: 30px auto;">
+      <h2 class="text-center">Desempenho</h2>
+
+      <div class="row text-center mb-4">
+  <div class="col-md-4 d-flex justify-content-center">
+    <div class="card" style="background-color: #007bff; border: none;"> <!-- Card azul -->
+      <div class="card-header text-white">
+        <i class="fas fa-tasks icon"></i> Tentativas
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_tentativas'))); ?></h5>
+        <p class="card-text"></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 d-flex justify-content-center">
+    <div class="card" style="background-color: #28a745; border: none;"> <!-- Card verde -->
+      <div class="card-header text-white">
+        <i class="fas fa-check-circle icon"></i> Acertos
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_acertos'))); ?></h5>
+        <p class="card-text"></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 d-flex justify-content-center">
+    <div class="card" style="background-color: #dc3545; border: none;"> <!-- Card vermelho -->
+      <div class="card-header text-white">
+        <i class="fas fa-times-circle icon"></i> Erros
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_erros'))); ?></h5>
+        <p class="card-text"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+      <div class="row mb-4">
+        <div class="col-md-6">
           <canvas id="myBarChart"></canvas>
+        </div>
+        <div class="col-md-6">
+          <canvas id="myLineChart"></canvas>
+        </div>
       </div>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const questoes = <?php echo json_encode(array_column($dados_questoes, 'id_questao')); ?>;
-            const tentativas = <?php echo json_encode(array_column($dados_questoes, 'total_tentativas')); ?>;
-            const acertos = <?php echo json_encode(array_column($dados_questoes, 'total_acertos')); ?>;
-            const erros = <?php echo json_encode(array_column($dados_questoes, 'total_erros')); ?>;
-            const ctx = document.getElementById('myBarChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: questoes,
-                    datasets: [
-                        {
-                            label: 'Tentativas',
-                            data: tentativas,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Acertos',
-                            data: acertos,
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Erros',
-                            data: erros,
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            stacked: true,
-                        },
-                        y: {
-                            stacked: true,
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
+      document.addEventListener('DOMContentLoaded', function() {
+          const questoes = <?php echo json_encode(array_column($dados_questoes, 'id_questao')); ?>;
+          const tentativas = <?php echo json_encode(array_column($dados_questoes, 'total_tentativas')); ?>;
+          const acertos = <?php echo json_encode(array_column($dados_questoes, 'total_acertos')); ?>;
+          const erros = <?php echo json_encode(array_column($dados_questoes, 'total_erros')); ?>;
+          const ctxBar = document.getElementById('myBarChart').getContext('2d');
+          const ctxLine = document.getElementById('myLineChart').getContext('2d');
+
+          // Gráfico de Barras
+          new Chart(ctxBar, {
+              type: 'bar',
+              data: {
+                  labels: questoes,
+                  datasets: [
+                      {
+                          label: 'Tentativas',
+                          data: tentativas,
+                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      },
+                      {
+                          label: 'Acertos',
+                          data: acertos,
+                          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                          borderColor: 'rgba(54, 162, 235, 1)',
+                          borderWidth: 1
+                      },
+                      {
+                          label: 'Erros',
+                          data: erros,
+                          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                          borderColor: 'rgba(255, 99, 132, 1)',
+                          borderWidth: 1
+                      }
+                  ]
+              },
+              options: {
+                  responsive: true,
+                  plugins: {
+                      legend: {
+                          position: 'top',
+                      },
+                      tooltip: {
+                          callbacks: {
+                              label: function(tooltipItem) {
+                                  return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                              }
+                          }
+                      }
+                  },
+                  scales: {
+                      x: {
+                          stacked: true,
+                      },
+                      y: {
+                          stacked: true,
+                          beginAtZero: true
+                      }
+                  }
+              }
+          });
+
+          // Gráfico de Linhas
+          new Chart(ctxLine, {
+              type: 'line',
+              data: {
+                  labels: questoes,
+                  datasets: [
+                      {
+                          label: 'Tentativas',
+                          data: tentativas,
+                          fill: false,
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          tension: 0.1
+                      },
+                      {
+                          label: 'Acertos',
+                          data: acertos,
+                          fill: false,
+                          borderColor: 'rgba(54, 162, 235, 1)',
+                          tension: 0.1
+                      },
+                      {
+                          label: 'Erros',
+                          data: erros,
+                          fill: false,
+                          borderColor: 'rgba(255, 99, 132, 1)',
+                          tension: 0.1
+                      }
+                  ]
+              },
+              options: {
+                  responsive: true,
+                  plugins: {
+                      legend: {
+                          position: 'top',
+                      },
+                      tooltip: {
+                          callbacks: {
+                              label: function(tooltipItem) {
+                                  return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                              }
+                          }
+                      }
+                  },
+                  scales: {
+                      x: {
+                          title: {
+                              display: true,
+                              text: 'Questões'
+                          }
+                      },
+                      y: {
+                          title: {
+                              display: true,
+                              text: 'Contagem'
+                          },
+                          beginAtZero: true
+                      }
+                  }
+              }
+          });
+      });
     </script>
   </div>
 

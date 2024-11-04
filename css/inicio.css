@@ -112,4 +112,34 @@ footer {
   font-size: 1rem;
   margin-top: 5px;
 }
+.rank-card .icon-part {
+  background-color: #6a4c93; /* Cor personalizada para o card de Rank */
+}
 
+.videos-card .icon-part {
+  background-color: #42a5f5; /* Cor personalizada para o card de Vídeos */
+}
+
+.relatorio-card .icon-part {
+  background-color: #ffca28; /* Cor personalizada para o card de Relatório */
+}
+
+.suporte-card .icon-part {
+  background-color: #66bb6a; /* Cor personalizada para o card de Ajuda */
+}
+
+.primeiro-ano-card .icon-part {
+  background-color: #f4a261; /* Cor do primeiro ano */
+}
+
+.segundo-ano-card .icon-part {
+  background-color: #e76f51; /* Cor do segundo ano */
+}
+
+.terceiro-ano-card .icon-part {
+  background-color: #d62828; /* Cor do terceiro ano */
+}
+
+.quarto-ano-card .icon-part {
+  background-color: #2a9d8f; /* Cor do quarto ano */
+}

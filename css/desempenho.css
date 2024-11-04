@@ -162,3 +162,41 @@ h2 {
   font-size: 24px; 
   margin-bottom: 20px; 
 }
+
+
+.card {
+  flex: 1; /* Faz os cards se expandirem igualmente */
+  margin: 10px; /* Espaçamento entre os cards */
+  border-radius: 15px; /* Bordas arredondadas */
+  transition: transform 0.3s, box-shadow 0.3s; /* Transição suave para efeitos de hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada */
+  overflow: hidden; /* Oculta conteúdo que ultrapassa os limites do card */
+  height: 150px; /* Altura fixa dos cards */
+}
+
+.card:hover {
+  transform: scale(1.03); /* Aumenta levemente o card ao passar o mouse */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Aumenta a sombra no hover */
+}
+
+.card-header {
+  font-size: 1.5rem; /* Tamanho da fonte do cabeçalho */
+  font-weight: bold; /* Negrito */
+  text-align: center; /* Centraliza o texto */
+  color: white; /* Cor do texto */
+  padding: 15px; /* Padding para aumentar o espaço interno */
+}
+h2{
+  color: #000000;
+}
+.card-body {
+  text-align: center; /* Centraliza o texto no corpo do card */
+  padding: 10px; /* Aumenta o espaço interno do corpo do card */
+  background-color: transparent; /* Mantém a cor de fundo do card */
+}
+
+.card-title {
+  font-size: 2rem; /* Tamanho da fonte do título */
+  color: white; /* Cor do texto */
+  margin: 0; /* Remove margens do título */
+}
