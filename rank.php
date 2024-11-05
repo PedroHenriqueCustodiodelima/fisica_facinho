@@ -46,71 +46,114 @@ include("funcoes_php/funcoes_ranking.php");
     <?php endfor; ?>
 </div>
 
-
-
-
-
-
-
-
-
-
-
     <h4 class="mt-4">Estudantes</h4>
     <table class="table table-striped">
     <thead>
         <tr>
-            <th>Posição</th>
+            <th style="width: 10%;">Ranking</th>
             <th>Usuário</th>
-            <th>Patente</th>
+            <th style="width: 15%;">Pontos</th> 
+            <th>Patente <i class="fa-solid fa-exclamation-circle" title="Patente do usuário" style="color: white; margin-left: 5px; cursor: pointer;"></i></th>
         </tr>
     </thead>
     <tbody>
         <?php if (count($ranking) > 0): ?>
             <?php foreach ($ranking as $index => $usuario): ?>
-                <tr>
+                <tr class="<?php
+                    if ($index == 0) {
+                        echo 'gold-row';
+                    } elseif ($index == 1) {
+                        echo 'silver-row';
+                    } elseif ($index == 2) {
+                        echo 'bronze-row';
+                    }
+                ?>">
                     <td><?php echo $index + 1; ?></td>
-                    <td>
-                        <?php echo htmlspecialchars($usuario['usuario_nome']); ?><br>
-                        <span><?php echo $usuario['total_acertos']; ?> Acertos</span>
-                    </td>
+                    <td><?php echo htmlspecialchars($usuario['usuario_nome']); ?></td>
+                    <td><?php echo $usuario['total_acertos']; ?></td>
                     <td>
                         <?php
                         $acertos = $usuario['total_acertos'];
+                        $icone = "";
+
+                        // Lógica para selecionar o ícone de patente baseado nos acertos
                         if ($acertos < 2) {
-                            echo "Iniciante";
+                            $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 20) {
-                            echo "Iniciante";
+                            $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 40) {
-                            echo "Aventureiro";
+                            $icone = "<img src='img/aventurero.png' alt='Aventureiro' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 60) {
-                            echo "Explorador";
+                            $icone = "<img src='img/explorador.png' alt='Explorador' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 80) {
-                            echo "Desbravador";
+                            $icone = "<img src='img/desbravador.png' alt='Desbravador' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 100) {
-                            echo "Valente";
+                            $icone = "<img src='img/valente.png' alt='Valente' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 120) {
-                            echo "Herói";
+                            $icone = "<img src='img/heroi.png' alt='Herói' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 140) {
-                            echo "Campeão";
+                            $icone = "<img src='img/campeao.png' alt='Campeão' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 160) {
-                            echo "Mestre";
+                            $icone = "<img src='img/mestre.png' alt='Mestre' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 180) {
-                            echo "Lendário";
+                            $icone = "<img src='img/lendario.png' alt='Lendário' style='width:30px; height:20px; vertical-align: middle;'>";
                         } else {
-                            echo "Supremo";
+                            $icone = "<img src='img/supremo.png' alt='Supremo' style='width:30px; height:20px; vertical-align: middle;'>";
                         }
+
+                        echo $icone;
                         ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="3" class="text-center">Não há usuários suficientes para mostrar.</td>
+                <td colspan="4" class="text-center">Não há usuários suficientes para mostrar.</td>
             </tr>
         <?php endif; ?>
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="patenteModal" tabindex="-1" role="dialog" aria-labelledby="patenteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="patenteModalLabel">Patentes e Pontos Necessários</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Iniciante: 0 - 1 ponto</li>
+                    <li>Aventureiro: 2 - 20 pontos</li>
+                    <li>Explorador: 21 - 40 pontos</li>
+                    <li>Desbravador: 41 - 60 pontos</li>
+                    <li>Valente: 61 - 80 pontos</li>
+                    <li>Herói: 81 - 100 pontos</li>
+                    <li>Campeão: 101 - 120 pontos</li>
+                    <li>Mestre: 121 - 140 pontos</li>
+                    <li>Lendário: 141 - 160 pontos</li>
+                    <li>Supremo: 161+ pontos</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Abrir o modal ao clicar no ícone de alerta
+    $('.fa-exclamation-circle').on('click', function() {
+        $('#patenteModal').modal('show'); // Corrigido aqui
+    });
+});
+</script>
+
 
 
 </main>
@@ -120,7 +163,7 @@ include("funcoes_php/funcoes_ranking.php");
   <footer>
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
   </footer>
-
+    
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

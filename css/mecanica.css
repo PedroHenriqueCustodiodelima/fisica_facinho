@@ -1,60 +1,56 @@
+/* Estilos do body */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #ffffff;
-    color: branco;
+    color: #555; /* Mudado de "branco" para um código de cor */
     display: flex;
     flex-direction: column;
     min-height: 100vh; 
-  }
-  
-
-h2 {
-    font-size: 24px;
-    color: #222; 
-    margin-bottom: 20px;
+    font-size: 18px; /* Tamanho do texto padrão */
 }
 
-
-main p {
-    font-size: 16px;
-    color: #555; 
-    margin-top: 8px;
-}
-
-  
-  header {
+/* Estilos do cabeçalho */
+header {
     background-color: #001A4E;
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  header img {
+}
+
+header img {
     height: 50px;
-  }
-  
-  
-  .conteudo-cabecalho h1 {
+}
+
+/* Estilos do título no cabeçalho */
+.conteudo-cabecalho h1 {
     margin: 0;
     color: #ffcd38;
-  }
-  
-  .container {
-    display: flex;
-    flex: 1; 
-    margin: 20px;
-  }
-  
-  
-  nav ul {
+}
+
+/* Estilos principais */
+main {
+    color: #555; /* Mantido o texto em cinza escuro */
+    margin: 0 auto;
+    flex: 1; /* Flex para ocupar espaço restante */
+    padding: 20px; /* Espaçamento interno */
+}
+
+/* Estilos para parágrafos */
+main p {
+    font-size: 1rem; /* Ajuste do tamanho do texto */
+    margin-top: 8px;
+}
+
+/* Estilos da lista de navegação */
+nav ul {
     list-style-type: none;
     padding: 0;
-  }
-  
-  nav ul li {
+}
+
+nav ul li {
     display: flex;
     align-items: center;
     margin: 10px 0;
@@ -63,88 +59,99 @@ main p {
     border-radius: 5px;
     cursor: pointer;
     text-align: left; 
-  }
-  
-  nav ul li:hover {
+}
+
+nav ul li:hover {
     transition: 0.5s;
     background-color: #b6b6b6ea;
-  }
-  
-  nav ul li a {
+}
+
+nav ul li a {
     display: flex;
     align-items: center;
     color: white;
     text-decoration: none;
-  }
-  
-  nav ul li a:hover {
+}
+
+nav ul li a:hover {
     color: white;
-    text-decoration: none;
-  }
-  
-  nav ul li i {
+}
+
+nav ul li i {
     font-size: 24px; 
     margin-right: 10px; 
-  }
-  
-  .custom-link:hover {
-    color: #001f3f;
-    background: none; 
-  }
-  
-  .custom-link span {
-    margin-left: 10px; 
-  }
-  
-  .voltar-container {
-    margin-top: 20px; 
-    margin-bottom: 20px; 
-  }
-  
+}
 
-  
-  main {
-    color: whitesmoke;
-    margin: 0 auto;
-  }
-  
-  
-  .perfil-header {
+/* Estilos do botão "Voltar" */
+.voltar-container {
+    position: absolute; /* Ajuste para posicionar em relação à tela */
+    top: 100px; /* Distância do topo */
+    left: 20px; /* Distância da esquerda */
+    margin-bottom: 20px; /* Adiciona espaço abaixo do botão */
+}
+
+.voltar-container button {
+    font-size: 12px; /* Tamanho do texto menor */
+    padding: 5px 10px; /* Espaçamento interno menor */
+    background-color: #001A4E; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none; /* Sem borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de ponteiro */
+}
+
+.voltar-container button:hover {
+    background-color: #003366; /* Cor ao passar o mouse */
+}
+
+/* Estilos do perfil */
+.perfil-header {
     display: flex;
     align-items: center;
-  }
-  
-  .perfil-header span {
+}
+
+.perfil-header span,
+.perfil-header p {
     color: #ffffff;
     margin-right: 10px;
     font-size: 16px;
-  }
-  .perfil-header p {
-    color: #ffffff;
-    margin-right: 10px;
-    font-size: 16px;
-  }
-  
-  .perfil-header img {
-    border: #f0f0f0;
+}
+
+.perfil-header img {
     border-radius: 50%;
     width: 50px;
     height: 50px;
     object-fit: cover;
-  }
-  
-  .card {
+}
+
+/* Estilos do card */
+.card {
     background-color: #f8f9fa; /* Cor de fundo do card */
     border: 1px solid #ced4da; /* Cor da borda do card */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra do card */
-  }
-  
-  footer {
+    padding: 30px; /* Adiciona padding ao card para melhor espaçamento interno */
+    width: 100%; /* Aumenta a largura do card para 90% da largura do contêiner pai */
+    max-width: 900px; /* Define uma largura máxima para o card */
+    margin: 20px auto; /* Centraliza o card na tela */
+}
+
+.card h2, .card p { /* Aumenta o tamanho do texto dentro do card */
+    font-size: 1.2rem; /* Ajusta o tamanho do texto */
+}
+
+/* Estilos do rodapé */
+footer {
     background-color: #001A4E;
-    padding: 2px;
+    padding: 10px;
     text-align: center;
     color: white;
-  }
-  footer p{
+}
+
+footer p {
     margin-top: 15px;
-  }  
+}
+
+/* Ajustes de tamanho de texto em classes específicas */
+.text-dark {
+    font-size: 1.2rem; /* Ajusta o tamanho do texto nas classes .text-dark */
+}

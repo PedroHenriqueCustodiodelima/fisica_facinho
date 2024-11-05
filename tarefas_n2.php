@@ -34,30 +34,7 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-function registrarTentativa($conn, $usuario_id, $questao_id, $alternativa_id, $nivel) {
-    $stmt = $conn->prepare("SELECT correta FROM alternativas WHERE id = ?");
-    $stmt->bind_param("i", $alternativa_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $alternativa = $result->fetch_assoc();
-
-    $correta = $alternativa['correta'] ? 1 : 0;
-
-    $stmt = $conn->prepare("
-        INSERT INTO tentativas_usuarios (id_usuario, id_questao, id_alternativa, correta, nivel, data_tentativa) 
-        VALUES (?, ?, ?, ?, ?, NOW())
-    ");
-    $stmt->bind_param("iiiis", $usuario_id, $questao_id, $alternativa_id, $correta, $nivel);
-
-    if ($stmt->execute()) {
-        return $correta; 
-    } else {
-        return false; 
-    }
-}
-
-// Define o nível como 2
-$nivel = 2;
+$nivel = 1; // Definindo o nível como 1
 $tabela = 'questoes_nivel2';
 $questoes_por_pagina = 3;
 
@@ -66,147 +43,160 @@ $pagina_atual = ($pagina_atual > 0) ? $pagina_atual : 1;
 
 $offset = ($pagina_atual - 1) * $questoes_por_pagina;
 
-// Contar o total de questões no nível 2
 $total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela";
 $total_questoes_result = $conn->query($total_questoes_sql);
 $total_questoes_row = $total_questoes_result->fetch_assoc();
 $total_questoes = $total_questoes_row['total'];
 
-// Verificar se o total de questões é maior que zero
-if ($total_questoes > 0) {
-    // Selecionar questões do nível 2
-    $questao_sql = "SELECT id, enunciado, explicacao FROM $tabela LIMIT $offset, $questoes_por_pagina";
-    $questao_result = $conn->query($questao_sql);
+$questao_sql = "SELECT id, enunciado, explicacao FROM $tabela LIMIT $offset, $questoes_por_pagina";
+$questao_result = $conn->query($questao_sql);
 
-    $questoes_data = [];
+$questoes_data = [];
 
-    if ($questao_result->num_rows > 0) {
-        while ($questao = $questao_result->fetch_assoc()) {
-            $questao_id = $questao['id'];
-            $enunciado = $questao['enunciado'];
-            $explicacao = $questao['explicacao'];
-            $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
-            $alternativas_result = $conn->query($alternativas_sql);
+if ($questao_result->num_rows > 0) {
+    while ($questao = $questao_result->fetch_assoc()) {
+        $questao_id = $questao['id'];
+        $enunciado = $questao['enunciado'];
+        $explicacao = $questao['explicacao'];
+        $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
+        $alternativas_result = $conn->query($alternativas_sql);
 
-            $questao_data = [
-                'id' => $questao_id,
-                'enunciado' => $enunciado,
-                'explicacao' => $explicacao,
-                'alternativas' => []
-            ];
+        $questao_data = [
+            'id' => $questao_id,
+            'enunciado' => $enunciado,
+            'explicacao' => $explicacao,
+            'alternativas' => []
+        ];
 
-            while ($alternativa = $alternativas_result->fetch_assoc()) {
-                $questao_data['alternativas'][] = $alternativa;
-            }
-
-            $questoes_data[] = $questao_data;
+        while ($alternativa = $alternativas_result->fetch_assoc()) {
+            $questao_data['alternativas'][] = $alternativa;
         }
+
+        $questoes_data[] = $questao_data;
     }
-} else {
-    $questoes_data = []; // Nenhuma questão encontrada
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $questao_id = $_POST['questao_id'];
-    $alternativa_id = $_POST['alternativa'];
-    $correta = registrarTentativa($conn, $usuario_id, $questao_id, $alternativa_id, $nivel);
-
-    if ($correta) {
-        echo "<script>alert('Resposta correta!');</script>";
-    } else {
-        echo "<script>alert('Resposta incorreta!');</script>";
-    }
-
-    header("Location: tarefas.php?pagina={$pagina_atual}");
-    exit();
-}
-
-$stmt->close();
-$conn->close();
-
-$total_paginas = ceil($total_questoes / $questoes_por_pagina);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configurações</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="css/tarefas.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas - 1º Ano</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/tarefas.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.5.1/confetti.min.js"></script> <!-- Adicionando biblioteca de confete -->
 </head>
 <body>
-
-<header class="d-flex justify-content-between align-items-center">
-    <a href="inicio.php">
-        <img src="img/logo.png" width="200px" alt="Logo">
-    </a>
-    <div class="perfil-header d-flex align-items-center">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-        <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
-    </div>
-</header>
-
-<div class="container">
-    <div class="voltar-container mb-4">
-        <a href="tarefas.php" class="custom-link">
-            <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+<div class="page-container">
+    <header class="d-flex justify-content-between align-items-center">
+        <a href="inicio.php">
+            <img src="img/logo.png" width="200px" alt="Logo">
         </a>
-    </div>
-    
-    <main>
-        <?php if (!empty($questoes_data)): ?>
-            <?php $index = 1; ?>
-            <?php foreach ($questoes_data as $questao_data): ?>
-                <form action="tarefas.php?pagina=<?php echo $pagina_atual; ?>" method="post" class="question-form">
-                    <div class="question-container">
-                        <h3>Questão <?php echo $index; ?>: <?php echo $questao_data['enunciado']; ?></h3>
+        <div class="perfil-header d-flex align-items-center">
+            <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+            <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="voltar-container mb-4">
+            <a href="tarefas.php" class="custom-link">
+                <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+            </a>
+        </div>
+
+        <h1 class="mt-4 mb-4">Atividades do 2º Ano</h1>
+
+
+        <div class="questoes-container">
+            <?php foreach ($questoes_data as $questao): ?>
+                <div class="questao mb-4 card">
+                    <h5><?php echo htmlspecialchars($questao['enunciado']); ?></h5>
+                    <form class="responder-form" method="POST" action="responder_questao.php">
+                        <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
+                        <input type="hidden" name="nivel" value="<?php echo $nivel; ?>">
+                        <input type="hidden" name="pagina" value="tarefas_n1.php"> <!-- Adicionando este campo oculto -->
                         <ul>
-                            <?php foreach ($questao_data['alternativas'] as $alternativa): ?>
+                            <?php foreach ($questao['alternativas'] as $alternativa): ?>
                                 <li>
-                                    <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" id="q2<?php echo $alternativa['id']; ?>">
-                                    <label for="q2<?php echo $alternativa['id']; ?>"><?php echo $alternativa['texto']; ?></label>
+                                    <label>
+                                        <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
+                                        <?php echo htmlspecialchars($alternativa['texto']); ?>
+                                    </label>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
-                        <input type="hidden" name="questao_id" value="<?php echo $questao_data['id']; ?>">
-                        <input type="hidden" name="nivel" value="<?php echo $nivel; ?>">
-                        <button type="submit" class="btn-responder">Responder</button>
-                    </div>
-                </form>
-                <?php $index++; ?>
+                        <button type="submit" class="btn btn-primary">Responder</button>
+                    </form>
+                    <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
+                    <!-- Dentro do loop das questões -->
+                    <button class="btn btn-info btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
+                </div>
             <?php endforeach; ?>
-        <?php else: ?>
-            <div class="question-container">Nenhuma questão encontrada.</div>
+        </div>
+
+        <?php if ($total_questoes > $questoes_por_pagina): ?>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
+                        <li class="page-item <?php echo ($i == $pagina_atual) ? 'active' : ''; ?>">
+                            <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
         <?php endif; ?>
-
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item <?php if ($pagina_atual <= 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual - 1; ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                    <li class="page-item <?php if ($i == $pagina_atual) echo 'active'; ?>">
-                        <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php endfor; ?>
-                <li class="page-item <?php if ($pagina_atual >= $total_paginas) echo 'disabled'; ?>">
-                    <a class="page-link" href="?nivel=<?php echo $nivel; ?>&pagina=<?php echo $pagina_atual + 1; ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </main>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <footer>
+        <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$(document).ready(function() {
+    // Verifica se há uma mensagem de acerto ou erro
+    <?php if (isset($_GET['mensagem'])): ?>
+        let mensagem = "<?php echo $_GET['mensagem']; ?>";
+        let titulo, texto;
+
+        if (mensagem === 'acertou') {
+            titulo = "Parabéns!";
+            texto = "Você acertou a questão.";
+        } else if (mensagem === 'errou') {
+            titulo = "Infelizmente!";
+            texto = "Você errou a questão.";
+        }
+
+        // Exibe o modal com SweetAlert2
+        Swal.fire({
+            title: titulo,
+            text: texto,
+            icon: mensagem === 'acertou' ? 'success' : 'error',
+            timer: 3000, // Fecha automaticamente em 3 segundos
+            showConfirmButton: false // Não mostra botão de confirmação
+        }).then(() => {
+            // Limpa a mensagem da URL
+            const url = new URL(window.location);
+            url.searchParams.delete('mensagem'); // Remove o parâmetro 'mensagem'
+            window.history.replaceState({}, document.title, url); // Atualiza a URL sem recarregar
+        });
+    <?php endif; ?>
+
+    // Manipulador de clique para o botão "Ver Resolução"
+    $('.btn-resolucao').click(function() {
+        var questaoId = $(this).data('questao-id');
+        $(this).siblings('.explicacao').toggle(); // Mostra ou esconde a explicação da questão correspondente
+    });
+});
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.5.1/confetti.min.js"></script>
+
 </body>
 </html>

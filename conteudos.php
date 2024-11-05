@@ -14,30 +14,37 @@ include("funcoes_php/funcoes_inicio.php");
   <link rel="stylesheet" href="css/conteudos.css">
   <style>
     .card {
-      border: none;
-      color: white; /* Cor do texto em branco */
-      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza a transição */
-      border-radius: 15px; /* Bordas arredondadas */
-      max-width: 320px; /* Largura máxima do card */
-      margin: 15px auto; /* Margem superior/inferior e centraliza o card */
-      cursor: pointer; /* Muda o cursor ao passar o mouse */
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+      border: 2px solid;
+      border-radius: 15px;
+      max-width: 320px;
+      height: 150px;
+      margin: 15px auto;
+      cursor: pointer;
+      box-shadow: none;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .card:hover {
-      transform: translateY(-5px); /* Eleva o card */
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra mais intensa ao passar o mouse */
+      transform: translateY(-5px);
     }
 
     .card-title {
-      font-size: 1.25rem; /* Tamanho do título */
-      font-weight: bold; /* Negrito */
-      margin-bottom: 10px; /* Margem abaixo do título */
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: black;
     }
 
     .card-description {
-      font-size: 1rem; /* Tamanho da descrição */
-      opacity: 0.9; /* Levemente transparente para suavizar */
+      font-size: 1rem;
+      color: black;
+    }
+
+    .card[data-cor] {
+      border-color: var(--cor);
     }
 
     .footer {
@@ -45,7 +52,8 @@ include("funcoes_php/funcoes_inicio.php");
       padding: 1rem 0;
       background-color: #f8f9fa;
     }
-    h2{
+    
+    h2 {
       color: #001f3f;
     }
   </style>
@@ -66,56 +74,55 @@ include("funcoes_php/funcoes_inicio.php");
     <div class="voltar-container mb-4">
       <a href="inicio.php" class="custom-link mb-3">
           <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
-        </a>
+      </a>
     </div>
     <main>
       <h2 class="text-center mb-4 text-black">Conteúdos de Física</h2>
-      <div class="row justify-content-center"> <!-- Adiciona centralização -->
+      <div class="row justify-content-center">
         <?php
-        // Exemplo de dados de conteúdos teóricos de física com novas cores
         $conteudos = [
           [
             "titulo" => "Introdução à Mecânica Clássica",
             "descricao" => "Entenda os princípios que regem o movimento dos corpos.",
-            "cor" => "#1F77B4", // Azul
-            "url" => "mecanica_classica.php" // Atualiza a URL
+            "cor" => "#1F77B4",
+            "url" => "mecanica_classica.php"
           ],
           [
             "titulo" => "Leis de Newton",
             "descricao" => "Explore as três leis fundamentais da mecânica.",
-            "cor" => "#FF7F0E", // Laranja
-            "url" => "leis_newton.php" // Atualiza a URL
+            "cor" => "#FF7F0E",
+            "url" => "leis_newton.php"
           ],
           [
             "titulo" => "Energia e Conservação",
             "descricao" => "Aprenda sobre a conservação da energia em sistemas físicos.",
-            "cor" => "#2CA02C", // Verde
-            "url" => "energia_conservacao.php" // Atualiza a URL
+            "cor" => "#2CA02C",
+            "url" => "energia_conservacao.php"
           ],
           [
             "titulo" => "Termodinâmica Básica",
             "descricao" => "Conheça as leis da termodinâmica e suas aplicações.",
-            "cor" => "#D62728", // Vermelho
-            "url" => "termodinamica.php" // Atualiza a URL
+            "cor" => "#D62728",
+            "url" => "termodinamica.php"
           ],
           [
             "titulo" => "Eletromagnetismo",
             "descricao" => "Estude as interações entre eletricidade e magnetismo.",
-            "cor" => "#9467BD", // Roxo
-            "url" => "eletromagnetismo.php" // Atualiza a URL
+            "cor" => "#9467BD",
+            "url" => "eletromagnetismo.php"
           ],
           [
             "titulo" => "Óptica: Luz e Lentes",
             "descricao" => "Descubra o comportamento da luz e suas aplicações.",
-            "cor" => "#8C564B", // Marrom
-            "url" => "optica.php" // Atualiza a URL
+            "cor" => "#8C564B",
+            "url" => "optica.php"
           ],
         ];
 
         foreach ($conteudos as $conteudo) {
-          echo '<div class="col-md-4 mb-4 d-flex justify-content-center">'; // Centraliza os cards
-          echo '  <a href="' . htmlspecialchars($conteudo["url"]) . '" style="text-decoration: none;">'; // Link para a nova página
-          echo '    <div class="card" style="background-color: ' . htmlspecialchars($conteudo["cor"]) . ';">';
+          echo '<div class="col-md-4 mb-4 d-flex justify-content-center">';
+          echo '  <a href="' . htmlspecialchars($conteudo["url"]) . '" style="text-decoration: none;">';
+          echo '    <div class="card" style="border-color: ' . htmlspecialchars($conteudo["cor"]) . ';">';
           echo '      <div class="card-body">';
           echo '        <h5 class="card-title">' . htmlspecialchars($conteudo["titulo"]) . '</h5>';
           echo '        <p class="card-description mt-2">' . htmlspecialchars($conteudo["descricao"]) . '</p>';
@@ -127,7 +134,6 @@ include("funcoes_php/funcoes_inicio.php");
         ?>
       </div>
     </main>
-    
   </div>
   
   <footer class="footer">

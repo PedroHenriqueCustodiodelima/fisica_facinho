@@ -24,30 +24,28 @@ include("funcoes_php/funcoes_missoes.php");
       <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
     </div>
   </header>
-
-  <main class="d-flex justify-content-center">
   <div class="voltar-container mb-4">
       <a href="conteudos.php" class="custom-link">
-        <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar para Conteúdos</span>
+        <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
       </a>
     </div>
-  <div class="container">
-    <div class="card mb-4 mx-auto" style="max-width: 600px;"> <!-- Card centralizado -->
-      <div class="card-body">
-        <p class="text-dark">A Mecânica Clássica é uma subárea da Mecânica voltada aos estudos dos movimentos dos corpos na Terra e imersos em fluidos abaixo da velocidade da luz e as causas desses movimentos. A Mecânica Clássica é dividida principalmente nas áreas de Cinemática, Dinâmica, Estática, Hidrostática e Hidrodinâmica. O estudo da Mecânica Clássica é de grande importância para uma enorme gama de profissões, além de ser o conteúdo de Física que é mais cobrado no Exame Nacional do Ensino Médio (Enem).</p>
-        <p class="text-dark">Veja mais sobre "Mecânica Clássica" em: <a href="https://brasilescola.uol.com.br/fisica/mecanica-classica.htm" target="_blank" rel="noopener noreferrer">Brasil Escola</a></p>
-        <p class="text-dark">Esta seção pode incluir tópicos como:</p>
-        <ul class="text-dark">
-          <li>Leis de Newton</li>
-          <li>Movimento Retilíneo Uniforme (MRU)</li>
-          <li>Movimento Retilíneo Uniformemente Acelerado (MRUA)</li>
-          <li>Trabalho e Energia</li>
-        </ul>
-      </div>
+    <main>
+    <div class="container">
+    <div class="card mb-4 mx-auto" style="max-width: 800px; width: 95%;"> <!-- Card centralizado -->
+        <div class="card-body">
+            <p class="text-dark">A Mecânica Clássica é uma subárea da Mecânica voltada aos estudos dos movimentos dos corpos na Terra e imersos em fluidos abaixo da velocidade da luz e as causas desses movimentos. A Mecânica Clássica é dividida principalmente nas áreas de Cinemática, Dinâmica, Estática, Hidrostática e Hidrodinâmica. O estudo da Mecânica Clássica é de grande importância para uma enorme gama de profissões, além de ser o conteúdo de Física que é mais cobrado no Exame Nacional do Ensino Médio (Enem).</p>
+            <p class="text-dark">Veja mais sobre "Mecânica Clássica" em: <a href="https://brasilescola.uol.com.br/fisica/mecanica-classica.htm" target="_blank" rel="noopener noreferrer">Brasil Escola</a></p>
+            <p class="text-dark">Esta seção pode incluir tópicos como:</p>
+            <ul class="text-dark">
+                <li>Leis de Newton</li>
+                <li>Movimento Retilíneo Uniforme (MRU)</li>
+                <li>Movimento Retilíneo Uniformemente Acelerado (MRUA)</li>
+                <li>Trabalho e Energia</li>
+            </ul>
+        </div>
     </div>
-    <!-- Fim do Card -->
-    
-  </div>
+</div>
+
 </main>
 
 

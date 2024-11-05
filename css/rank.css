@@ -184,30 +184,54 @@ footer p {
     text-align: center; /* Centraliza o texto */
 }
 .table {
-    width: 100%; /* Largura total da tabela */
-    margin: 20px 0; /* Margem em cima e embaixo */
-    border-collapse: collapse; /* Colapsar bordas */
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
 }
 
 .table th, .table td {
-    padding: 12px; /* Espaçamento interno */
-    text-align: left; /* Alinhamento do texto à esquerda */
-    border: 1px solid #dee2e6; /* Borda das células */
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #dee2e6;
 }
 
 .table th {
-    background-color: #007bff; /* Azul claro */
-    color: white; /* Cor do texto */
+    background-color: #001A4E; /* Cabeçalho com cor #001A4E */
+    color: white;
+}
+
+.table th:nth-child(1) {
+    width: 10%;
+}
+
+.table th:nth-child(3) {
+    width: 15%;
 }
 
 .table tbody tr:nth-child(even) {
-    background-color: #f2f2f2; /* Cor de fundo das linhas pares */
+    background-color: #f2f2f2;
 }
 
 .table tbody tr:hover {
-    background-color: #e9ecef; /* Cor ao passar o mouse */
+    background-color: #e9ecef;
 }
 
 .table td {
-    vertical-align: middle; /* Alinhamento vertical das células */
+    vertical-align: middle;
+}
+
+/* Cores destacadas para os três primeiros lugares */
+.gold-row {
+    color: #000000; /* Texto em preto para contraste */
+    font-weight: bold;
+}
+
+.silver-row {
+    color: #000000;
+    font-weight: bold;
+}
+
+.bronze-row {
+    color: #000000;
+    font-weight: bold;
 }
