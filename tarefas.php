@@ -34,7 +34,7 @@ include("funcoes_php/funcoes_inicio.php");
         <div class="row justify-content-center">
           <!-- Linha 1: Cards do Primeiro e Segundo Ano -->
           <div class="col-md-6 mb-3">
-            <a href="tarefas_n1.php" class="card-link"> <!-- Alterado para tarefas_n1.php -->
+            <a href="assunto_p1.php" class="card-link"> <!-- Alterado para tarefas_n1.php -->
               <div class="card primeiro-ano-card">
                 <div class="icon-part">
                   <i class="fa-solid fa-book" style="font-size: 2rem;"></i>

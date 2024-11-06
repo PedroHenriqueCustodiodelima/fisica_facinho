@@ -31,8 +31,10 @@ $stmt->execute();
 $stmt->close();
 $conn->close();
 
-// Redireciona para a página com o resultado (acertou ou errou)
-$mensagem = $correta == 1 ? 'acertou' : 'errou'; // Atualizando para verificar corretamente
-header("Location: tarefas_n1.php?nivel={$nivel}&pagina={$_GET['pagina']}&mensagem={$mensagem}");
+// Armazena a mensagem na sessão em vez de passar pela URL
+$_SESSION['mensagem'] = $correta == 1 ? 'acertou' : 'errou';
+
+// Redireciona para a página sem a mensagem na URL
+header("Location: tarefas_n1.php?nivel={$nivel}&pagina={$_GET['pagina']}");
 exit();
 ?>
