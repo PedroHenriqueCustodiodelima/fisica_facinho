@@ -35,7 +35,6 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-$nivel = 1;
 $tabela = 'questoes_nivel1';
 $questoes_por_pagina = 3;
 
@@ -76,6 +75,13 @@ if ($questao_result->num_rows > 0) {
         $questoes_data[] = $questao_data;
     }
 }
+
+// Verifica se há mensagem de acerto/erro
+$mensagem = isset($_SESSION['resultado']) ? $_SESSION['resultado'] : null;
+if ($mensagem) {
+    // Remove a mensagem após exibí-la
+    unset($_SESSION['resultado']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -111,14 +117,19 @@ if ($questao_result->num_rows > 0) {
 
         <h1 class="mt-4 mb-4">Atividades de Grandezas e Vetores</h1>
 
+        <!-- Exibe a mensagem de acerto ou erro -->
+        <?php if ($mensagem): ?>
+            <div class="alert alert-<?php echo $mensagem == 'acertou' ? 'success' : 'danger'; ?>">
+                Você <?php echo ucfirst($mensagem); ?>! 
+            </div>
+        <?php endif; ?>
+
         <div class="questoes-container">
             <?php foreach ($questoes_data as $questao): ?>
                 <div class="questao mb-4 card">
                     <h5><?php echo htmlspecialchars($questao['enunciado']); ?></h5>
-                    <form class="responder-form" method="POST" action="../responder_questao.php">
+                    <form class="responder-form" method="POST" action="javascript:void(0);">
                         <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
-                        <input type="hidden" name="nivel" value="<?php echo $nivel; ?>">
-                        <input type="hidden" name="pagina" value="tarefas_n1.php">
                         <ul>
                             <?php foreach ($questao['alternativas'] as $alternativa): ?>
                                 <li>
@@ -129,7 +140,7 @@ if ($questao_result->num_rows > 0) {
                                 </li>
                             <?php endforeach; ?>
                         </ul>
-                        <button type="submit" class="btn btn-primary">Responder</button>
+                        <button type="submit" class="btn btn-primary btn-responder">Responder</button>
                     </form>
                     <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
                     <button class="btn btn-info btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
@@ -138,54 +149,59 @@ if ($questao_result->num_rows > 0) {
         </div>
 
         <?php if ($total_questoes > $questoes_por_pagina): ?>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
                     <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
-                        <li class="page-item <?php echo ($i == $pagina_atual) ? 'active' : ''; ?>">
-                            <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
+                            <a class="page-link" href="grandeza_vetores.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
                 </ul>
             </nav>
         <?php endif; ?>
     </main>
-
-    <footer>
-        <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-    </footer>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-$(document).ready(function() {
-    <?php if (isset($_GET['mensagem'])): ?>
-        let mensagem = "<?php echo $_GET['mensagem']; ?>";
-        let titulo, texto;
-
-        if (mensagem === 'acertou') {
-            titulo = "Parabéns!";
-            texto = "Você acertou a questão.";
-        } else if (mensagem === 'errou') {
-            titulo = "Infelizmente!";
-            texto = "Você errou a questão.";
-        }
-
-        Swal.fire({
-            title: titulo,
-            text: texto,
-            icon: mensagem === 'acertou' ? 'success' : 'error',
-            confirmButtonText: 'OK'
-        });
-    <?php endif; ?>
-
-    $('.btn-resolucao').on('click', function() {
+    $(".btn-resolucao").click(function() {
         var questaoId = $(this).data('questao-id');
         var explicacao = $(this).closest('.questao').find('.explicacao');
         explicacao.toggle();
     });
-});
-</script>
 
+    // Lidar com o envio de respostas via AJAX
+    $(".responder-form").submit(function(event) {
+        event.preventDefault(); // Impede o envio tradicional do formulário
+
+        var form = $(this);
+        var questao_id = form.find("input[name='questao_id']").val();
+        var alternativa_id = form.find("input[name='alternativa']:checked").val();
+
+        $.ajax({
+            url: "../responder_questao.php",
+            method: "POST",
+            data: {
+                questao_id: questao_id,
+                alternativa: alternativa_id
+            },
+            success: function(response) {
+                // Exibe a resposta de sucesso ou erro
+                if (response == 'acertou') {
+                    Swal.fire({
+                        title: 'Resposta correta!',
+                        icon: 'success',
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Resposta incorreta!',
+                        icon: 'error',
+                    });
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
