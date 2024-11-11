@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const special = document.getElementById('special');
 
         const passwordValue = passwordField.value;
-        
-        length.classList.toggle('valid', passwordValue.length >= 8);
-        length.classList.toggle('invalid', passwordValue.length < 8);
+
+        length.classList.toggle('valid', passwordValue.length >= 8 && passwordValue.length <= 15);
+        length.classList.toggle('invalid', passwordValue.length < 8 || passwordValue.length > 15);
 
         uppercase.classList.toggle('valid', /[A-Z]/.test(passwordValue));
         uppercase.classList.toggle('invalid', !/[A-Z]/.test(passwordValue));
@@ -61,6 +61,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     passwordField.addEventListener('input', validatePassword);
 
+    // Função para validar o formulário de cadastro
+    // Validação do formulário
+function validateForm(event) {
+    const passwordValue = passwordField.value;
+    const confirmPasswordValue = confirmPasswordField.value;
+    const emailValid = validateEmail(); // Chama a função de validação de e-mail
+
+    // Verificar se a senha atende aos requisitos
+    const isPasswordValid = passwordValue.length >= 8 && passwordValue.length <= 15
+        && /[A-Z]/.test(passwordValue)
+        && /[a-z]/.test(passwordValue)
+        && /[0-9]/.test(passwordValue)
+        && /[!@#$%^&*(),.?":{}|<>]/.test(passwordValue);
+
+    // Verificar se as senhas coincidem
+    const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
+
+    // Se as senhas ou o e-mail não forem válidos, mostrar um alerta e impedir o envio do formulário
+    if (!isPasswordValid || !isConfirmPasswordValid || !emailValid) {
+        event.preventDefault(); // Impede o envio do formulário
+        Swal.fire({
+            title: 'Erro',
+            text: 'Verifique os campos de senha e e-mail. O e-mail deve ser do tipo "usuario@gmail.com".',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+}
+
+    
+
+    // Adicionar o listener de submit no formulário
+    const form = document.querySelector('form');
+    form.addEventListener('submit', validateForm);
+
+    // Função para o login com o Google
     gapi.load('auth2', function() {
         const auth2 = gapi.auth2.init({
             client_id: '795836589716-3avdsmk6r53a0sed11kh6jujj667ho1v.apps.googleusercontent.com',
@@ -102,3 +138,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+function validateEmail() {
+    const emailValue = document.getElementById('email').value;
+
+    // Valida se o e-mail é válido e se é do domínio @gmail.com
+    const emailValid = validator.isEmail(emailValue) && emailValue.endsWith('@gmail.com');
+
+    const emailErrorElement = document.getElementById('emailError');
+    if (!emailValid) {
+        emailErrorElement.style.display = 'block'; // Exibe a mensagem de erro
+    } else {
+        emailErrorElement.style.display = 'none'; // Oculta a mensagem de erro
+    }
+
+    return emailValid;
+}
