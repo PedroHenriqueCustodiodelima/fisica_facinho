@@ -30,12 +30,11 @@ $usuario = $result->fetch_assoc();
 
 if ($usuario) {
     $imagemPerfil = !empty($usuario['foto']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/img/' . $usuario['foto'])
-                    ? '/img/' . $usuario['foto']
-                    : '/img/default-avatar.png';
+        ? '/img/' . $usuario['foto']
+        : '/img/default-avatar.png';
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-$nivel = 1;
 $tabela = 'questoes_nivel1';
 $questoes_por_pagina = 3;
 
@@ -76,6 +75,44 @@ if ($questao_result->num_rows > 0) {
         $questoes_data[] = $questao_data;
     }
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'responder') {
+    $id_usuario = $usuario_id;
+    $id_questao = intval($_POST['questao_id']);
+    $id_alternativa = intval($_POST['alternativa_id']);
+    $query = "SELECT correta FROM alternativas WHERE id = ? AND questao_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $id_alternativa, $id_questao);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $alternativa = $result->fetch_assoc();
+
+    if ($alternativa) {
+        $correta = $alternativa['correta'] == 1;
+        $query_inserir = "INSERT INTO tentativas_usuarios (id_usuario, id_questao, id_alternativa, correta, data_tentativa) 
+                          VALUES (?, ?, ?, ?, NOW())";
+        $stmt_inserir = $conn->prepare($query_inserir);
+        $stmt_inserir->bind_param("iiii", $id_usuario, $id_questao, $id_alternativa, $correta);
+
+        if ($stmt_inserir->execute()) {
+            echo json_encode([
+                'status' => 'success',
+                'correct' => $correta,
+                'message' => $correta ? 'Resposta correta!' : 'Resposta incorreta!',
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao salvar a tentativa: ' . $stmt_inserir->error,
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Alternativa inválida ou questão não encontrada.',
+        ]);
+    }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +120,7 @@ if ($questao_result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarefas - Movimentos sob ação da gravidade</title>
+    <title>Tarefas - Introdução à Física</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -111,14 +148,15 @@ if ($questao_result->num_rows > 0) {
 
         <h1 class="mt-4 mb-4">Atividades de Movimentos sob ação da gravidade</h1>
 
+        <?php
+        $mensagem = $mensagem ?? null; 
+        ?>
         <div class="questoes-container">
             <?php foreach ($questoes_data as $questao): ?>
                 <div class="questao mb-4 card">
                     <h5><?php echo htmlspecialchars($questao['enunciado']); ?></h5>
-                    <form class="responder-form" method="POST" action="../responder_questao.php">
+                    <form class="responder-form" method="POST" action="javascript:void(0);">
                         <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
-                        <input type="hidden" name="nivel" value="<?php echo $nivel; ?>">
-                        <input type="hidden" name="pagina" value="tarefas_n1.php">
                         <ul>
                             <?php foreach ($questao['alternativas'] as $alternativa): ?>
                                 <li>
@@ -129,7 +167,7 @@ if ($questao_result->num_rows > 0) {
                                 </li>
                             <?php endforeach; ?>
                         </ul>
-                        <button type="submit" class="btn btn-primary">Responder</button>
+                        <button type="submit" class="btn btn-primary btn-responder">Responder</button>
                     </form>
                     <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
                     <button class="btn btn-info btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
@@ -138,54 +176,78 @@ if ($questao_result->num_rows > 0) {
         </div>
 
         <?php if ($total_questoes > $questoes_por_pagina): ?>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
                     <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
-                        <li class="page-item <?php echo ($i == $pagina_atual) ? 'active' : ''; ?>">
-                            <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
+                            <a class="page-link" href="grandeza_vetores.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
                 </ul>
             </nav>
         <?php endif; ?>
     </main>
-
-    <footer>
-        <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-    </footer>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-$(document).ready(function() {
-    <?php if (isset($_GET['mensagem'])): ?>
-        let mensagem = "<?php echo $_GET['mensagem']; ?>";
-        let titulo, texto;
-
-        if (mensagem === 'acertou') {
-            titulo = "Parabéns!";
-            texto = "Você acertou a questão.";
-        } else if (mensagem === 'errou') {
-            titulo = "Infelizmente!";
-            texto = "Você errou a questão.";
-        }
-
-        Swal.fire({
-            title: titulo,
-            text: texto,
-            icon: mensagem === 'acertou' ? 'success' : 'error',
-            confirmButtonText: 'OK'
-        });
-    <?php endif; ?>
-
-    $('.btn-resolucao').on('click', function() {
+    $(".btn-resolucao").click(function() {
         var questaoId = $(this).data('questao-id');
         var explicacao = $(this).closest('.questao').find('.explicacao');
         explicacao.toggle();
     });
-});
-</script>
+    $(".responder-form").submit(function (event) {
+        event.preventDefault(); 
 
+        var form = $(this);
+        var questao_id = form.find("input[name='questao_id']").val();
+        var alternativa_id = form.find("input[name='alternativa']:checked").val();
+
+        if (!alternativa_id) {
+            Swal.fire({
+                title: 'Selecione uma alternativa!',
+                icon: 'warning',
+            });
+            return;
+        }
+        $.ajax({
+            url: "", 
+            method: "POST",
+            data: {
+                action: "responder",
+                questao_id: questao_id,
+                alternativa_id: alternativa_id
+            },
+            success: function (response) {
+                try {
+                    var data = JSON.parse(response); 
+                    if (data.status === "success") {
+                        Swal.fire({
+                            title: data.message,
+                            icon: data.correct ? "success" : "error", 
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Erro ao registrar resposta.",
+                            icon: "error",
+                        });
+                    }
+                } catch (e) {
+                    Swal.fire({
+                        title: "Erro inesperado!",
+                        icon: "error",
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    title: "Erro na comunicação com o servidor.",
+                    icon: "error",
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

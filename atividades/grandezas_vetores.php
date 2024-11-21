@@ -30,8 +30,8 @@ $usuario = $result->fetch_assoc();
 
 if ($usuario) {
     $imagemPerfil = !empty($usuario['foto']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/img/' . $usuario['foto'])
-                    ? '/img/' . $usuario['foto']
-                    : '/img/default-avatar.png';
+        ? '/img/' . $usuario['foto']
+        : '/img/default-avatar.png';
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
@@ -75,12 +75,43 @@ if ($questao_result->num_rows > 0) {
         $questoes_data[] = $questao_data;
     }
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'responder') {
+    $id_usuario = $usuario_id;
+    $id_questao = intval($_POST['questao_id']);
+    $id_alternativa = intval($_POST['alternativa_id']);
+    $query = "SELECT correta FROM alternativas WHERE id = ? AND questao_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $id_alternativa, $id_questao);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $alternativa = $result->fetch_assoc();
 
-// Verifica se há mensagem de acerto/erro
-$mensagem = isset($_SESSION['resultado']) ? $_SESSION['resultado'] : null;
-if ($mensagem) {
-    // Remove a mensagem após exibí-la
-    unset($_SESSION['resultado']);
+    if ($alternativa) {
+        $correta = $alternativa['correta'] == 1;
+        $query_inserir = "INSERT INTO tentativas_usuarios (id_usuario, id_questao, id_alternativa, correta, data_tentativa) 
+                          VALUES (?, ?, ?, ?, NOW())";
+        $stmt_inserir = $conn->prepare($query_inserir);
+        $stmt_inserir->bind_param("iiii", $id_usuario, $id_questao, $id_alternativa, $correta);
+
+        if ($stmt_inserir->execute()) {
+            echo json_encode([
+                'status' => 'success',
+                'correct' => $correta,
+                'message' => $correta ? 'Resposta correta!' : 'Resposta incorreta!',
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao salvar a tentativa: ' . $stmt_inserir->error,
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Alternativa inválida ou questão não encontrada.',
+        ]);
+    }
+    exit;
 }
 ?>
 
@@ -117,13 +148,9 @@ if ($mensagem) {
 
         <h1 class="mt-4 mb-4">Atividades de Grandezas e Vetores</h1>
 
-        <!-- Exibe a mensagem de acerto ou erro -->
-        <?php if ($mensagem): ?>
-            <div class="alert alert-<?php echo $mensagem == 'acertou' ? 'success' : 'danger'; ?>">
-                Você <?php echo ucfirst($mensagem); ?>! 
-            </div>
-        <?php endif; ?>
-
+        <?php
+        $mensagem = $mensagem ?? null; 
+        ?>
         <div class="questoes-container">
             <?php foreach ($questoes_data as $questao): ?>
                 <div class="questao mb-4 card">
@@ -170,35 +197,54 @@ if ($mensagem) {
         var explicacao = $(this).closest('.questao').find('.explicacao');
         explicacao.toggle();
     });
-
-    // Lidar com o envio de respostas via AJAX
-    $(".responder-form").submit(function(event) {
-        event.preventDefault(); // Impede o envio tradicional do formulário
+    $(".responder-form").submit(function (event) {
+        event.preventDefault(); 
 
         var form = $(this);
         var questao_id = form.find("input[name='questao_id']").val();
         var alternativa_id = form.find("input[name='alternativa']:checked").val();
 
+        if (!alternativa_id) {
+            Swal.fire({
+                title: 'Selecione uma alternativa!',
+                icon: 'warning',
+            });
+            return;
+        }
         $.ajax({
-            url: "../responder_questao.php",
+            url: "", 
             method: "POST",
             data: {
+                action: "responder",
                 questao_id: questao_id,
-                alternativa: alternativa_id
+                alternativa_id: alternativa_id
             },
-            success: function(response) {
-                // Exibe a resposta de sucesso ou erro
-                if (response == 'acertou') {
+            success: function (response) {
+                try {
+                    var data = JSON.parse(response); 
+                    if (data.status === "success") {
+                        Swal.fire({
+                            title: data.message,
+                            icon: data.correct ? "success" : "error", 
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Erro ao registrar resposta.",
+                            icon: "error",
+                        });
+                    }
+                } catch (e) {
                     Swal.fire({
-                        title: 'Resposta correta!',
-                        icon: 'success',
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Resposta incorreta!',
-                        icon: 'error',
+                        title: "Erro inesperado!",
+                        icon: "error",
                     });
                 }
+            },
+            error: function () {
+                Swal.fire({
+                    title: "Erro na comunicação com o servidor.",
+                    icon: "error",
+                });
             }
         });
     });
