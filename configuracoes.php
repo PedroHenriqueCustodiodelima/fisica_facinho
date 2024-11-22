@@ -2,13 +2,10 @@
 
 include("funcoes_php/funcoes_confi.php");
 
-
 if (!isset($usuario)) {
-    
     header('Location: login.php');
     exit();
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
     $imagem = $_FILES['imagem'];
@@ -82,10 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
               <label for="email" style=" color: #001A4E;">E-mail</label>
               <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>">
             </div>
-            <div class="form-group">
-              <label for="senha" style=" color: #001A4E;">Senha</label>
-              <input type="senha" class="form-control" id="senha" name="senha" value="<?php echo htmlspecialchars($usuario['']); ?>">
-            </div>
             <button type="submit" class="btn " style="background-color: #001A4E; color:white;">Salvar</button>
           </form>
         </div>
@@ -96,18 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
   <footer class="mt-auto text-white text-center py-3" style="background-color: #001A4E;">
   <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
 </footer>
-
-
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
   <script>
     function alterarImagemPerfil() {
-      // Submete o formulário automaticamente ao selecionar uma nova imagem
       document.getElementById('troca-imagem-form').submit();
     }
   </script>
-
 </body>
 </html>
