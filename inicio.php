@@ -115,14 +115,14 @@ include("funcoes_php/funcoes_inicio.php");
             </a>
           </div>
           <div class="col-md-4 mb-3">
-            <a href="relatorio.php" class="card-link">
-              <div class="card relatorio-card">
+            <a href="missoes.php" class="card-link">
+              <div class="card missoes-card">
                 <div class="icon-part">
-                  <i class="fa-solid fa-file-alt" style="font-size: 2rem;"></i>
+                  <i class="fa-solid fa-flag-checkered" style="font-size: 2rem;"></i>
                 </div>
                 <div class="text-part">
-                  <h5 class="card-title">Relatório</h5>
-                  <p class="card-text">Veja seus relatórios.</p>
+                  <h5 class="card-title">Missões</h5>
+                  <p class="card-text">Complete suas missões.</p>
                 </div>
               </div>
             </a>
