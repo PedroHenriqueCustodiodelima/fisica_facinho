@@ -8,7 +8,7 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mecânica Clássica</title>
+  <title>Introdução à Física</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -21,7 +21,7 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
       <img src="../img/logo.png" width="200px" alt="Logo">
     </a>
     <div class="perfil-header d-flex align-items-center">
-    <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+      <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
       <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
     </div>
   </header>
@@ -34,15 +34,47 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
     <div class="container">
     <div class="card mb-4 mx-auto" style="max-width: 800px; width: 95%;">
         <div class="card-body">
-            <p class="text-dark">A Mecânica Clássica é uma subárea da Mecânica voltada aos estudos dos movimentos dos corpos na Terra e imersos em fluidos abaixo da velocidade da luz e as causas desses movimentos. A Mecânica Clássica é dividida principalmente nas áreas de Cinemática, Dinâmica, Estática, Hidrostática e Hidrodinâmica. O estudo da Mecânica Clássica é de grande importância para uma enorme gama de profissões, além de ser o conteúdo de Física que é mais cobrado no Exame Nacional do Ensino Médio (Enem).</p>
-            <p class="text-dark">Veja mais sobre "Mecânica Clássica" em: <a href="https://brasilescola.uol.com.br/fisica/mecanica-classica.htm" target="_blank" rel="noopener noreferrer">Brasil Escola</a></p>
-            <p class="text-dark">Esta seção pode incluir tópicos como:</p>
+            <h2 class="text-dark">Introdução à Física</h2>
+            <p class="text-dark">A Física é uma das ciências naturais que estuda os fenômenos do universo, incluindo a matéria, a energia, o espaço e o tempo. O principal objetivo da Física é compreender as leis naturais que governam o comportamento do mundo físico. Desde as partículas subatômicas até o cosmos, a Física explica como as forças interagem, como a matéria se organiza e como a energia se transforma.</p>
+
+            <h3 class="text-dark">O que é a Física?</h3>
+            <p class="text-dark">A Física é o estudo das interações entre matéria e energia, buscando entender como os sistemas funcionam no universo. Ela abrange várias áreas, como a mecânica, a termodinâmica, a eletromagnetismo, a óptica, a física nuclear, entre outras. A Física não apenas ajuda a descrever os fenômenos naturais, mas também desenvolve tecnologias que melhoram a vida cotidiana, como computadores, eletrônicos, e sistemas de comunicação.</p>
+
+            <h3 class="text-dark">O Método Científico</h3>
+            <p class="text-dark">A Física se baseia no método científico, um processo de investigação rigoroso utilizado para entender o mundo físico. Esse método segue etapas como observação, formulação de hipóteses, experimentação, análise de resultados e elaboração de teorias. O método científico permite que as teorias sejam testadas e validadas ou refutadas, criando um ciclo contínuo de aprimoramento do conhecimento.</p>
+
+            <h3 class="text-dark">Unidades de Medida e Sistema Internacional (SI)</h3>
+            <p class="text-dark">As medições na Física seguem um conjunto de unidades padronizadas chamado Sistema Internacional de Unidades (SI). As unidades básicas do SI são:</p>
             <ul class="text-dark">
-                <li>Leis de Newton</li>
-                <li>Movimento Retilíneo Uniforme (MRU)</li>
-                <li>Movimento Retilíneo Uniformemente Acelerado (MRUA)</li>
-                <li>Trabalho e Energia</li>
+                <li><b>Metro (m):</b> Unidade de comprimento</li>
+                <li><b>Kilograma (kg):</b> Unidade de massa</li>
+                <li><b>Segundo (s):</b> Unidade de tempo</li>
+                <li><b>Ampère (A):</b> Unidade de corrente elétrica</li>
+                <li><b>Kelvin (K):</b> Unidade de temperatura</li>
+                <li><b>Mol (mol):</b> Unidade de quantidade de substância</li>
+                <li><b>Candela (cd):</b> Unidade de intensidade luminosa</li>
             </ul>
+
+            <h3 class="text-dark">Áreas da Física</h3>
+            <p class="text-dark">A Física é dividida em diversas áreas de estudo, cada uma focada em um aspecto específico do comportamento físico. Algumas dessas áreas incluem:</p>
+            <ul class="text-dark">
+                <li><b>Mecânica:</b> Estudo dos movimentos dos corpos e das forças que os causam.</li>
+                <li><b>Termodinâmica:</b> Estudo da transferência de calor e das leis que governam o comportamento da energia térmica.</li>
+                <li><b>Eletromagnetismo:</b> Estudo dos fenômenos elétricos e magnéticos e suas interações.</li>
+                <li><b>Óptica:</b> Estudo da luz e de como ela interage com a matéria.</li>
+                <li><b>Física Nuclear:</b> Estudo das partículas subatômicas e dos processos nucleares.</li>
+            </ul>
+
+            <h3 class="text-dark">Importância da Física no Cotidiano</h3>
+            <p class="text-dark">A Física tem um impacto profundo no nosso cotidiano. A compreensão das leis físicas permite o desenvolvimento de tecnologias que usamos todos os dias, como computadores, smartphones, veículos e aparelhos de comunicação. Além disso, a Física é crucial para a exploração espacial, a medicina (como na utilização de raios-X e ressonância magnética) e na energia (como na geração de eletricidade e o uso de energias renováveis).</p>
+
+            <h3 class="text-dark">Exemplo de Aplicação: Leis de Newton</h3>
+            <p class="text-dark">As Leis de Newton são um dos pilares da Física clássica e explicam como os objetos se movem quando são submetidos a forças. Elas são fundamentais para o estudo da mecânica e têm diversas aplicações práticas, como em veículos, aeronaves e até mesmo em satélites no espaço. A primeira lei de Newton, conhecida como a Lei da Inércia, afirma que um objeto em repouso permanecerá em repouso, e um objeto em movimento continuará em movimento, a menos que uma força externa atue sobre ele.</p>
+
+            <h3 class="text-dark">Conclusão</h3>
+            <p class="text-dark">A Física é uma ciência fundamental para o entendimento do universo e para a criação de novas tecnologias. Ela é presente em todos os aspectos da nossa vida, e seu estudo é essencial para quem deseja compreender como o mundo funciona. Através da física, podemos observar as leis que governam a natureza e usar esse conhecimento para melhorar a qualidade de vida e impulsionar o desenvolvimento científico e tecnológico.</p>
+
+            <p class="text-dark">Para mais informações sobre Física, consulte o artigo da <a href="https://www.educacao.uol.com.br/disciplinas/fisica/o-que-e-fisica.htm" target="_blank" rel="noopener noreferrer">UOL Educação</a>.</p>
         </div>
     </div>
 </div>
@@ -50,16 +82,11 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
 </main>
 
   <footer>
-    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte (IFRN)</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="../js/inicio.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script src="../js/mecanica.js"></script>
 </body>
 </html>
