@@ -73,14 +73,14 @@ include("funcoes_php/funcoes_inicio.php");
             </a>
           </div>
           <div class="col-md-4 mb-3">
-            <a href="videos.php" class="card-link">
+            <a href="concurso.php" class="card-link">
               <div class="card videos-card">
                 <div class="icon-part">
                   <i class="fa-solid fa-video" style="font-size: 2rem;"></i>
                 </div>
                 <div class="text-part">
-                  <h5 class="card-title">Vídeos</h5>
-                  <p class="card-text">Veja seus vídeos.</p>
+                  <h5 class="card-title">Concursos</h5>
+                  <p class="card-text">Veja questões de concursos</p>
                 </div>
               </div>
             </a>

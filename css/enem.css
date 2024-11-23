@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+  }
+  header {
+    background-color: #001A4E;
+    padding: 10px;
+    color: white;
+  }
+  .main-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f7f7f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .questions-container {
+    width: 75%;
+    }
+
+    .question {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .question h5 {
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+    }
+
+    .alternatives label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    }
+
+    .alternatives input[type="radio"] {
+    accent-color: #007bff;
+    transform: scale(1.2);
+    }
+
+    .btn-group {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+    }
+
+    .resolution {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #e9f7ef;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    display: none;
+    }
+
+    .years-container {
+    width: 20%;
+    text-align: right;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .years-container button {
+    display: block; /* Cada botão em uma nova linha */
+    margin-bottom: 5px; /* Espaço reduzido entre os botões */
+    padding: 8px 15px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    }
+
+    .years-container button:hover {
+    background-color: #0056b3;
+    }  
