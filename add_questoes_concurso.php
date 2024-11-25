@@ -1,173 +1,279 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-require_once 'conexao.php';
-
-$usuario_id = $_SESSION['usuario_id'];
-
-$imagemPerfil = 'img/default-avatar.png';
-$nomeUsuario = 'Usuário';
-
-$stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$usuario = $result->fetch_assoc();
-
-if ($usuario) {
-    $imagemPerfil = $usuario['foto'] ?? $imagemPerfil;
-    $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
-}
+include("funcoes_php/funcoes_inicio.php");
+date_default_timezone_set('America/Sao_Paulo');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $enunciado = $_POST['enunciado'];
-    $ano = $_POST['ano'];
-    $concurso = $_POST['concurso'];
-    $materia = $_POST['materia'];
     $resolucao = $_POST['resolucao'];
-    $alternativas = $_POST['alternativa'];
-    $correta = $_POST['correta'];
+    $ano = $_POST['ano'];
+    $concurso = $_POST['concurso']; 
+    $materia = $_POST['materia']; 
+    $foto_enunciado = ''; 
+    $video = isset($_POST['video']) ? $_POST['video'] : ''; // Captura o link do vídeo
 
-    // Processar a foto do enunciado (se houver)
-    $foto_enunciado = null;
+    // Verifica se há um arquivo de foto
     if (isset($_FILES['foto_enunciado']) && $_FILES['foto_enunciado']['error'] == 0) {
-        $foto_tmp = $_FILES['foto_enunciado']['tmp_name'];
-        $foto_nome = $_FILES['foto_enunciado']['name'];
-        $foto_ext = pathinfo($foto_nome, PATHINFO_EXTENSION);
-        
-        // Defina um nome único para o arquivo
-        $foto_nome_novo = uniqid('foto_', true) . '.' . $foto_ext;
+        $foto_enunciado = 'img/' . $_FILES['foto_enunciado']['name'];
+        move_uploaded_file($_FILES['foto_enunciado']['tmp_name'], $foto_enunciado);
+    }
 
-        // Diretório onde a foto será salva
-        $diretorio = 'uploads/';
+    // Validar os dados
+    if (empty($enunciado) || empty($resolucao) || empty($ano) || empty($concurso)) {
+        $mensagem_feedback = 'Por favor, preencha todos os campos obrigatórios.';
+    } else {
+        // Inserir dados no banco de dados para a questão
+        $stmt = $conn->prepare("INSERT INTO questoes (enunciado, resolucao, ano, concurso, materia, foto_enunciado, video) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $enunciado, $resolucao, $ano, $concurso, $materia, $foto_enunciado, $video);
 
-        // Verifique se o diretório de upload existe, caso contrário, crie-o
-        if (!file_exists($diretorio)) {
-            mkdir($diretorio, 0777, true);
-        }
+        if ($stmt->execute()) {
+            $id_questao = $stmt->insert_id; // ID da questão recém inserida
 
-        // Mova o arquivo para o diretório de upload
-        if (move_uploaded_file($foto_tmp, $diretorio . $foto_nome_novo)) {
-            $foto_enunciado = $diretorio . $foto_nome_novo;
+            // Inserir alternativas (supondo que as alternativas venham do formulário)
+            for ($i = 1; $i <= 5; $i++) {
+                $alternativa = $_POST["alternativa_$i"];
+                $correta = isset($_POST["correta_$i"]) ? 1 : 0; // Verifica se é a alternativa correta
+
+                // Inserir alternativa na tabela alternativas_concurso
+                $stmt_alt = $conn->prepare("INSERT INTO alternativas_concurso (id_questao, texto, correta) VALUES (?, ?, ?)");
+                $stmt_alt->bind_param("isi", $id_questao, $alternativa, $correta);
+                $stmt_alt->execute();
+            }
+
+            $mensagem_feedback = 'Questão e alternativas adicionadas com sucesso!';
         } else {
-            echo "Erro ao enviar a foto do enunciado.";
+            $mensagem_feedback = 'Erro ao adicionar a questão. Tente novamente.';
         }
     }
-
-    // Inserir questão na tabela questoes
-    $stmt = $conn->prepare("INSERT INTO questoes (enunciado, ano, concurso, materia, resolucao, foto_enunciado) VALUES (?, ?, ?, ?, ?, ?)");
-    if (!$stmt) {
-        die("Erro na preparação da consulta de questões: " . $conn->error);
-    }
-    $stmt->bind_param("ssssss", $enunciado, $ano, $concurso, $materia, $resolucao, $foto_enunciado);
-    $stmt->execute();
-    $questao_id = $stmt->insert_id;
-
-    // Inserir alternativas na tabela alternativas_concurso
-    foreach ($alternativas as $indice => $texto_alternativa) {
-        $correta_flag = ($indice == $correta) ? 1 : 0;
-        $stmt = $conn->prepare("INSERT INTO alternativas_concurso (id_questao, texto, correta) VALUES (?, ?, ?)");
-        if (!$stmt) {
-            die("Erro na preparação da consulta de alternativas: " . $conn->error);
-        }
-        $stmt->bind_param("isi", $questao_id, $texto_alternativa, $correta_flag);
-        $stmt->execute();
-    }
-
-    $stmt->close();
-    $conn->close();
-
-    echo "Questão adicionada com sucesso!";
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Questão de Concurso</title>
-    <link rel="stylesheet" href="css/add.css">
+    <title>Adicionar Questões - Concurso</title>
+    <style>
+        /* Reseta margens e paddings para garantir um layout mais limpo */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container do formulário */
+.container {
+    width: 100%;
+    max-width: 900px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4CAF50;
+}
+
+/* Estilo do formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo dos campos de entrada */
+label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+}
+
+textarea, input[type="text"], input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 5px;
+    resize: vertical;
+}
+
+/* Tamanho mínimo das caixas de texto */
+textarea {
+    min-height: 80px;
+}
+
+input[type="text"] {
+    height: 35px;
+}
+
+input[type="file"] {
+    height: auto;
+}
+
+/* Estilo do botão */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para mensagens de feedback */
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.alert.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.alert.error {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Estilo das alternativas */
+h2 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Estilo das alternativas */
+div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+textarea[name^="alternativa_"] {
+    width: 90%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+    }
+}
+
+    </style>
 </head>
 <body>
-<header class="d-flex justify-content-between align-items-center">
-    <a href="inicio.php">
-        <img src="img/logo.png" width="200px" alt="Logo">
-    </a>
-    <div class="perfil-header d-flex align-items-center">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-        <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
-    </div>
-</header>
+    <h1>Adicionar Questão ao Concurso</h1>
+    
+    <!-- Exibir mensagem de feedback -->
+    <?php if (isset($mensagem_feedback)): ?>
+        <div class="alert">
+            <?php echo $mensagem_feedback; ?>
+        </div>
+    <?php endif; ?>
 
-<div class="container">
-    <main>
-        <h1>Adicionar Nova Questão de Concurso</h1>
-        <form action="adicionar_questao.php" method="POST" enctype="multipart/form-data">
-            <label for="ano">Ano:</label><br>
-            <input type="number" id="ano" name="ano" required><br><br>
+    <!-- Formulário para adicionar uma nova questão -->
+    <form action="add_questoes_concurso.php" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="enunciado">Enunciado da Questão:</label>
+            <textarea name="enunciado" id="enunciado" rows="4" required></textarea>
+        </div>
+        <div>
+            <label for="resolucao">Resolução da Questão:</label>
+            <textarea name="resolucao" id="resolucao" rows="4" required></textarea>
+        </div>
+        <div>
+            <label for="ano">Ano:</label>
+            <input type="text" name="ano" id="ano" required>
+        </div>
+        <div>
+            <label for="concurso">Concurso:</label>
+            <select name="concurso" id="concurso" required>
+                <option value="ENEM">ENEM</option>
+                <option value="ITA">ITA</option>
+                <option value="IME">IME</option>
+                <option value="EEAR">EEAR</option>
+                <option value="FUVEST">FUVEST</option>
+            </select>
+        </div>
+        <div>
+            <label for="materia">Matéria (Opcional):</label>
+            <input type="text" name="materia" id="materia">
+        </div>
+        <div>
+            <label for="foto_enunciado">Foto do Enunciado (Opcional):</label>
+            <input type="file" name="foto_enunciado" id="foto_enunciado" accept="image/*">
+        </div>
+        <div>
+            <label for="video">Link do Vídeo (Opcional):</label>
+            <input type="text" name="video" id="video" placeholder="https://youtube.com/...">
+        </div>
 
-            <label for="concurso">Nome do Concurso:</label><br>
-            <input type="text" id="concurso" name="concurso" required><br><br>
+        <h2>Alternativas:</h2>
+        <div>
+            <label for="alternativa_1">Alternativa 1:</label>
+            <textarea name="alternativa_1" required></textarea>
+            <label for="correta_1">Correta</label>
+            <input type="checkbox" name="correta_1">
+        </div>
+        <div>
+            <label for="alternativa_2">Alternativa 2:</label>
+            <textarea name="alternativa_2" required></textarea>
+            <label for="correta_2">Correta</label>
+            <input type="checkbox" name="correta_2">
+        </div>
+        <div>
+            <label for="alternativa_3">Alternativa 3:</label>
+            <textarea name="alternativa_3" required></textarea>
+            <label for="correta_3">Correta</label>
+            <input type="checkbox" name="correta_3">
+        </div>
+        <div>
+            <label for="alternativa_4">Alternativa 4:</label>
+            <textarea name="alternativa_4" required></textarea>
+            <label for="correta_4">Correta</label>
+            <input type="checkbox" name="correta_4">
+        </div>
+        <div>
+            <label for="alternativa_5">Alternativa 5:</label>
+            <textarea name="alternativa_5" required></textarea>
+            <label for="correta_5">Correta</label>
+            <input type="checkbox" name="correta_5">
+        </div>
 
-            <label for="materia">Matéria:</label><br>
-            <input type="text" id="materia" name="materia" required><br><br>
-
-            <label for="enunciado">Enunciado da Questão:</label><br>
-            <textarea id="enunciado" name="enunciado" rows="4" cols="50" required></textarea><br><br>
-
-            <label for="resolucao">Resolução da Questão:</label><br>
-            <textarea id="resolucao" name="resolucao" rows="4" cols="50" required></textarea><br><br>
-
-            <label for="foto_enunciado">Foto do Enunciado:</label><br>
-            <input type="file" id="foto_enunciado" name="foto_enunciado" accept="image/*"><br><br>
-
-            <h3>Alternativas:</h3>
-            <div>
-                <label for="alternativa1">Alternativa 1:</label>
-                <input type="text" id="alternativa1" name="alternativa[]" required><br>
-
-                <label for="alternativa2">Alternativa 2:</label>
-                <input type="text" id="alternativa2" name="alternativa[]" required><br>
-
-                <label for="alternativa3">Alternativa 3:</label>
-                <input type="text" id="alternativa3" name="alternativa[]" required><br>
-
-                <label for="alternativa4">Alternativa 4:</label>
-                <input type="text" id="alternativa4" name="alternativa[]" required><br>
-
-                <label for="alternativa5">Alternativa 5:</label>
-                <input type="text" id="alternativa5" name="alternativa[]" required><br>
-            </div>
-
-            <h3>Selecione a alternativa correta:</h3>
-            <input type="radio" id="correta1" name="correta" value="0" required>
-            <label for="correta1">Alternativa 1</label><br>
-
-            <input type="radio" id="correta2" name="correta" value="1" required>
-            <label for="correta2">Alternativa 2</label><br>
-
-            <input type="radio" id="correta3" name="correta" value="2" required>
-            <label for="correta3">Alternativa 3</label><br>
-
-            <input type="radio" id="correta4" name="correta" value="3" required>
-            <label for="correta4">Alternativa 4</label><br>
-
-            <input type="radio" id="correta5" name="correta" value="4" required>
-            <label for="correta5">Alternativa 5</label><br><br>
-
-            <input type="submit" value="Adicionar Questão">
-        </form>
-    </main>
-</div>
-
-<footer>
-    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-</footer>
+        <div>
+            <button type="submit">Adicionar Questão</button>
+        </div>
+    </form>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

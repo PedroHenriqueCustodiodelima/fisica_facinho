@@ -1,56 +1,65 @@
 <?php
 include("funcoes_php/funcoes_inicio.php");
+date_default_timezone_set('America/Sao_Paulo');
 
-// Definindo o número de questões por página
-$questoesPorPagina = 2;
-
-// Obtendo o número total de questões
-$sqlTotal = "SELECT COUNT(*) AS total_questoes FROM questoes WHERE concurso = 'ENEM'";
-$resultTotal = $conn->query($sqlTotal);
-$rowTotal = $resultTotal->fetch_assoc();
-$totalDeQuestoes = $rowTotal['total_questoes'];
-
-// Calculando o número total de páginas
-$totalDePaginas = ceil($totalDeQuestoes / $questoesPorPagina);
-
-// Verificando a página atual
-$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-if ($paginaAtual < 1) {
-    $paginaAtual = 1;
-} elseif ($paginaAtual > $totalDePaginas) {
-    $paginaAtual = $totalDePaginas;
-}
-
-// Calculando o limite de início para a consulta
-$inicio = ($paginaAtual - 1) * $questoesPorPagina;
-
-// Consulta para pegar as questões da página atual
-$sql = "
-    SELECT q.id AS questao_id, q.enunciado, q.ano, q.concurso, q.materia, q.resolucao, q.foto_enunciado
-    FROM questoes q
-    WHERE q.concurso = 'ENEM'
-    ORDER BY q.id ASC
-    LIMIT $inicio, $questoesPorPagina
-";
+// Alterando a consulta SQL para buscar apenas questões do concurso "ENEM"
+$sql = "SELECT id, enunciado, resolucao, ano FROM questoes WHERE concurso = 'ENEM'"; // Filtro para concurso ENEM
 $result = $conn->query($sql);
+$feedback = '';
+$mensagem_feedback = '';
 
-// Função para salvar a resposta no banco
-function salvarTentativa($idUsuario, $idQuestao, $resposta, $status) {
-    global $conn;
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
+    $id_usuario = $_SESSION['usuario_id'];
+    $id_questao = $_POST['id_questao'];
+    $id_resposta = $_POST['resposta']; 
+    $data_tentativa = date('Y-m-d H:i:s'); 
 
-    // Inserir tentativa do usuário na tabela 'tentativas_concursos'
-    $stmt = $conn->prepare("INSERT INTO tentativas_concursos (id_usuario, id_questao, resposta, status) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("iiis", $idUsuario, $idQuestao, $resposta, $status);
+    // Consulta para verificar a resposta correta
+    $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ? AND correta = 1 LIMIT 1");
+    $stmt->bind_param("i", $id_questao);
     $stmt->execute();
-    $stmt->close();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($id_correta, $texto_correto, $correta);
+        $stmt->fetch();
+        $stmt_alt = $conn->prepare("SELECT texto FROM alternativas_concurso WHERE id = ?");
+        $stmt_alt->bind_param("i", $id_resposta);
+        $stmt_alt->execute();
+        $stmt_alt->store_result();
+        
+        if ($stmt_alt->num_rows > 0) {
+            $stmt_alt->bind_result($texto_resposta);
+            $stmt_alt->fetch();
+            $correta_usuario = ($texto_resposta == $texto_correto) ? 1 : 0;
+            $stmt_insert = $conn->prepare("INSERT INTO tentativas_concursos (id_usuario, id_questao, resposta, data_tentativa, correta) VALUES (?, ?, ?, ?, ?)");
+            $stmt_insert->bind_param("iisss", $id_usuario, $id_questao, $texto_resposta, $data_tentativa, $correta_usuario);
+            if ($stmt_insert->execute()) {
+                if ($correta_usuario == 1) {
+                    $feedback = 'success';
+                    $mensagem_feedback = 'Parabéns! Você acertou!';
+                } else {
+                    $feedback = 'error';
+                    $mensagem_feedback = 'Que pena, você errou. Tente novamente!';
+                }
+            } else {
+                echo "<div class='alert alert-danger'>Houve um erro ao salvar sua tentativa. Tente novamente.</div>";
+            }
+        } else {
+            echo "<div class='alert alert-danger'>Alternativa selecionada não encontrada. Tente novamente.</div>";
+        }
+    } else {
+        echo "<div class='alert alert-danger'>Alternativa correta não encontrada. Tente novamente.</div>";
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configurações</title>
+  <title>ENEM - Questões</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -60,126 +69,163 @@ function salvarTentativa($idUsuario, $idQuestao, $resposta, $status) {
   <div class="page-container">
     <header class="d-flex justify-content-between align-items-center">
       <a href="inicio.php">
-        <img src="img/logo.png" alt="Logo">
+        <img src="img/logo.png" width="200px" alt="Logo">
       </a>
       <div class="perfil-header d-flex align-items-center">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px">
-        <p class="ml-3"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+        <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
       </div>
     </header>
-
-    <main class="container">
-      <div class="main-content">
-        <div class="questions-container">
-          <h3 class="text-primary">Perguntas do ENEM</h3>
-
+    <main class="container mt-4">
+      <div class="row">
+        <!-- Coluna das questões -->
+        <div class="col-md-8">
           <?php
           if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              echo '<div class="question shadow-sm">';
-              echo '<h5>Pergunta ' . htmlspecialchars($row['questao_id']) . ': ' . htmlspecialchars($row['enunciado']) . '</h5>';
+            $alternativas = ['A', 'B', 'C', 'D', 'E']; 
+            while($row = $result->fetch_assoc()) {
+              $id_questao = $row['id'];
+              $ano_questao = $row['ano']; // Pegando o ano da questão
+              echo "<div class='questao' data-ano='$ano_questao' data-enunciado='" . strtolower($row['enunciado']) . "'>"; // Adicionando o atributo data-enunciado
+              
 
-              // Consulta das alternativas da questão
-              $sqlAlternativas = "SELECT * FROM alternativas_concurso WHERE id_questao = " . $row['questao_id'];
-              $alternativasResult = $conn->query($sqlAlternativas);
-
-              echo '<div class="alternatives">';
-              if ($alternativasResult->num_rows > 0) {
-                while ($alt = $alternativasResult->fetch_assoc()) {
-                  echo '<label><input type="radio" name="question' . $row['questao_id'] . '" value="' . $alt['id'] . '"> ' . htmlspecialchars($alt['texto']) . '</label><br>';
-                }
+              // Enunciado da questão
+              echo "<h4 class='mb-3'>" . htmlspecialchars($row['enunciado']) . "</h4>";
+              
+              $alt_sql = "SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?";
+              $stmt = $conn->prepare($alt_sql);
+              $stmt->bind_param("i", $id_questao);
+              $stmt->execute();
+              $alt_result = $stmt->get_result();
+              
+              // Formulário de resposta
+              echo "<form method='POST' action=''>"; 
+              echo "<input type='hidden' name='id_questao' value='" . $id_questao . "'>";
+              
+              // Alternativas
+              echo "<div class='alternativas'>";
+              $letra_index = 0;
+              while ($alt_row = $alt_result->fetch_assoc()) {
+                $letra = $alternativas[$letra_index];
+                echo "<div class='alternativa d-flex align-items-center'>";
+                echo "<input type='radio' id='alternativa" . $letra . "' name='resposta' value='" . $alt_row['id'] . "' class='mr-2'>";
+                echo "<strong>" . $letra . ". " . htmlspecialchars($alt_row['texto']) . "</strong>";
+                echo "</div>";
+                $letra_index++;
               }
-              echo '</div>'; // Fecha alternativas
+              echo "</div>";
 
-              echo '<div class="btn-group">';
-              echo '<button class="btn btn-outline-success btn-sm" onclick="responderQuestao(' . $row['questao_id'] . ')">Responder</button>';
-              echo '<button class="btn btn-outline-primary btn-sm" onclick="toggleResolution(\'resolution' . $row['questao_id'] . '\')">Ver Resolução</button>';
-              echo '</div>';
+              // Botões de envio, resolução e vídeo
+              echo "<button type='submit' class='btn btn-primary mt-3 btn-sm'>Responder</button>";
+              echo "<button type='button' class='btn btn-info mt-3 ml-2 btn-sm' onclick='mostrarResolucao(" . $id_questao . ")'>Ver Resolução</button>";
+              echo "<button type='button' class='btn btn-danger mt-3 ml-2 btn-sm' onclick='verVideo(" . $id_questao . ")'>Vídeo</button>";
+              echo "</form>";
 
-              echo '<div id="resolution' . $row['questao_id'] . '" class="resolution" style="display:none;">';
-              echo htmlspecialchars($row['resolucao']);
-              echo '</div>';
+              // Bloco de resolução que ficará oculto até o clique
+              echo "<div id='resolucao-" . $id_questao . "' class='resolucao mt-3' style='display:none;'>";
+              echo "<h5>Resolução:</h5>";
+              echo "<p>" . htmlspecialchars($row['resolucao']) . "</p>";
+              echo "</div>";
 
-              echo '</div>'; // Fecha a questão
+              // Adicionando o bloco de vídeo
+              echo "<div id='video-" . $id_questao . "' class='video mt-3' style='display:none;'>";
+              echo "<h5>Vídeo:</h5>";
+
+              // Aqui você coloca o link correto do vídeo, seja ele no YouTube, Vimeo, ou qualquer outra plataforma.
+              $video_url = "https://www.youtube.com/watch?v=example"; // Substitua esse link pelo link real do vídeo
+              echo "<a href='$video_url' target='_blank' class='btn btn-primary'>Clique aqui para assistir ao vídeo</a>";
+              echo "</div>";
+
+
+              echo "</div>"; // Fim da questão
             }
           } else {
-            echo "Nenhuma questão encontrada.";
+            echo "<p>Não há questões disponíveis no momento.</p>";
           }
           ?>
+        </div>
 
-          <!-- Navegação de páginas -->
-          <div class="pagination-container">
-            <ul class="pagination">
-              <li class="page-item <?php echo ($paginaAtual == 1) ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaAtual - 1; ?>">Anterior</a>
-              </li>
-
-              <?php for ($i = 1; $i <= $totalDePaginas; $i++) { ?>
-                <li class="page-item <?php echo ($i == $paginaAtual) ? 'active' : ''; ?>">
-                  <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-              <?php } ?>
-
-              <li class="page-item <?php echo ($paginaAtual == $totalDePaginas) ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaAtual + 1; ?>">Próxima</a>
-              </li>
-            </ul>
+        <div class="col-md-4 filtros">
+        <h5>Pesquisar Enunciado</h5>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="search-icon">
+              <i class="fas fa-search"></i>
+            </span>
           </div>
+          <input type="text" id="searchEnunciado" class="form-control" placeholder="Pesquisar aqui" onkeyup="filterByText()">
+        </div>
+
+        <h5 class="mt-2">Anos Disponíveis</h5>
+        <div class="btn-group-vertical">
+          <?php
+          for ($ano = 2015; $ano <= 2024; $ano++) {
+            echo "<button type='button' class='btn btn-ano btn-sm' onclick='filterByYear($ano)'>$ano</button>";
+          }
+          ?>
+        </div>
 
         </div>
       </div>
     </main>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
   <script>
-    function toggleResolution(id) {
-      const resolution = document.getElementById(id);
-      resolution.style.display = resolution.style.display === "block" ? "none" : "block";
+    <?php if ($feedback): ?>
+      Swal.fire({
+        icon: '<?php echo $feedback; ?>',
+        title: '<?php echo $mensagem_feedback; ?>',
+        showConfirmButton: false,
+        timer: 3000
+      });
+    <?php endif; ?>
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        filterByText();
+        document.querySelector("#searchEnunciado").focus();
+    });
+
+    function mostrarResolucao(id) {
+        var resolucao = document.getElementById('resolucao-' + id);
+        resolucao.style.display = resolucao.style.display === 'none' ? 'block' : 'none';
     }
 
-    function responderQuestao(questionId) {
-      const respostaSelecionada = document.querySelector('input[name="question' + questionId + '"]:checked');
+    function verVideo(id) {
+  var videoDiv = document.getElementById('video-' + id);
+  if (videoDiv.style.display === 'none') {
+    videoDiv.style.display = 'block';
+  } else {
+    videoDiv.style.display = 'none';
+  }
+}
+    function filterByText() {
+      var input = document.getElementById('searchEnunciado');
+      var filter = input.value.toLowerCase();
+      var questoes = document.querySelectorAll('.questao');
+      questoes.forEach(function(questao) {
+        var enunciado = questao.getAttribute('data-enunciado');
+        if (enunciado.includes(filter)) {
+          questao.style.display = '';
+        } else {
+          questao.style.display = 'none';
+        }
+      });
+    }
 
-      if (!respostaSelecionada) {
-        Swal.fire({
-          title: 'Erro',
-          text: 'Você precisa selecionar uma alternativa.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-        return;
-      }
-
-      const resposta = respostaSelecionada.value;
-
-      // Aqui você deve verificar se a resposta está correta
-      // Consulta para verificar a resposta correta da questão
-      fetch('verificar_resposta.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          questionId: questionId,
-          resposta: resposta
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        Swal.fire({
-          title: 'Resposta registrada!',
-          text: data.message,
-          icon: data.icon,
-          confirmButtonText: 'OK'
-        });
+    function filterByYear(ano) {
+      var questoes = document.querySelectorAll('.questao');
+      questoes.forEach(function(questao) {
+        var questaoAno = questao.getAttribute('data-ano');
+        if (questaoAno == ano) {
+          questao.style.display = '';
+        } else {
+          questao.style.display = 'none';
+        }
       });
     }
   </script>
 </body>
 </html>
-
-<?php
-// Fecha a conexão com o banco de dados
-$conn->close();
-?>
