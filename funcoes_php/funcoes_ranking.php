@@ -35,7 +35,6 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-// Consulta para obter o ranking com as fotos
 $query = "
     SELECT 
         u.id AS usuario_id, 
