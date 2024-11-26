@@ -21,56 +21,81 @@ include("funcoes_php/funcoes_missoes.php");
     </a>
     <div class="perfil-header d-flex align-items-center">
       <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-      <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
+      <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
     </div>
   </header>
 
   <div class="container">
-  <div class="voltar-container mb-4">
+    <div class="voltar-container mb-4">
         <a href="inicio.php" class="custom-link">
             <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
         </a>
     </div>
+
     <main>
-        <section id="missoes">
-            <h2>Missões</h2>
+    <section id="missoes">
+    <h2>Missões</h2>
 
-            <!-- Missão 1: Acertar 30 questões -->
-            <div class="missao">
-                <h3>Acertar 30 Questões</h3>
-                <progress id="missao30" value="0" max="30"></progress>
-                <p id="progresso30">0/30 Concluído</p>
-            </div>
+    <div class="missao-container">
+        <?php
+        // Definindo as metas de questões para as missões
+        $metasMissao = [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210, 300];
+        
+        // Nomes para as missões
+        $nomesMissao = [
+            "Missão Iniciante", "Missão Básica", "Missão Intermediária", "Missão Avançada", 
+            "Missão Desafio", "Missão Expert", "Missão Mestre", "Missão Elite", 
+            "Missão Suprema", "Missão Pro", "Missão Titã", "Missão Lendária"
+        ];
 
-            <!-- Missão 2: Acertar 20 questões -->
-            <div class="missao">
-                <h3>Acertar 20 Questões</h3>
-                <progress id="missao20" value="0" max="20"></progress>
-                <p id="progresso20">0/20 Concluído</p>
-            </div>
-        </section>
+        // Separando as missões entre valores de 10 a 200
+        $metasFiltradas = array_filter($metasMissao, function($meta) {
+            return $meta >= 10 && $meta <= 300;
+        });
+
+        // Ordenando as metas de forma crescente
+        sort($metasFiltradas);
+
+        // Gerando missões ordenadas
+        foreach ($metasFiltradas as $index => $meta) {
+            $missaoId = $index + 1; // Identificador da missão (1 a 12)
+            echo "
+                <div class='missao'>
+                    <h3>{$nomesMissao[$index]} - Acertar $meta Questões</h3>
+                    <progress id='missao$missaoId' value='0' max='$meta'></progress>
+                    <p id='progresso$missaoId'>0/$meta Concluído</p>
+                </div>
+            ";
+        }
+        ?>
+    </div>
+</section>
+
     </main>
 
     <script>
-        // Dados obtidos do PHP
+        // Dados obtidos do PHP (total de acertos)
         const totalAcertos = <?php echo $dadosMissoes['total_acertos']; ?>;
 
         // Função para atualizar as missões
-        function atualizarMissoes(certas) {
-            // Missão 30 questões
-            const progresso30 = document.getElementById('missao30');
-            const textoProgresso30 = document.getElementById('progresso30');
-            progresso30.value = certas;
-            textoProgresso30.textContent = `${certas}/30 Concluído`;
+        function atualizarMissoes(acertosTotais) {
+            // Definindo as metas de acertos das missões
+            const metasMissao = [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210, 300];
 
-            // Missão 20 questões
-            const progresso20 = document.getElementById('missao20');
-            const textoProgresso20 = document.getElementById('progresso20');
-            progresso20.value = Math.min(certas, 20); // Limita a 20 para essa missão
-            textoProgresso20.textContent = `${Math.min(certas, 20)}/20 Concluído`;
+            // Atualizando as missões com base nos acertos
+            metasMissao.forEach((meta, index) => {
+                const progressoElement = document.getElementById(`missao${index + 1}`);
+                const progressoTexto = document.getElementById(`progresso${index + 1}`);
+                
+                // A cada missão, limitamos os acertos ao máximo da missão
+                const progresso = Math.min(acertosTotais, meta);
+                
+                progressoElement.value = progresso;
+                progressoTexto.textContent = `${progresso}/${meta} Concluído`;
+            });
         }
 
-        // Atualiza com o número de respostas corretas
+        // Atualiza as missões com os dados de acertos
         atualizarMissoes(totalAcertos);
     </script>
   </div>

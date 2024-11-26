@@ -1,196 +1,186 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-    color: branco;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-  }
-  
-  
-  
-  #missoes {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
+/* Reset de margens e padding para garantir consistência */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-
-h2 {
-    font-size: 24px;
-    color: #222; 
-    margin-bottom: 20px;
+html, body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f9f9f9; /* Fundo mais suave */
+  color: #333; /* Cor de texto padrão */
 }
 
-h3 {
-    font-size: 18px;
-    color: #444; 
-    margin-bottom: 10px;
+/* Estilo do cabeçalho */
+header {
+  background-color: #001A4E;
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombras sutis */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+header img {
+  width: 180px;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+}
+
+#avatar-imagem {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+}
+
+#usuario-nome {
+  margin-left: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Estilo da seção de Missões */
+#missoes {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+#missoes h2 {
+  font-size: 32px;
+  color: #001A4E;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.missao-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-around;
+  margin-top: 20px;
+}
 
 .missao {
-    margin-bottom: 30px; 
-    padding: 10px; 
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
-    background-color: #f9f9f9; 
+  width: 280px; /* Largura dos cards */
+  padding: 25px;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
-progress {
-    width: 100%;
-    height: 25px;
-    border-radius: 12px;
-    overflow: hidden;
+.missao:hover {
+  transform: translateY(-8px); /* Eleva o card ao passar o mouse */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-progress::-webkit-progress-bar {
-    background-color: #e0e0e0;
-    border-radius: 12px;
+.missao h3 {
+  font-size: 20px;
+  color: #007bff;
+  font-weight: 500;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
-progress::-webkit-progress-value {
-    background-color: #4caf50;
-    border-radius: 12px 0 0 12px;
+.missao progress {
+  width: 100%;
+  height: 18px;
+  border-radius: 15px;
+  background-color: #e0e0e0;
+  margin-bottom: 15px;
 }
 
-progress::-moz-progress-bar {
-    background-color: #4caf50;
-    border-radius: 12px 0 0 12px;
+.missao p {
+  font-size: 16px;
+  color: #555;
+  font-weight: 500;
+  text-align: center;
 }
 
-
-main p {
-    font-size: 16px;
-    color: #555; 
-    margin-top: 8px;
+/* Estilo do botão de Voltar */
+.voltar-container {
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-  
+.voltar-container a {
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.voltar-container a:hover {
+  color: #0056b3;
+}
+
+.voltar-container i {
+  margin-right: 10px;
+}
+
+/* Rodapé */
+footer {
+  background-color: #001A4E;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 30px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
   header {
-    background-color: #001A4E;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
+    padding: 15px;
+    flex-direction: column;
     align-items: center;
   }
-  
-  header img {
-    height: 50px;
-  }
-  
-  
-  .conteudo-cabecalho h1 {
-    margin: 0;
-    color: #ffcd38;
-  }
-  
-  .container {
-    display: flex;
-    flex: 1; 
-    margin: 20px;
-  }
-  
-  
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  nav ul li {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    padding: 10px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: left; 
-  }
-  
-  nav ul li:hover {
-    transition: 0.5s;
-    background-color: #b6b6b6ea;
-  }
-  
-  nav ul li a {
-    display: flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-  }
-  
-  nav ul li a:hover {
-    color: white;
-    text-decoration: none;
-  }
-  
-  nav ul li i {
-    font-size: 24px; 
-    margin-right: 10px; 
-  }
-  
-  .custom-link:hover {
-    color: #001f3f;
-    background: none; 
-  }
-  
-  .custom-link span {
-    margin-left: 10px; 
-  }
-  
-  .voltar-container {
-    margin-top: 20px; 
-    margin-bottom: 20px; 
-  }
-  
 
-  
-  main {
-    color: whitesmoke;
-    margin: 0 auto;
-  }
-  
-  
   .perfil-header {
-    display: flex;
-    align-items: center;
+    margin-top: 10px;
   }
-  
-  .perfil-header span {
-    color: #ffffff;
-    margin-right: 10px;
-    font-size: 16px;
-  }
-  .perfil-header p {
-    color: #ffffff;
-    margin-right: 10px;
-    font-size: 16px;
-  }
-  
-  .perfil-header img {
-    border: #f0f0f0;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-  }
-  
 
+  .missao-container {
+    justify-content: center;
+  }
 
-  
+  .missao {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 20px;
+  }
+
+  #missoes h2 {
+    font-size: 28px;
+  }
+
   footer {
-    background-color: #001A4E;
-    padding: 2px;
-    text-align: center;
-    color: white;
+    font-size: 12px;
   }
-  footer p{
-    margin-top: 15px;
-  }  
+}

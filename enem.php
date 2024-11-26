@@ -9,49 +9,51 @@ $feedback = '';
 $mensagem_feedback = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
-    $id_usuario = $_SESSION['usuario_id'];
-    $id_questao = $_POST['id_questao'];
-    $id_resposta = $_POST['resposta']; 
-    $data_tentativa = date('Y-m-d H:i:s'); 
+  $id_usuario = $_SESSION['usuario_id'];
+  $id_questao = $_POST['id_questao'];
+  $id_resposta = $_POST['resposta']; 
+  $data_tentativa = date('Y-m-d H:i:s'); 
 
-    // Consulta para verificar a resposta correta
-    $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ? AND correta = 1 LIMIT 1");
-    $stmt->bind_param("i", $id_questao);
-    $stmt->execute();
-    $stmt->store_result();
+  $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ? AND correta = 1 LIMIT 1");
+  $stmt->bind_param("i", $id_questao);
+  $stmt->execute();
+  $stmt->store_result();
 
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id_correta, $texto_correto, $correta);
-        $stmt->fetch();
-        $stmt_alt = $conn->prepare("SELECT texto FROM alternativas_concurso WHERE id = ?");
-        $stmt_alt->bind_param("i", $id_resposta);
-        $stmt_alt->execute();
-        $stmt_alt->store_result();
-        
-        if ($stmt_alt->num_rows > 0) {
-            $stmt_alt->bind_result($texto_resposta);
-            $stmt_alt->fetch();
-            $correta_usuario = ($texto_resposta == $texto_correto) ? 1 : 0;
-            $stmt_insert = $conn->prepare("INSERT INTO tentativas_concursos (id_usuario, id_questao, resposta, data_tentativa, correta) VALUES (?, ?, ?, ?, ?)");
-            $stmt_insert->bind_param("iisss", $id_usuario, $id_questao, $texto_resposta, $data_tentativa, $correta_usuario);
-            if ($stmt_insert->execute()) {
-                if ($correta_usuario == 1) {
-                    $feedback = 'success';
-                    $mensagem_feedback = 'Parabéns! Você acertou!';
-                } else {
-                    $feedback = 'error';
-                    $mensagem_feedback = 'Que pena, você errou. Tente novamente!';
-                }
-            } else {
-                echo "<div class='alert alert-danger'>Houve um erro ao salvar sua tentativa. Tente novamente.</div>";
-            }
-        } else {
-            echo "<div class='alert alert-danger'>Alternativa selecionada não encontrada. Tente novamente.</div>";
-        }
-    } else {
-        echo "<div class='alert alert-danger'>Alternativa correta não encontrada. Tente novamente.</div>";
-    }
+  if ($stmt->num_rows > 0) {
+      $stmt->bind_result($id_correta, $texto_correto, $correta);
+      $stmt->fetch();
+      $stmt_alt = $conn->prepare("SELECT texto FROM alternativas_concurso WHERE id = ?");
+      $stmt_alt->bind_param("i", $id_resposta);
+      $stmt_alt->execute();
+      $stmt_alt->store_result();
+      
+      if ($stmt_alt->num_rows > 0) {
+          $stmt_alt->bind_result($texto_resposta);
+          $stmt_alt->fetch();
+          $correta_usuario = ($texto_resposta == $texto_correto) ? 1 : 0;
+          $stmt_insert = $conn->prepare("INSERT INTO tentativas_concursos (id_usuario, id_questao, resposta, data_tentativa, correta) VALUES (?, ?, ?, ?, ?)");
+          $stmt_insert->bind_param("iisss", $id_usuario, $id_questao, $texto_resposta, $data_tentativa, $correta_usuario);
+          if ($stmt_insert->execute()) {
+              $response = [
+                  "status" => $correta_usuario == 1 ? "success" : "error",
+                  "message" => $correta_usuario == 1 ? "Parabéns! Você acertou!" : "Que pena, você errou. Tente novamente!",
+              ];
+              echo json_encode($response);
+              exit;
+          } else {
+              echo json_encode(["status" => "error", "message" => "Houve um erro ao salvar sua tentativa. Tente novamente."]);
+              exit;
+          }
+      } else {
+          echo json_encode(["status" => "error", "message" => "Alternativa selecionada não encontrada. Tente novamente."]);
+          exit;
+      }
+  } else {
+      echo json_encode(["status" => "error", "message" => "Alternativa correta não encontrada. Tente novamente."]);
+      exit;
+  }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -174,14 +176,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
   <script>
-    <?php if ($feedback): ?>
-      Swal.fire({
-        icon: '<?php echo $feedback; ?>',
-        title: '<?php echo $mensagem_feedback; ?>',
-        showConfirmButton: false,
-        timer: 3000
+    document.addEventListener("DOMContentLoaded", function () {
+    const forms = document.querySelectorAll("form");
+    forms.forEach((form) => {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Impede o comportamento padrão de recarregar a página
+        const formData = new FormData(form);
+
+        // Enviar dados via AJAX
+        fetch(form.action, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              Swal.fire({
+                icon: "success",
+                title: data.message,
+                showConfirmButton: false,
+                timer: 3000,
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: data.message,
+                showConfirmButton: false,
+                timer: 3000,
+              });
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Erro ao enviar a resposta",
+              text: error.message,
+            });
+          });
       });
-    <?php endif; ?>
+    });
+  });
     
     document.addEventListener("DOMContentLoaded", function() {
         filterByText();
