@@ -25,7 +25,15 @@ footer {
 }
 
 
-
+.custom-link{
+    align-items: left;
+    color: #001A4E;
+    text-decoration: none;
+  }
+  custom-link:hover{
+    color: #001A4E;
+    text-decoration: none;
+  }
 
 
 

@@ -36,16 +36,17 @@ include("funcoes_php/funcoes_ranking.php");
       <h2 class="mb-4">Ranking de Estudantes</h2>
 
       <div class="top-ranking">
-        <?php for ($i = 0; $i < 3 && $i < count($ranking); $i++): ?>
-          <div class="rank-item rank-<?php echo $i + 1; ?>">
-            <img src="<?php echo htmlspecialchars($ranking[$i]['usuario_foto'] ?? 'img/default-avatar.png'); ?>" alt="Foto de <?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?>" class="avatar">
-            <p><?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?></p> 
+    <?php for ($i = 0; $i < 3 && $i < count($ranking); $i++): ?>
+        <div class="rank-item rank-<?php echo $i + 1; ?>">
+            <img src="<?php echo htmlspecialchars($ranking[$i]['usuario_foto'] ?? 'img/usuario_perfil.png'); ?>" alt="Foto de <?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?>" class="avatar">
+            <p><?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?></p>
             <div class="rank-bar" style="background-color: <?php echo ($i == 0) ? '#FFD700' : (($i == 1) ? '#C0C0C0' : '#CD7F32'); ?>; height: <?php echo (80 - ($i * 5)) . 'px'; ?>;">
                 <span class="rank-number"><?php echo ($i + 1); ?></span>
             </div>
-          </div>
-        <?php endfor; ?>
-      </div>
+        </div>
+    <?php endfor; ?>
+</div>
+
 
       <h4 class="mt-4">Estudantes</h4>
       <table class="table table-striped">
@@ -60,52 +61,54 @@ include("funcoes_php/funcoes_ranking.php");
     <tbody>
         <?php if (count($ranking) > 0): ?>
             <?php foreach ($ranking as $index => $usuario): ?>
-                <tr class="<?php
-                    if ($usuario['usuario_id'] == $usuario) {
-                        echo 'highlight-row'; 
-                    } elseif ($index == 0) {
-                        echo 'gold-row'; 
-                    } elseif ($index == 1) {
-                        echo 'silver-row'; 
-                    } elseif ($index == 2) {
-                        echo 'bronze-row'; 
-                    }
-                ?>">
-                    <td><?php echo $index + 1; ?></td>
-                    <td><?php echo htmlspecialchars($usuario['usuario_nome']); ?></td>
-                    <td><?php echo $usuario['total_acertos']; ?></td>
-                    <td>
-                        <?php
-                        $acertos = $usuario['total_acertos'];
-                        $icone = "";
-                        if ($acertos < 2) {
-                            $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 20) {
-                            $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 40) {
-                            $icone = "<img src='img/aventurero.png' alt='Aventureiro' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 60) {
-                            $icone = "<img src='img/explorador.png' alt='Explorador' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 80) {
-                            $icone = "<img src='img/desbravador.png' alt='Desbravador' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 100) {
-                            $icone = "<img src='img/valente.png' alt='Valente' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 120) {
-                            $icone = "<img src='img/heroi.png' alt='Herói' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 140) {
-                            $icone = "<img src='img/campeao.png' alt='Campeão' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 160) {
-                            $icone = "<img src='img/mestre.png' alt='Mestre' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 180) {
-                            $icone = "<img src='img/lendario.png' alt='Lendário' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } else {
-                            $icone = "<img src='img/supremo.png' alt='Supremo' style='width:30px; height:20px; vertical-align: middle;'>";
+                <?php if ($usuario['total_acertos'] > 10): ?>  <!-- Filtra usuários com mais de 10 acertos -->
+                    <tr class="<?php
+                        if ($usuario['usuario_id'] == $usuario) {
+                            echo 'highlight-row'; 
+                        } elseif ($index == 0) {
+                            echo 'gold-row'; 
+                        } elseif ($index == 1) {
+                            echo 'silver-row'; 
+                        } elseif ($index == 2) {
+                            echo 'bronze-row'; 
                         }
+                    ?>">
+                        <td><?php echo $index + 1; ?></td>
+                        <td><?php echo htmlspecialchars($usuario['usuario_nome']); ?></td>
+                        <td><?php echo $usuario['total_acertos']; ?></td>
+                        <td>
+                            <?php
+                            $acertos = $usuario['total_acertos'];
+                            $icone = "";
+                            if ($acertos < 2) {
+                                $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 20) {
+                                $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 40) {
+                                $icone = "<img src='img/aventurero.png' alt='Aventureiro' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 60) {
+                                $icone = "<img src='img/explorador.png' alt='Explorador' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 80) {
+                                $icone = "<img src='img/desbravador.png' alt='Desbravador' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 100) {
+                                $icone = "<img src='img/valente.png' alt='Valente' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 120) {
+                                $icone = "<img src='img/heroi.png' alt='Herói' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 140) {
+                                $icone = "<img src='img/campeao.png' alt='Campeão' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 160) {
+                                $icone = "<img src='img/mestre.png' alt='Mestre' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } elseif ($acertos <= 180) {
+                                $icone = "<img src='img/lendario.png' alt='Lendário' style='width:30px; height:20px; vertical-align: middle;'>";
+                            } else {
+                                $icone = "<img src='img/supremo.png' alt='Supremo' style='width:30px; height:20px; vertical-align: middle;'>";
+                            }
 
-                        echo $icone;
-                        ?>
-                    </td>
-                </tr>
+                            echo $icone;
+                            ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
@@ -114,6 +117,7 @@ include("funcoes_php/funcoes_ranking.php");
         <?php endif; ?>
     </tbody>
 </table>
+
 
 
       <!-- Modal -->

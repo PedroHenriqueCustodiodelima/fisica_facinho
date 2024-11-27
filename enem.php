@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
         </div>
 
         <div class="col-md-4 filtros">
-        <h5>Pesquisar Enunciado</h5>
+        <h5 style="margin-bottom: 40px;">Filtros</h5>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text" id="search-icon">
@@ -166,16 +166,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
           </div>
           <input type="text" id="searchEnunciado" class="form-control" placeholder="Pesquisar aqui" onkeyup="filterByText()">
         </div>
-
-        <h5 class="mt-2">Anos Disponíveis</h5>
-        <div class="btn-group-vertical">
-          <?php
-          for ($ano = 2015; $ano <= 2024; $ano++) {
-            echo "<button type='button' class='btn btn-ano' onclick='filterByYear($ano)'>$ano</button>";
-          }
-          ?>
+        <div class="form-group">
+            <label for="selectAno">Escolha o Ano</label>
+            <select class="form-control" id="selectAno" onchange="filterByYear(this.value)">
+                <option value="">Selecione um Ano</option>
+                <?php
+                for ($ano = 1998; $ano <= 2024; $ano++) {
+                    echo "<option value='$ano'>$ano</option>";
+                }
+                ?>
+            </select>
         </div>
-
         </div>
       </div>
     </main>
