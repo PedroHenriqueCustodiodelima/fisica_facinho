@@ -31,70 +31,48 @@ include("funcoes_php/funcoes_inicio.php");
             <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
         </a>
     </div>
+    <h1>Conteúdos</h1>
     <div class="row justify-content-center">
-  <!-- Card do 1º Ano -->
-  <div class="col-md-6 mb-3">
-    <a href="conteudos1.php" class="card-link">
-      <div class="card primeiro-ano-card">
-        <div class="icon-part">
-          <i class="fa-solid fa-graduation-cap"></i>
+      <div class="col-md-4 mb-3">
+        <a href="conteudos1.php" class="card-link">
+          <div class="card primeiro-ano-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h5 class="card-title">1º Ano</h5>
+              <p class="card-text">conteúdos de física para o 1º ano.</p>
+            </div>
+          </div>
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+      <a href="conteudos2.php" class="card-link">
+        <div class="card segundo-ano-card">
+          <div class="icon-part">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <h5 class="card-title">2º Ano</h5>
+            <p class="card-text">conteúdos de física para o 2º ano.</p>
+          </div>
         </div>
-        <div>
-          <h5 class="card-title">1º Ano</h5>
-          <p class="card-text">Atividades e materiais exclusivos para o 1º ano.</p>
+      </a>
+    </div>
+    <div class="col-md-4 mb-3">
+      <a href="conteudos3.php" class="card-link">
+        <div class="card terceiro-ano-card">
+          <div class="icon-part">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div>
+            <h5 class="card-title">3º Ano</h5>
+            <p class="card-text">conteúdos de física para o 3º ano.</p>
+          </div>
         </div>
-      </div>
-    </a>
-  </div>
-
-  <!-- Card do 2º Ano -->
-  <div class="col-md-6 mb-3">
-    <a href="conteudos2.php" class="card-link">
-      <div class="card segundo-ano-card">
-        <div class="icon-part">
-          <i class="fa-solid fa-book-open"></i>
-        </div>
-        <div>
-          <h5 class="card-title">2º Ano</h5>
-          <p class="card-text">Explore as atividades e os desafios do 2º ano.</p>
-        </div>
-      </div>
-    </a>
-  </div>
+      </a>
+    </div>
 </div>
-
-<div class="row justify-content-center">
-  <!-- Card do 3º Ano -->
-  <div class="col-md-6 mb-3">
-    <a href="conteudos3.php" class="card-link">
-      <div class="card terceiro-ano-card">
-        <div class="icon-part">
-          <i class="fa-solid fa-lightbulb"></i>
-        </div>
-        <div>
-          <h5 class="card-title">3º Ano</h5>
-          <p class="card-text">Preparação para o futuro com atividades do 3º ano.</p>
-        </div>
-      </div>
-    </a>
-  </div>
-
-  <!-- Card do 4º Ano -->
-  <div class="col-md-6 mb-3">
-    <a href="conteudos4.php" class="card-link">
-      <div class="card quarto-ano-card">
-        <div class="icon-part">
-          <i class="fa-solid fa-trophy"></i>
-        </div>
-        <div>
-          <h5 class="card-title">4º Ano</h5>
-          <p class="card-text">Desafios e atividades finais para o 4º ano.</p>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
-
     </main>
     <footer>
       <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>

@@ -8,6 +8,7 @@ html, body {
   height: 100%;
   font-family: 'Roboto', sans-serif;
 }
+
 header {
   background-color: #001A4E;
   padding: 10px;
@@ -16,17 +17,28 @@ header {
 
 .perfil-header p,
 .perfil-header #usuario-nome {
-  color: white; /* Garantindo que o texto do perfil também fique visível */
+  color: white; 
 }
-
+.custom-link{
+  color: #001A4E;
+  text-decoration: none;
+}
+custom-link:hover{
+  color: #001A4E;
+  text-decoration: none;
+}
+h1{
+  text-align: center;
+  padding: 15px;
+}
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Garante que ocupe a altura total */
+  min-height: 100vh; 
 }
 
 main.container {
-  flex-grow: 1; /* Faz o conteúdo crescer para ocupar o espaço restante */
+  flex-grow: 1; 
   margin-top: 20px;
 }
 
@@ -36,111 +48,91 @@ footer {
   padding: 10px;
   text-align: center;
 }
+
 #avatar-imagem {
   border-radius: 50%;
-  object-fit: cover; /* Garante que a imagem se ajuste corretamente dentro do círculo */
+  object-fit: cover; 
 }
 
 .container {
   margin-top: 20px;
 }
 
-/* Estilo base dos cards */
 .card {
   cursor: pointer;
-  transition: all 0.3s ease; /* Transição suave */
-  border-radius: 12px; /* Bordas arredondadas */
-  overflow: hidden; /* Esconde bordas externas */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra intensa */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  border-radius: 15px; 
+  overflow: hidden;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); 
   display: flex;
-  flex-direction: column; /* Alinha conteúdo verticalmente */
-  align-items: center; /* Centraliza conteúdo */
-  text-align: center; /* Centraliza texto */
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   padding: 20px;
-  background-color: #f9f9f9; /* Fundo claro padrão */
+  background-color: #ffffff; 
+  border: 1px solid #e0e0e0; 
+  animation: fadeIn 0.5s ease-out; 
 }
 
 .card:hover {
-  transform: scale(1.05); /* Ampliação suave ao passar o mouse */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
+  transform: scale(1.05); 
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); 
 }
 
-/* Parte do ícone */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .icon-part {
   width: 90px;
   height: 90px;
-  border-radius: 50%; /* Forma circular */
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white; /* Cor do ícone */
-  font-size: 2.5rem; /* Ícone grande */
-  margin-bottom: 15px; /* Espaço entre o ícone e o texto */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra no ícone */
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
-/* Diferenciação de cores por categoria */
+.icon-part:hover {
+  transform: scale(1.1); 
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+}
+
 .primeiro-ano-card {
-  background-color: #eaf4fc; /* Fundo azul claro */
+  background-color: #eaf9f0; 
 }
 
 .primeiro-ano-card .icon-part {
-  background-color: #3498DB; /* Azul escuro */
+  background-color: #3498DB; 
 }
 
 .segundo-ano-card {
-  background-color: #eaf9f0; /* Fundo verde claro */
+  background-color: #eaf9f0; 
 }
 
 .segundo-ano-card .icon-part {
-  background-color: #28A745; /* Verde escuro */
+  background-color: #28A745; 
 }
 
 .terceiro-ano-card {
-  background-color: #fff5e6; /* Fundo laranja claro */
+  background-color: #eaf9f0;
 }
 
 .terceiro-ano-card .icon-part {
-  background-color: #F39C12; /* Laranja escuro */
+  background-color: #F39C12; 
 }
 
-.quarto-ano-card {
-  background-color: #fceaea; /* Fundo vermelho claro */
-}
-
-.quarto-ano-card .icon-part {
-  background-color: #E74C3C; /* Vermelho escuro */
-}
-
-/* Parte do texto */
-.card-title {
-  font-size: 1.6rem; /* Tamanho maior do título */
-  font-weight: bold; /* Destaque no título */
-  color: #333; /* Texto escuro */
-  margin-bottom: 10px; /* Espaço abaixo do título */
-}
-
-.card-text {
-  font-size: 1rem; /* Texto padrão */
-  color: #555; /* Texto mais claro */
-  line-height: 1.4; /* Melhor espaçamento entre linhas */
-}
-
-/* Link sem sublinhado */
-.card-link {
-  text-decoration: none;
-}
-
-
-
-.text-part {
-  width: 70%;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #001A4E;
-}
 
 .desempenho-card .icon-part {
   background-color: #2a9d8f;
@@ -166,43 +158,48 @@ footer {
   background-color: #d62828;
 }
 
+.rank-card .icon-part {
+  background-color: #6a4c93; 
+}
+
+.videos-card .icon-part {
+  background-color: #42a5f5;
+}
+
+.relatorio-card .icon-part {
+  background-color: #ffca28; 
+}
+
+.suporte-card .icon-part {
+  background-color: #66bb6a; 
+}
+
 .card-title {
-  font-size: 1.3rem;
-  font-weight: bold;
+  font-size: 1.5rem; 
+  font-weight: 600;
+  color: #333; 
+  margin-bottom: 10px;
+  text-transform: uppercase; 
 }
 
 .card-text {
   font-size: 1rem;
-  margin-top: 5px;
-}
-.rank-card .icon-part {
-  background-color: #6a4c93; /* Cor personalizada para o card de Rank */
-}
-
-.videos-card .icon-part {
-  background-color: #42a5f5; /* Cor personalizada para o card de Vídeos */
+  color: #555;
+  line-height: 1.5; 
+  margin-bottom: 15px; 
 }
 
-.relatorio-card .icon-part {
-  background-color: #ffca28; /* Cor personalizada para o card de Relatório */
+.card-link {
+  text-decoration: none;
 }
-
-.suporte-card .icon-part {
-  background-color: #66bb6a; /* Cor personalizada para o card de Ajuda */
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px; 
+  flex-wrap: wrap; 
+  margin-top: 20px;
 }
-
-.primeiro-ano-card .icon-part {
-  background-color: #f4a261; /* Cor do primeiro ano */
-}
-
-.segundo-ano-card .icon-part {
-  background-color: #e76f51; /* Cor do segundo ano */
-}
-
-.terceiro-ano-card .icon-part {
-  background-color: #d62828; /* Cor do terceiro ano */
-}
-
-.quarto-ano-card .icon-part {
-  background-color: #2a9d8f; /* Cor do quarto ano */
+.card {
+  width: 100%; 
+  max-width: 280px; 
 }

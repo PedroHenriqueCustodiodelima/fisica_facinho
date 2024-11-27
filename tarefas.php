@@ -10,7 +10,7 @@ include("funcoes_php/funcoes_inicio.php");
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="css/inicio.css">
+  <link rel="stylesheet" href="css/conteudos.css">
 </head>
 <body>
   <div class="page-container">
@@ -31,67 +31,49 @@ include("funcoes_php/funcoes_inicio.php");
             <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
         </a>
     </div>
-        <div class="row justify-content-center">
-          <!-- Linha 1: Cards do Primeiro e Segundo Ano -->
-          <div class="col-md-6 mb-3">
-            <a href="assunto_p1.php" class="card-link"> <!-- Alterado para tarefas_n1.php -->
-              <div class="card primeiro-ano-card">
-                <div class="icon-part">
-                  <i class="fa-solid fa-book" style="font-size: 2rem;"></i>
-                </div>
-                <div class="text-part">
-                  <h5 class="card-title">1º Ano</h5>
-                  <p class="card-text">Atividades do 1º ano.</p>
-                </div>
-              </div>
-            </a>
+    <h1>Atividades</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-3">
+        <a href="assunto_p1.php" class="card-link">
+          <div class="card primeiro-ano-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h5 class="card-title">1º Ano</h5>
+              <p class="card-text">Atividades exclusivas para o 1º ano.</p>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <a href="tarefas_n2.php" class="card-link"> <!-- Alterado para tarefas_n2.php -->
-              <div class="card segundo-ano-card">
-                <div class="icon-part">
-                  <i class="fa-solid fa-book" style="font-size: 2rem;"></i>
-                </div>
-                <div class="text-part">
-                  <h5 class="card-title">2º Ano</h5>
-                  <p class="card-text">Atividades do 2º ano.</p>
-                </div>
-              </div>
-            </a>
+        </a>
+      </div>
+      <div class="col-md-4 mb-3">
+        <a href="assunto_p2.php" class="card-link">
+          <div class="card segundo-ano-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-book-open"></i>
+            </div>
+            <div>
+              <h5 class="card-title">2º Ano</h5>
+              <p class="card-text">Atividades exclusivas para o 2º ano.</p>
+            </div>
           </div>
-        </div>
-        <div class="row justify-content-center">
-          <!-- Linha 2: Cards do Terceiro e Quarto Ano -->
-          <div class="col-md-6 mb-3">
-            <a href="tarefas_n3.php" class="card-link"> <!-- Alterado para tarefas_n3.php -->
-              <div class="card terceiro-ano-card">
-                <div class="icon-part">
-                  <i class="fa-solid fa-book" style="font-size: 2rem;"></i>
-                </div>
-                <div class="text-part">
-                  <h5 class="card-title">3º Ano</h5>
-                  <p class="card-text">Atividades do 3º ano.</p>
-                </div>
-              </div>
-            </a>
+        </a>
+      </div>
+      <div class="col-md-4 mb-3">
+        <a href="assunto_p3.php" class="card-link">
+          <div class="card terceiro-ano-card">
+            <div class="icon-part">
+              <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <div>
+              <h5 class="card-title">3º Ano</h5>
+              <p class="card-text">Atividades exclusivas para o 3º ano.</p>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <a href="tarefas_n4.php" class="card-link"> <!-- Alterado para tarefas_n4.php -->
-              <div class="card quarto-ano-card">
-                <div class="icon-part">
-                  <i class="fa-solid fa-book" style="font-size: 2rem;"></i>
-                </div>
-                <div class="text-part">
-                  <h5 class="card-title">4º Ano</h5>
-                  <p class="card-text">Atividades do 4º ano.</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
+        </a>
+      </div>
       </div>
     </main>
-
     <footer>
       <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
     </footer>

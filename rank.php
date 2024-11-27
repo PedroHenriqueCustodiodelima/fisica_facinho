@@ -31,23 +31,24 @@ include("funcoes_php/funcoes_ranking.php");
             <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
         </a>
     </div>
-    <main class="centralizado">
-    <h2 class="mb-4">Ranking de Estudantes</h2>
 
-    <div class="top-ranking">
-    <?php for ($i = 0; $i < 3 && $i < count($ranking); $i++): ?>
-        <div class="rank-item rank-<?php echo $i + 1; ?>">
+    <main class="centralizado">
+      <h2 class="mb-4">Ranking de Estudantes</h2>
+
+      <div class="top-ranking">
+        <?php for ($i = 0; $i < 3 && $i < count($ranking); $i++): ?>
+          <div class="rank-item rank-<?php echo $i + 1; ?>">
             <img src="<?php echo htmlspecialchars($ranking[$i]['usuario_foto'] ?? 'img/default-avatar.png'); ?>" alt="Foto de <?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?>" class="avatar">
             <p><?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?></p> 
             <div class="rank-bar" style="background-color: <?php echo ($i == 0) ? '#FFD700' : (($i == 1) ? '#C0C0C0' : '#CD7F32'); ?>; height: <?php echo (80 - ($i * 5)) . 'px'; ?>;">
                 <span class="rank-number"><?php echo ($i + 1); ?></span>
             </div>
-        </div>
-    <?php endfor; ?>
-</div>
+          </div>
+        <?php endfor; ?>
+      </div>
 
-    <h4 class="mt-4">Estudantes</h4>
-    <table class="table table-striped">
+      <h4 class="mt-4">Estudantes</h4>
+      <table class="table table-striped">
     <thead>
         <tr>
             <th style="width: 10%;">Ranking</th>
@@ -60,12 +61,14 @@ include("funcoes_php/funcoes_ranking.php");
         <?php if (count($ranking) > 0): ?>
             <?php foreach ($ranking as $index => $usuario): ?>
                 <tr class="<?php
-                    if ($index == 0) {
-                        echo 'gold-row';
+                    if ($usuario['usuario_id'] == $usuario) {
+                        echo 'highlight-row'; 
+                    } elseif ($index == 0) {
+                        echo 'gold-row'; 
                     } elseif ($index == 1) {
-                        echo 'silver-row';
+                        echo 'silver-row'; 
                     } elseif ($index == 2) {
-                        echo 'bronze-row';
+                        echo 'bronze-row'; 
                     }
                 ?>">
                     <td><?php echo $index + 1; ?></td>
@@ -75,8 +78,6 @@ include("funcoes_php/funcoes_ranking.php");
                         <?php
                         $acertos = $usuario['total_acertos'];
                         $icone = "";
-
-                        // Lógica para selecionar o ícone de patente baseado nos acertos
                         if ($acertos < 2) {
                             $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
                         } elseif ($acertos <= 20) {
@@ -114,63 +115,52 @@ include("funcoes_php/funcoes_ranking.php");
     </tbody>
 </table>
 
-<!-- Modal -->
-<div class="modal fade" id="patenteModal" tabindex="-1" role="dialog" aria-labelledby="patenteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+
+      <!-- Modal -->
+      <div class="modal fade" id="patenteModal" tabindex="-1" role="dialog" aria-labelledby="patenteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="patenteModalLabel">Patentes e Pontos Necessários</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+              <h5 class="modal-title" id="patenteModalLabel">Patentes e Pontos Necessários</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
-                <ul>
-                    <li>Iniciante: 0 - 1 ponto</li>
-                    <li>Aventureiro: 2 - 20 pontos</li>
-                    <li>Explorador: 21 - 40 pontos</li>
-                    <li>Desbravador: 41 - 60 pontos</li>
-                    <li>Valente: 61 - 80 pontos</li>
-                    <li>Herói: 81 - 100 pontos</li>
-                    <li>Campeão: 101 - 120 pontos</li>
-                    <li>Mestre: 121 - 140 pontos</li>
-                    <li>Lendário: 141 - 160 pontos</li>
-                    <li>Supremo: 161+ pontos</li>
-                </ul>
+              <ul>
+                <li>Iniciante: 0 - 1 ponto</li>
+                <li>Aventureiro: 2 - 20 pontos</li>
+                <li>Explorador: 21 - 40 pontos</li>
+                <li>Desbravador: 41 - 60 pontos</li>
+                <li>Valente: 61 - 80 pontos</li>
+                <li>Herói: 81 - 100 pontos</li>
+                <li>Campeão: 101 - 120 pontos</li>
+                <li>Mestre: 121 - 140 pontos</li>
+                <li>Lendário: 141 - 160 pontos</li>
+                <li>Supremo: 161+ pontos</li>
+              </ul>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            </div>
+          </div>
         </div>
-    </div>
-</div>
-
-<script>
-$(document).ready(function() {
-    // Abrir o modal ao clicar no ícone de alerta
-    $('.fa-exclamation-circle').on('click', function() {
-        $('#patenteModal').modal('show'); // Corrigido aqui
-    });
-});
-</script>
-
-
-
-</main>
-
+      </div>
+    </main>
   </div>
 
-  <footer>
-    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+  <footer class="text-center mt-4">
+    <p>&copy; 2024 Todos os direitos reservados.</p>
   </footer>
-    
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="js/inicio.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    $(document).ready(function() {
+        // Exibição do modal de patente
+        $('[title="Patente"]').on('click', function() {
+            $('#patenteModal').modal('show');
+        });
+    });
+  </script>
 </body>
 </html>

@@ -235,3 +235,8 @@ footer p {
     color: #000000;
     font-weight: bold;
 }
+/* Destaque a linha do usuário logado */
+.highlight-row {
+    background-color: yellow; /* Altere a cor para a que preferir */
+    font-weight: bold;
+}
