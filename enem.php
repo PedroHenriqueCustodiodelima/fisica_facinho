@@ -3,7 +3,7 @@ include("funcoes_php/funcoes_inicio.php");
 date_default_timezone_set('America/Sao_Paulo');
 
 // Alterando a consulta SQL para buscar apenas questões do concurso "ENEM"
-$sql = "SELECT id, enunciado, resolucao, ano FROM questoes WHERE concurso = 'ENEM'"; // Filtro para concurso ENEM
+$sql = "SELECT id, enunciado, resolucao, ano, materia, concurso FROM questoes WHERE concurso = 'ENEM'"; // Filtro para concurso ENEM
 $result = $conn->query($sql);
 $feedback = '';
 $mensagem_feedback = '';
@@ -82,67 +82,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
       <div class="row">
         <!-- Coluna das questões -->
         <div class="col-md-8">
-          <?php
+        <?php
           if ($result->num_rows > 0) {
-            $alternativas = ['A', 'B', 'C', 'D', 'E']; 
-            while($row = $result->fetch_assoc()) {
-              $id_questao = $row['id'];
-              $ano_questao = $row['ano']; // Pegando o ano da questão
-              echo "<div class='questao' data-ano='$ano_questao' data-enunciado='" . strtolower($row['enunciado']) . "'>"; // Adicionando o atributo data-enunciado
-              
+              $alternativas = ['A', 'B', 'C', 'D', 'E']; 
+              while ($row = $result->fetch_assoc()) {
+                  $id_questao = $row['id'];
+                  $ano_questao = $row['ano']; // Pegando o ano da questão
+                  $materia_questao = $row['materia']; // Pegando a matéria da questão
+                  $concurso_questao = $row['concurso']; // Pegando o concurso da questão
 
-              // Enunciado da questão
-              echo "<h4 class='mb-3'>" . htmlspecialchars($row['enunciado']) . "</h4>";
-              
-              $alt_sql = "SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?";
-              $stmt = $conn->prepare($alt_sql);
-              $stmt->bind_param("i", $id_questao);
-              $stmt->execute();
-              $alt_result = $stmt->get_result();
-              
-              // Formulário de resposta
-              echo "<form method='POST' action=''>"; 
-              echo "<input type='hidden' name='id_questao' value='" . $id_questao . "'>";
-              
-              // Alternativas
-              echo "<div class='alternativas'>";
-              $letra_index = 0;
-              while ($alt_row = $alt_result->fetch_assoc()) {
-                $letra = $alternativas[$letra_index];
-                echo "<div class='alternativa d-flex align-items-center'>";
-                echo "<input type='radio' id='alternativa" . $letra . "' name='resposta' value='" . $alt_row['id'] . "' class='mr-2'>";
-                echo "<strong>" . $letra . ". " . htmlspecialchars($alt_row['texto']) . "</strong>";
-                echo "</div>";
-                $letra_index++;
+                  echo "<div class='questao' data-ano='$ano_questao' data-enunciado='" . strtolower($row['enunciado']) . "'>"; // Adicionando o atributo data-enunciado
+
+                  // Exibir o concurso, a matéria e o ano da questão no topo, como botões
+                  echo "<div class='concurso-materia-ano'>";
+                  echo "<span class='concurso btn btn-info mr-2'>" . htmlspecialchars($concurso_questao) . "</span>  "; 
+                  echo "<span class='materia btn btn-secondary mr-2'>" . htmlspecialchars($materia_questao) . "</span>  "; 
+                  echo "<span class='ano btn btn-secondary'>" . htmlspecialchars($ano_questao) . "</span>"; 
+                  echo "</div>";
+                  
+                  // Enunciado da questão
+                  echo "<h4 class='enunciado mb-3'>" . htmlspecialchars($row['enunciado']) . "</h4>";
+
+                  // Alternativas
+                  $alt_sql = "SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?";
+                  $stmt = $conn->prepare($alt_sql);
+                  $stmt->bind_param("i", $id_questao);
+                  $stmt->execute();
+                  $alt_result = $stmt->get_result();
+                  
+                  // Formulário de resposta
+                  echo "<form method='POST' action=''>"; 
+                  echo "<input type='hidden' name='id_questao' value='" . $id_questao . "'>";
+                  
+                  echo "<div class='alternativas'>";
+                  $letra_index = 0;
+                  while ($alt_row = $alt_result->fetch_assoc()) {
+                      $letra = $alternativas[$letra_index];
+                      echo "<div class='alternativa d-flex align-items-center'>";
+                      echo "<input type='radio' id='alternativa" . $letra . "' name='resposta' value='" . $alt_row['id'] . "' class='mr-2'>";
+                      echo "<strong>" . $letra . ". " . htmlspecialchars($alt_row['texto']) . "</strong>";
+                      echo "</div>";
+                      $letra_index++;
+                  }
+                  echo "</div>";
+
+                  // Botões de envio, resolução e vídeo
+                  echo "<button type='submit' class='btn btn-primary mt-3 btn-sm'>Responder</button>";
+                  echo "<button type='button' class='btn btn-info mt-3 ml-2 btn-sm' onclick='mostrarResolucao(" . $id_questao . ")'>Ver Resolução</button>";
+                  echo "<button type='button' class='btn btn-danger mt-3 ml-2 btn-sm' onclick='verVideo(" . $id_questao . ")'>Vídeo</button>";
+                  echo "</form>";
+
+                  // Bloco de resolução que ficará oculto até o clique
+                  echo "<div id='resolucao-" . $id_questao . "' class='resolucao mt-3' style='display:none;'>";
+                  echo "<h5>Resolução:</h5>";
+                  echo "<p>" . htmlspecialchars($row['resolucao']) . "</p>";
+                  echo "</div>";
+
+                  // Adicionando o bloco de vídeo
+                  echo "<div id='video-" . $id_questao . "' class='video mt-3' style='display:none;'>";
+                  echo "<h5>Vídeo:</h5>";
+
+                  // Aqui você coloca o link correto do vídeo, seja ele no YouTube, Vimeo, ou qualquer outra plataforma.
+                  $video_url = "https://www.youtube.com/watch?v=example"; // Substitua esse link pelo link real do vídeo
+                  echo "<a href='$video_url' target='_blank' class='btn btn-primary'>Clique aqui para assistir ao vídeo</a>";
+                  echo "</div>";
+
+                  echo "</div>"; // Fim da questão
               }
-              echo "</div>";
 
-              // Botões de envio, resolução e vídeo
-              echo "<button type='submit' class='btn btn-primary mt-3 btn-sm'>Responder</button>";
-              echo "<button type='button' class='btn btn-info mt-3 ml-2 btn-sm' onclick='mostrarResolucao(" . $id_questao . ")'>Ver Resolução</button>";
-              echo "<button type='button' class='btn btn-danger mt-3 ml-2 btn-sm' onclick='verVideo(" . $id_questao . ")'>Vídeo</button>";
-              echo "</form>";
-
-              // Bloco de resolução que ficará oculto até o clique
-              echo "<div id='resolucao-" . $id_questao . "' class='resolucao mt-3' style='display:none;'>";
-              echo "<h5>Resolução:</h5>";
-              echo "<p>" . htmlspecialchars($row['resolucao']) . "</p>";
-              echo "</div>";
-
-              // Adicionando o bloco de vídeo
-              echo "<div id='video-" . $id_questao . "' class='video mt-3' style='display:none;'>";
-              echo "<h5>Vídeo:</h5>";
-
-              // Aqui você coloca o link correto do vídeo, seja ele no YouTube, Vimeo, ou qualquer outra plataforma.
-              $video_url = "https://www.youtube.com/watch?v=example"; // Substitua esse link pelo link real do vídeo
-              echo "<a href='$video_url' target='_blank' class='btn btn-primary'>Clique aqui para assistir ao vídeo</a>";
-              echo "</div>";
-
-
-              echo "</div>"; // Fim da questão
-            }
           } else {
-            echo "<p>Não há questões disponíveis no momento.</p>";
+              echo "<p>Não há questões disponíveis no momento.</p>";
           }
           ?>
         </div>
@@ -162,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
         <div class="btn-group-vertical">
           <?php
           for ($ano = 2015; $ano <= 2024; $ano++) {
-            echo "<button type='button' class='btn btn-ano btn-sm' onclick='filterByYear($ano)'>$ano</button>";
+            echo "<button type='button' class='btn btn-ano' onclick='filterByYear($ano)'>$ano</button>";
           }
           ?>
         </div>
@@ -180,10 +189,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
     const forms = document.querySelectorAll("form");
     forms.forEach((form) => {
       form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Impede o comportamento padrão de recarregar a página
+        event.preventDefault(); 
         const formData = new FormData(form);
-
-        // Enviar dados via AJAX
         fetch(form.action, {
           method: "POST",
           body: formData,
@@ -215,51 +222,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
           });
       });
     });
+    filterByText();
+    document.querySelector("#searchEnunciado").focus();
   });
-    
-    document.addEventListener("DOMContentLoaded", function() {
-        filterByText();
-        document.querySelector("#searchEnunciado").focus();
-    });
-
-    function mostrarResolucao(id) {
-        var resolucao = document.getElementById('resolucao-' + id);
-        resolucao.style.display = resolucao.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function verVideo(id) {
-  var videoDiv = document.getElementById('video-' + id);
-  if (videoDiv.style.display === 'none') {
-    videoDiv.style.display = 'block';
-  } else {
-    videoDiv.style.display = 'none';
+  function mostrarResolucao(id) {
+    var resolucao = document.getElementById('resolucao-' + id);
+    resolucao.style.display = resolucao.style.display === 'none' ? 'block' : 'none';
   }
-}
-    function filterByText() {
-      var input = document.getElementById('searchEnunciado');
-      var filter = input.value.toLowerCase();
-      var questoes = document.querySelectorAll('.questao');
-      questoes.forEach(function(questao) {
-        var enunciado = questao.getAttribute('data-enunciado');
-        if (enunciado.includes(filter)) {
-          questao.style.display = '';
-        } else {
-          questao.style.display = 'none';
-        }
-      });
+  function verVideo(id) {
+    var videoDiv = document.getElementById('video-' + id);
+    if (videoDiv.style.display === 'none') {
+      videoDiv.style.display = 'block';
+    } else {
+      videoDiv.style.display = 'none';
     }
-
-    function filterByYear(ano) {
-      var questoes = document.querySelectorAll('.questao');
-      questoes.forEach(function(questao) {
-        var questaoAno = questao.getAttribute('data-ano');
-        if (questaoAno == ano) {
-          questao.style.display = '';
-        } else {
-          questao.style.display = 'none';
-        }
-      });
-    }
+  }
+  function filterByText() {
+    var input = document.getElementById('searchEnunciado');
+    var filter = input.value.toLowerCase();
+    var questoes = document.querySelectorAll('.questao');
+    questoes.forEach(function (questao) {
+      var enunciado = questao.querySelector('.enunciado').textContent.toLowerCase();
+      var materia = questao.querySelector('.materia').textContent.toLowerCase();
+      
+      if (enunciado.includes(filter) || materia.includes(filter)) {
+        questao.style.display = '';
+      } else {
+        questao.style.display = 'none';
+      }
+    });
+  }
+  function filterByYear(ano) {
+    var input = document.getElementById('searchEnunciado');
+    var filter = input.value.toLowerCase();
+    var questoes = document.querySelectorAll('.questao');
+    questoes.forEach(function (questao) {
+      var questaoAno = questao.getAttribute('data-ano');
+      var enunciado = questao.querySelector('.enunciado').textContent.toLowerCase();
+      var materia = questao.querySelector('.materia').textContent.toLowerCase();
+      if ((questaoAno == ano) && (enunciado.includes(filter) || materia.includes(filter))) {
+        questao.style.display = '';
+      } else {
+        questao.style.display = 'none';
+      }
+    });
+  }
   </script>
 </body>
 </html>
