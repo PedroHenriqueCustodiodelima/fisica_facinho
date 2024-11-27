@@ -1,6 +1,54 @@
 <?php
-include("funcoes_php/funcoes_inicio.php");
+include("funcoes_php/funcoes_inicio.php"); // Conexão com o banco de dados
+
+// Variáveis para armazenar as mensagens de sucesso ou erro
+$sucesso = '';
+$erro = '';
+
+// Verifique se o usuário está autenticado (isso depende da lógica de autenticação da sua aplicação)
+if (!isset($_SESSION['usuario_id'])) {
+    $erro = "Usuário não autenticado. Faça login para enviar a mensagem.";
+} else {
+    $user_id = $_SESSION['usuario_id']; // ID do usuário autenticado
+}
+
+// Processamento do envio da mensagem
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $mensagem = $_POST['mensagem'];
+
+    // Validação simples dos campos
+    if (!empty($nome) && !empty($email) && !empty($mensagem)) {
+        // Prepara a consulta SQL para inserir os dados no banco de dados
+        $sql = "INSERT INTO mensagens_suporte (user_id, nome, email, mensagem) VALUES (?, ?, ?, ?)";
+
+        // Usa a função prepared statements para evitar SQL Injection
+        if ($stmt = $conn->prepare($sql)) {
+            // Bind dos parâmetros
+            $stmt->bind_param("isss", $user_id, $nome, $email, $mensagem);
+
+            // Executa a consulta
+            if ($stmt->execute()) {
+                $sucesso = "Sua mensagem foi enviada com sucesso!";
+            } else {
+                $erro = "Erro ao salvar a mensagem. Tente novamente mais tarde.";
+            }
+
+            // Fecha a declaração
+            $stmt->close();
+        } else {
+            $erro = "Erro na preparação da consulta. Tente novamente mais tarde.";
+        }
+    } else {
+        $erro = "Por favor, preencha todos os campos.";
+    }
+}
+
+// Fechar a conexão com o banco de dados
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,6 +75,32 @@ include("funcoes_php/funcoes_inicio.php");
     <main class="container mt-4">
       <h1>Central de Ajuda</h1>
       <p>Bem-vindo à central de ajuda. Aqui você pode encontrar respostas para suas dúvidas ou aprender a utilizar os recursos do nosso sistema.</p>
+
+      <!-- Exibindo Mensagens de Sucesso ou Erro -->
+      <?php if ($sucesso): ?>
+        <div class="alert alert-success"><?php echo $sucesso; ?></div>
+      <?php endif; ?>
+      <?php if ($erro): ?>
+        <div class="alert alert-danger"><?php echo $erro; ?></div>
+      <?php endif; ?>
+
+      <!-- Formulário de Contato -->
+      <h2>Envie sua mensagem para o Suporte</h2>
+      <form action="" method="POST">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+      </form>
 
       <h2>Perguntas Frequentes</h2>
       <div class="accordion" id="faqAccordion">
