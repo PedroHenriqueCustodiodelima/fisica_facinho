@@ -32,14 +32,16 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
     </div>
     <main>
     <div class="container">
-    <div class="card mb-4 mx-auto" style="max-width: 800px; width: 95%;">
+    <div class="card mb-4 mx-auto" >
         <div class="card-body">
             <h2 class="text-dark">Grandezas e Vetores</h2>
             <p class="text-dark">Grandezas físicas são características ou propriedades dos corpos ou fenômenos que podem ser medidas ou quantificadas. Em Física, as grandezas são classificadas em duas categorias principais:</p>
             <ul class="text-dark">
+           
                 <li><b>Grandezas escalares:</b> possuem apenas módulo (valor numérico) e unidade de medida. Exemplos: massa, temperatura, tempo, comprimento, energia.</li>
                 <li><b>Grandezas vetoriais:</b> possuem módulo, direção e sentido. Exemplos: força, velocidade, aceleração, campo elétrico, deslocamento.</li>
-            </ul>
+            </ul>  
+             <img class="col-12" src="../img/rb_98941.png" style="margin: 10px;" alt="">
             <h3 class="text-dark">Vetores</h3>
             <p class="text-dark">Os vetores são representações matemáticas usadas para descrever grandezas vetoriais. Cada vetor é caracterizado por:</p>
             <ul class="text-dark">

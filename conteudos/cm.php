@@ -32,26 +32,27 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
     </div>
     <main>
     <div class="container">
-    <div class="card mb-4 mx-auto" style="max-width: 800px; width: 95%;">
+    <div class="card mb-4 mx-auto" >
         <div class="card-body">
-            <h2 class="text-dark">Cinemática - Identificando Movimentos</h2>
+            <h1 class="text-dark">Cinemática - Identificando Movimentos</h1>
             <p class="text-dark">Identificar o tipo de movimento de um objeto é fundamental para entender as leis que regem sua trajetória e as forças que atuam sobre ele. A cinemática estuda esses movimentos e nos ajuda a classificá-los em diferentes categorias. Abaixo, apresentamos os principais tipos de movimento:</p>
             
-            <h3 class="text-dark">Movimento Retilíneo Uniforme (MRU)</h3>
+            <h3 class="text-dark"><b>  Movimento Retilíneo Uniforme (MRU)</b></h3>
             <p class="text-dark">No movimento retilíneo uniforme (MRU), o objeto se desloca ao longo de uma linha reta com velocidade constante, ou seja, a velocidade não varia com o tempo.</p>
             <ul class="text-dark">
                 <li><b>Equação do MRU:</b> s = s₀ + vt</li>
                 <li><b>Exemplo:</b> Um carro se movendo a 60 km/h em linha reta, sem aceleração.</li>
             </ul>
+            <img class="col-8" src="../img/1613602850601-Oi5fl393JZ.png" alt="">
 
-            <h3 class="text-dark">Movimento Retilíneo Uniformemente Acelerado (MRUA)</h3>
+            <h3 class="text-dark"><b> Movimento Retilíneo Uniformemente Acelerado (MRUA)</b> </h3>
             <p class="text-dark">No movimento retilíneo uniformemente acelerado (MRUA), o objeto se move ao longo de uma linha reta, mas sua velocidade varia de maneira constante devido a uma aceleração constante.</p>
             <ul class="text-dark">
                 <li><b>Equação do MRUA:</b> s = s₀ + V₀t + (1/2)at²</li>
                 <li><b>Exemplo:</b> Um carro acelerando constantemente de 0 a 100 km/h.</li>
             </ul>
 
-            <h3 class="text-dark">Movimento Circular</h3>
+            <h3 class="text-dark"><b>  Movimento Circular</b></h3>
             <p class="text-dark">No movimento circular, um objeto se desloca ao longo de uma trajetória circular. Este tipo de movimento pode ser uniforme (com velocidade constante) ou acelerado (com aceleração centrípeta).</p>
             <ul class="text-dark">
                 <li><b>Movimento Circular Uniforme (MCU):</b> O objeto se move ao longo de uma circunferência com velocidade constante.</li>
@@ -59,13 +60,14 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
                 <li><b>Exemplo:</b> A rotação de uma roda de bicicleta (MCU) ou o movimento de um satélite em órbita (MCA).</li>
             </ul>
 
-            <h3 class="text-dark">Movimento Oscilatório</h3>
+            <h3 class="text-dark"><b> Movimento Oscilatório</b> </h3>
             <p class="text-dark">O movimento oscilatório é caracterizado por um objeto que se move repetidamente em torno de uma posição de equilíbrio. Esse movimento é frequente em sistemas com forças restauradoras, como a mola ou o pêndulo.</p>
             <ul class="text-dark">
+            <img class="col-8" src="../img/Figura-2-Movimento-oscilatorio-constante-em-forma-de-sino-produzido-pelas-plataformas.png" alt="">
                 <li><b>Exemplo:</b> O movimento de um pêndulo simples ou a vibração de uma corda de violão.</li>
             </ul>
 
-            <h3 class="text-dark">Como Identificar o Tipo de Movimento?</h3>
+            <h3 class="text-dark"><b>  Como Identificar o Tipo de Movimento?</b></h3>
             <p class="text-dark">Para identificar o tipo de movimento, é necessário analisar o gráfico de posição versus tempo do objeto, a variação da sua velocidade ao longo do tempo e as forças que atuam sobre ele. Aqui estão algumas dicas:</p>
             <ul class="text-dark">
                 <li><b>MRU:</b> O gráfico de posição versus tempo é uma linha reta com inclinação constante.</li>
@@ -75,7 +77,7 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
             </ul>
             <p class="text-dark">Com essas análises, você pode classificar os movimentos e entender melhor como os corpos se comportam nas mais variadas situações.</p>
 
-            <h3 class="text-dark">Exemplo de Identificação de Movimento</h3>
+            <h3 class="text-dark"><b> Exemplo de Identificação de Movimento </b></h3>
             <p class="text-dark">Imagine que você está observando um carro que acelera de 0 a 100 km/h em 10 segundos, e em seguida mantém essa velocidade constante por 20 segundos. Esse movimento pode ser classificado como:</p>
             <ul class="text-dark">
                 <li><b>MRUA:</b> Durante a aceleração de 0 a 100 km/h.</li>

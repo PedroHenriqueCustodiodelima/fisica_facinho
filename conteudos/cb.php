@@ -34,7 +34,7 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
     <div class="container">
     <div class="card mb-4 mx-auto" style="max-width: 800px; width: 95%;">
         <div class="card-body">
-            <h2 class="text-dark">Cinemática - Conceitos Básicos</h2>
+            <h2 class="text-dark"> <b>  Cinemática -  </b> <p>  Conceitos Básicos</p></h2>
             <p class="text-dark">A cinemática é uma das áreas da física que estuda o movimento dos corpos sem se preocupar com as causas que os geram. Ela analisa como os objetos se deslocam no espaço e no tempo, focando principalmente nas grandezas que descrevem o movimento. As principais grandezas estudadas na cinemática são:</p>
             <ul class="text-dark">
                 <li><b>Posição:</b> a localização de um objeto em um determinado instante de tempo.</li>
@@ -42,6 +42,7 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
                 <li><b>Velocidade:</b> a taxa de variação do deslocamento em relação ao tempo. Pode ser média ou instantânea.</li>
                 <li><b>Aceleração:</b> a taxa de variação da velocidade em relação ao tempo. Pode ser média ou instantânea.</li>
             </ul>
+            <img class="col-12" src="../img/34278.jpg" style="margin: 10px;" alt="">
             <h3 class="text-dark">Equações da Cinemática</h3>
             <p class="text-dark">As equações da cinemática são utilizadas para descrever o movimento de um corpo em função do tempo. A principal equação utilizada no estudo do movimento retilíneo uniformemente acelerado (MRUA) é:</p>
             <ul class="text-dark">
@@ -55,6 +56,7 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
                 <li><b>Movimento Retilíneo Uniformemente Acelerado (MRUA):</b> movimento ao longo de uma linha reta, com aceleração constante.</li>
                 <li><b>Movimento Circular:</b> movimento ao longo de uma trajetória circular, com ou sem aceleração.</li>
             </ul>
+            <img class="col-12" src="../img/Captura de tela 2024-11-28 082810.png"  alt="">
             <p class="text-dark">Esses tipos de movimento são importantes para entender as diversas situações no estudo do movimento dos corpos. Por exemplo, o movimento de um carro em uma estrada (MRU) ou o movimento de uma bola lançada para cima (MRUA).</p>
             <h3 class="text-dark">Importância da Cinemática</h3>
             <p class="text-dark">A cinemática é fundamental para compreender a dinâmica dos corpos e é aplicada em muitas áreas da física, como:</p>
