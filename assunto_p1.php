@@ -9,8 +9,7 @@ include("funcoes_php/funcoes_inicio.php");
   <title>Configurações</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="css/inicio.css">
+  <link rel="stylesheet" href="css/assunto.css">
 </head>
 <body>
   <div class="page-container">
@@ -31,8 +30,12 @@ include("funcoes_php/funcoes_inicio.php");
               <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
           </a>
         </div>
-        <div class="row justify-content-center">
-          <!-- Cards com os títulos que você pediu -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Atividades</h2>
+          <i class="fa-solid fa-arrow-up-a-z" id="sort-icon" style="font-size: 2rem; cursor: pointer;"></i> <!-- Ícone atualizado e maior -->
+        </div>
+
+        <div class="row justify-content-center" id="card-container">
           <?php
           $cards = [
             "Introdução à Física" => ["icon" => "fa-lightbulb", "color" => "bg-warning", "page" => "atividades/introducao_fisica.php"],
@@ -55,7 +58,7 @@ include("funcoes_php/funcoes_inicio.php");
 
           foreach ($cards as $title => $cardDetails) {
             echo '
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3 card-item" data-title="' . $title . '">
               <a href="' . $cardDetails['page'] . '" class="card-link">
                 <div class="card ' . $cardDetails['color'] . '">
                   <div class="icon-part">
@@ -79,12 +82,36 @@ include("funcoes_php/funcoes_inicio.php");
     </footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="js/inicio.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const sortIcon = document.getElementById("sort-icon");
+      const cardContainer = document.getElementById("card-container");
+      let ascending = true;
+
+      sortIcon.addEventListener("click", function () {
+        const cards = Array.from(cardContainer.getElementsByClassName("card-item"));
+        cards.sort((a, b) => {
+          const titleA = a.getAttribute("data-title").toLowerCase();
+          const titleB = b.getAttribute("data-title").toLowerCase();
+          return ascending ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
+        });
+
+        cards.forEach(card => cardContainer.appendChild(card));
+        ascending = !ascending;
+        
+        // Alternando entre as classes do ícone
+        if (ascending) {
+          sortIcon.classList.add("fa-arrow-up-a-z");
+          sortIcon.classList.remove("fa-arrow-down-a-z");
+        } else {
+          sortIcon.classList.add("fa-arrow-down-a-z");
+          sortIcon.classList.remove("fa-arrow-up-a-z");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

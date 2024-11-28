@@ -183,3 +183,9 @@ ul li a {
 ul li a:hover {
     color: #004d99;
 }
+footer {
+    background-color: #001A4E;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }

@@ -1,52 +1,6 @@
 <?php
-include("funcoes_php/funcoes_inicio.php"); // Conexão com o banco de dados
+include("funcoes_php/funcoes_suporte.php"); 
 
-// Variáveis para armazenar as mensagens de sucesso ou erro
-$sucesso = '';
-$erro = '';
-
-// Verifique se o usuário está autenticado (isso depende da lógica de autenticação da sua aplicação)
-if (!isset($_SESSION['usuario_id'])) {
-    $erro = "Usuário não autenticado. Faça login para enviar a mensagem.";
-} else {
-    $user_id = $_SESSION['usuario_id']; // ID do usuário autenticado
-}
-
-// Processamento do envio da mensagem
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $mensagem = $_POST['mensagem'];
-
-    // Validação simples dos campos
-    if (!empty($nome) && !empty($email) && !empty($mensagem)) {
-        // Prepara a consulta SQL para inserir os dados no banco de dados
-        $sql = "INSERT INTO mensagens_suporte (user_id, nome, email, mensagem) VALUES (?, ?, ?, ?)";
-
-        // Usa a função prepared statements para evitar SQL Injection
-        if ($stmt = $conn->prepare($sql)) {
-            // Bind dos parâmetros
-            $stmt->bind_param("isss", $user_id, $nome, $email, $mensagem);
-
-            // Executa a consulta
-            if ($stmt->execute()) {
-                $sucesso = "Sua mensagem foi enviada com sucesso!";
-            } else {
-                $erro = "Erro ao salvar a mensagem. Tente novamente mais tarde.";
-            }
-
-            // Fecha a declaração
-            $stmt->close();
-        } else {
-            $erro = "Erro na preparação da consulta. Tente novamente mais tarde.";
-        }
-    } else {
-        $erro = "Por favor, preencha todos os campos.";
-    }
-}
-
-// Fechar a conexão com o banco de dados
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -89,11 +43,7 @@ $conn->close();
       <form action="" method="POST">
         <div class="form-group">
           <label for="nome">Nome</label>
-          <input type="text" id="nome" name="nome" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" class="form-control" required>
+          <input type="text" id="nome" name="nome" class="form-control" value="<?php echo htmlspecialchars($nomeUsuario); ?>" required>
         </div>
         <div class="form-group">
           <label for="mensagem">Mensagem</label>
@@ -104,48 +54,7 @@ $conn->close();
 
       <h2>Perguntas Frequentes</h2>
       <div class="accordion" id="faqAccordion">
-        <div class="card">
-          <div class="card-header" id="headingOne">
-            <h5 class="mb-0">
-              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Como faço para atualizar meu perfil?
-              </button>
-            </h5>
-          </div>
-          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#faqAccordion">
-            <div class="card-body">
-              Para atualizar seu perfil, basta clicar no ícone de perfil no canto superior direito e acessar a seção de configurações. Você poderá alterar seu nome, e-mail e foto de perfil.
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="headingTwo">
-            <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Onde posso encontrar os relatórios gerados?
-              </button>
-            </h5>
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
-            <div class="card-body">
-              Os relatórios gerados estão disponíveis na seção "Relatórios" do menu principal. Lá você pode visualizar e exportar todos os relatórios em formato PDF ou Excel.
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="headingThree">
-            <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Como faço para entrar em contato com o suporte?
-              </button>
-            </h5>
-          </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
-            <div class="card-body">
-              Para entrar em contato com o suporte, clique no ícone de chat no canto inferior direito ou envie um e-mail para suporte@exemplo.com.
-            </div>
-          </div>
-        </div>
+        <!-- Perguntas Frequentes aqui -->
       </div>
 
       <h2>Guia Rápido</h2>
@@ -158,7 +67,34 @@ $conn->close();
     </main>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Exibe a mensagem de sucesso ou erro com SweetAlert2
+    <?php if ($sucesso): ?>
+      Swal.fire({
+        icon: 'success',
+        title: 'Mensagem enviada!',
+        text: '<?php echo $sucesso; ?>',
+        confirmButtonText: 'Ok'
+      }).then(() => {
+        // Redireciona após a exibição da mensagem
+        window.location.href = window.location.href;
+      });
+    <?php elseif ($erro): ?>
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro!',
+        text: '<?php echo $erro; ?>',
+        confirmButtonText: 'Ok'
+      });
+    <?php endif; ?>
+  </script>
+
+  <footer>
+    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

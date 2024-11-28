@@ -16,18 +16,19 @@ header {
 
 .perfil-header p,
 .perfil-header #usuario-nome {
-  color: white; /* Garantindo que o texto do perfil também fique visível */
+  color: white; 
 }
 
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Garante que ocupe a altura total */
+  min-height: 100vh; 
 }
 
 main.container {
-  flex-grow: 1; /* Faz o conteúdo crescer para ocupar o espaço restante */
+  flex-grow: 1; 
   margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 footer {
@@ -38,7 +39,7 @@ footer {
 }
 #avatar-imagem {
   border-radius: 50%;
-  object-fit: cover; /* Garante que a imagem se ajuste corretamente dentro do círculo */
+  object-fit: cover; 
 }
 
 .container {
@@ -54,7 +55,7 @@ footer {
   margin-bottom: 20px;
   color: #001A4E;
   border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma leve sombra */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .card:hover {
@@ -113,15 +114,15 @@ footer {
   margin-top: 5px;
 }
 .rank-card .icon-part {
-  background-color: #6a4c93; /* Cor personalizada para o card de Rank */
+  background-color: #6a4c93; 
 }
 
 .videos-card .icon-part {
-  background-color: #42a5f5; /* Cor personalizada para o card de Vídeos */
+  background-color: #42a5f5; 
 }
 
 .relatorio-card .icon-part {
-  background-color: #ffca28; /* Cor personalizada para o card de Relatório */
+  background-color: #ffca28;
 }
 
 .suporte-card .icon-part {
@@ -129,17 +130,36 @@ footer {
 }
 
 .primeiro-ano-card .icon-part {
-  background-color: #f4a261; /* Cor do primeiro ano */
+  background-color: #f4a261; 
 }
 
 .segundo-ano-card .icon-part {
-  background-color: #e76f51; /* Cor do segundo ano */
+  background-color: #e76f51; 
 }
 
 .terceiro-ano-card .icon-part {
-  background-color: #d62828; /* Cor do terceiro ano */
+  background-color: #d62828; 
 }
 
 .quarto-ano-card .icon-part {
-  background-color: #2a9d8f; /* Cor do quarto ano */
+  background-color: #2a9d8f; 
 }
+.row.justify-content-center {
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+}
+
+.card {
+  flex: 0 0 calc(33.333% - 20px); 
+  margin: 10px; 
+}
+#sort-icon {
+  position: absolute; 
+  top: -20px; 
+  right: -130px; 
+  cursor: pointer;
+  font-size: 2rem;
+  z-index: 100; 
+}
+

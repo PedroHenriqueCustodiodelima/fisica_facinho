@@ -1,0 +1,101 @@
+<?php
+session_start();
+
+require_once __DIR__ . '/../conexao.php';
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$usuario_id = $_SESSION['usuario_id'];
+
+$imagemPerfil = 'img/default-avatar.png'; // Imagem padrão
+$nomeUsuario = 'Usuário';
+
+$stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $usuario_id);  // Usar $usuario_id para pegar o email do usuário
+$stmt->execute();
+$result = $stmt->get_result();
+$email = $result->fetch_assoc()['email'] ?? '';
+
+if (strpos($email, 'edu.br') !== false) {
+    $stmt = $conn->prepare("SELECT foto, nome, imagem FROM professores WHERE id = ?");
+} else {
+    $stmt = $conn->prepare("SELECT foto, nome, imagem FROM usuarios WHERE id = ?");
+}
+
+$stmt->bind_param("i", $usuario_id);  // Continuar usando o $usuario_id
+$stmt->execute();
+$result = $stmt->get_result();
+$usuario = $result->fetch_assoc();
+
+if ($usuario) {
+    $imagemPerfil = !empty($usuario['foto']) ? $usuario['foto'] : $usuario['imagem'] ?? $imagemPerfil;
+    $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
+}
+
+$sucesso = '';
+$erro = '';
+
+// Processamento do envio da mensagem
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $nome = $_POST['nome'];
+  $mensagem = $_POST['mensagem'];
+
+  // Validação simples dos campos
+  if (!empty($nome) && !empty($mensagem)) {
+      // Buscar o email do usuário na tabela 'usuarios' (já está sendo feito corretamente acima)
+      $sql_email = "SELECT email FROM usuarios WHERE id = ?";
+      if ($stmt = $conn->prepare($sql_email)) {
+          // Bind do parâmetro
+          $stmt->bind_param("i", $usuario_id);  // Usar $usuario_id corretamente
+
+          // Executa a consulta
+          if ($stmt->execute()) {
+              $stmt->store_result();
+              $stmt->bind_result($email_usuario);
+
+              // Verifica se o email foi encontrado
+              if ($stmt->fetch()) {
+                  // Prepara a consulta SQL para inserir os dados no banco de dados
+                  $sql = "INSERT INTO mensagens_suporte (id_usuario, nome, email, mensagem) VALUES (?, ?, ?, ?)";
+
+                  // Usa a função prepared statements para evitar SQL Injection
+                  if ($stmt_insert = $conn->prepare($sql)) {
+                      // Bind dos parâmetros
+                      $stmt_insert->bind_param("isss", $usuario_id, $nome, $email_usuario, $mensagem);
+
+                      // Executa a consulta
+                      if ($stmt_insert->execute()) {
+                          // Após o envio da mensagem, exibe a mensagem de sucesso
+                          $sucesso = "Sua mensagem foi enviada com sucesso!";
+                      } else {
+                          $erro = "Erro ao salvar a mensagem. Tente novamente mais tarde.";
+                      }
+
+                      // Fecha a declaração de inserção
+                      $stmt_insert->close();
+                  } else {
+                      $erro = "Erro na preparação da consulta. Tente novamente mais tarde.";
+                  }
+              } else {
+                  $erro = "Não foi possível recuperar o email do usuário.";
+              }
+
+              // Fecha a declaração de busca do email
+              $stmt->close();
+          } else {
+              $erro = "Erro ao recuperar o email do usuário.";
+          }
+      } else {
+          $erro = "Erro na preparação da consulta para buscar o email. Tente novamente mais tarde.";
+      }
+  } else {
+      $erro = "Por favor, preencha todos os campos.";
+  }
+}
+
+// Fechar a conexão com o banco de dados
+$conn->close();
+?>
