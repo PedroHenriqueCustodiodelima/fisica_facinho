@@ -26,7 +26,6 @@ include("funcoes_php/funcoes_eear.php");
     </header>
     <main class="container mt-4">
       <div class="row">
-        <!-- Coluna das questões -->
         <div class="col-md-8">
         <?php
         if ($result->num_rows > 0) {
