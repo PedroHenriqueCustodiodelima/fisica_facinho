@@ -23,14 +23,13 @@ include("funcoes_php/funcoes_inicio.php");
         <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
       </div>
     </header>
-    
     <main class="container">
-      <div class="container mt-5">
-      <div class="voltar-container mb-4">
+    <div class="voltar-container mb-4">
         <a href="inicio.php" class="custom-link">
             <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
         </a>
     </div>
+    <div class="container mt-5"> 
     <h1>Conteúdos</h1>
     <div class="row justify-content-center">
       <div class="col-md-4 mb-3">

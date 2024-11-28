@@ -1,6 +1,8 @@
 <?php
-include("funcoes_php/funcoes_inicio.php");
+include("funcoes_php/funcoes_suporte.php"); 
+
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -28,50 +30,31 @@ include("funcoes_php/funcoes_inicio.php");
       <h1>Central de Ajuda</h1>
       <p>Bem-vindo à central de ajuda. Aqui você pode encontrar respostas para suas dúvidas ou aprender a utilizar os recursos do nosso sistema.</p>
 
+      <!-- Exibindo Mensagens de Sucesso ou Erro -->
+      <?php if ($sucesso): ?>
+        <div class="alert alert-success"><?php echo $sucesso; ?></div>
+      <?php endif; ?>
+      <?php if ($erro): ?>
+        <div class="alert alert-danger"><?php echo $erro; ?></div>
+      <?php endif; ?>
+
+      <!-- Formulário de Contato -->
+      <h2>Envie sua mensagem para o Suporte</h2>
+      <form action="" method="POST">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" class="form-control" value="<?php echo htmlspecialchars($nomeUsuario); ?>" required>
+        </div>
+        <div class="form-group">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+      </form>
+
       <h2>Perguntas Frequentes</h2>
       <div class="accordion" id="faqAccordion">
-        <div class="card">
-          <div class="card-header" id="headingOne">
-            <h5 class="mb-0">
-              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Como faço para atualizar meu perfil?
-              </button>
-            </h5>
-          </div>
-          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#faqAccordion">
-            <div class="card-body">
-              Para atualizar seu perfil, basta clicar no ícone de perfil no canto superior direito e acessar a seção de configurações. Você poderá alterar seu nome, e-mail e foto de perfil.
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="headingTwo">
-            <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Onde posso encontrar os relatórios gerados?
-              </button>
-            </h5>
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
-            <div class="card-body">
-              Os relatórios gerados estão disponíveis na seção "Relatórios" do menu principal. Lá você pode visualizar e exportar todos os relatórios em formato PDF ou Excel.
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="headingThree">
-            <h5 class="mb-0">
-              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Como faço para entrar em contato com o suporte?
-              </button>
-            </h5>
-          </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
-            <div class="card-body">
-              Para entrar em contato com o suporte, clique no ícone de chat no canto inferior direito ou envie um e-mail para suporte@exemplo.com.
-            </div>
-          </div>
-        </div>
+        <!-- Perguntas Frequentes aqui -->
       </div>
 
       <h2>Guia Rápido</h2>
@@ -84,7 +67,34 @@ include("funcoes_php/funcoes_inicio.php");
     </main>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Exibe a mensagem de sucesso ou erro com SweetAlert2
+    <?php if ($sucesso): ?>
+      Swal.fire({
+        icon: 'success',
+        title: 'Mensagem enviada!',
+        text: '<?php echo $sucesso; ?>',
+        confirmButtonText: 'Ok'
+      }).then(() => {
+        // Redireciona após a exibição da mensagem
+        window.location.href = window.location.href;
+      });
+    <?php elseif ($erro): ?>
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro!',
+        text: '<?php echo $erro; ?>',
+        confirmButtonText: 'Ok'
+      });
+    <?php endif; ?>
+  </script>
+
+  <footer>
+    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

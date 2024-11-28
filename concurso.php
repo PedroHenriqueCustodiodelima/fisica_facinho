@@ -33,11 +33,12 @@ include("funcoes_php/funcoes_inicio.php");
         </div>
         <div class="row justify-content-between align-items-center mb-4">
           <div class="col-md-10">
-            <i class="fa-solid fa-arrow-up-a-z" id="sort-icon"></i>
+          </div>
+          <div class="col-md-2 d-flex justify-content-end">
+          <i class="fa-solid fa-arrow-up-a-z" id="sort-icon" style="color: #001A4E;"></i>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <!-- Linha 1: ENEM, ITA e IME -->
+        <div class="row justify-content-center" id="cards-container">
           <div class="col-md-4 mb-3">
             <a href="enem.php" class="card-link">
               <div class="card enem-card">
@@ -72,14 +73,13 @@ include("funcoes_php/funcoes_inicio.php");
                 </div>
                 <div class="text-part">
                   <h5 class="card-title">IME</h5>
-                  <p class="card-text">Recursos para o Instituto Militar de Engenharia.</p>
+                  <p class="card-text">Instituto Militar de Engenharia.</p>
                 </div>
               </div>
             </a>
           </div>
         </div>
         <div class="row justify-content-center">
-          <!-- Linha 2: EEAR e FUVEST -->
           <div class="col-md-4 mb-3">
             <a href="eear.php" class="card-link">
               <div class="card eear-card">
@@ -123,21 +123,27 @@ include("funcoes_php/funcoes_inicio.php");
       </div>
     </main>
     <script>
+      let sortAscending = true;
       document.getElementById('sort-icon').addEventListener('click', function() {
-        const cards = Array.from(document.querySelectorAll('.card'));
+        const cards = Array.from(document.querySelectorAll('.col-md-4'));
+        const container = document.getElementById('cards-container');
         cards.sort((a, b) => {
           const titleA = a.querySelector('.card-title').textContent.toLowerCase();
           const titleB = b.querySelector('.card-title').textContent.toLowerCase();
-          return titleA.localeCompare(titleB);
+          if (sortAscending) {
+            return titleA.localeCompare(titleB);
+          } else {
+            return titleB.localeCompare(titleA);
+          }
         });
-
-        const container = document.querySelector('.container.mt-5 .row.justify-content-center');
-        container.innerHTML = ''; 
         cards.forEach(card => {
-          container.appendChild(card);
+          container.appendChild(card);  
         });
+        sortAscending = !sortAscending;
+        document.getElementById('sort-icon').classList.toggle('fa-arrow-down-a-z', !sortAscending);
+        document.getElementById('sort-icon').classList.toggle('fa-arrow-up-a-z', sortAscending);
       });
-    </script>
+</script>
   </div>
 </body>
 </html>

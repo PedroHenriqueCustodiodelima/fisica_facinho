@@ -14,28 +14,29 @@ body {
 
 
 /* cabeçalho */
-
 header {
   background-color: #001A4E;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-header img {
-  height: 50px;
+header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
 }
-
-
-
-/* navegadores da página */
-
-
-
-
-
-/* main */
+#avatar-imagem {
+  border-radius: 50%;
+  object-fit: cover; 
+}
+#usuario-nome {
+  margin-left: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
 
 main {
   color: whitesmoke;
@@ -86,14 +87,16 @@ main {
   border-radius: 10px;
   padding: 10px;
 }
-.perfil img {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  border: 3px solid #ffffff;
-  border-radius: 50%; 
-  margin-left: 30px; 
-}  
+#preview-imagem {
+  width: 100px; /* Tamanho do círculo */
+  height: 100px; /* Tamanho do círculo */
+  border-radius: 50%; /* Torna a imagem circular */
+  object-fit: cover; /* Ajusta a imagem ao contêiner mantendo proporções */
+  display: block; /* Garante que o elemento seja tratado como um bloco */
+  margin: 0 auto; /* Centraliza se necessário */
+  border: 2px solid #001A4E; /* Opcional: borda ao redor da imagem */
+}
+
 .perfil p {
   color: #ffffff;
   font-size: 24px;
@@ -115,3 +118,35 @@ main {
   margin-top: 0; 
 }
 
+
+
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+  background-color: #001A4E;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: left;
+}
+
+.modal-body {
+  padding: 30px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.modal-footer {
+  border-top: none;
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: #001A4E;
+  border-color: #001A4E;
+  padding: 10px 20px;
+  font-size: 16px;
+}

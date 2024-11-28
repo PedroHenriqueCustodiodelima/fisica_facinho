@@ -35,7 +35,7 @@ include("funcoes_php/funcoes_desempenho.php");
 
       <div class="row text-center mb-4">
   <div class="col-md-4 d-flex justify-content-center">
-    <div class="card" style="background-color: #007bff; border: none;"> <!-- Card azul -->
+    <div class="card" style="background-color: #007bff; border: none;"> 
       <div class="card-header text-white">
         <i class="fas fa-tasks icon"></i> Tentativas
       </div>
@@ -46,7 +46,7 @@ include("funcoes_php/funcoes_desempenho.php");
     </div>
   </div>
   <div class="col-md-4 d-flex justify-content-center">
-    <div class="card" style="background-color: #28a745; border: none;"> <!-- Card verde -->
+    <div class="card" style="background-color: #28a745; border: none;"> 
       <div class="card-header text-white">
         <i class="fas fa-check-circle icon"></i> Acertos
       </div>
@@ -57,7 +57,7 @@ include("funcoes_php/funcoes_desempenho.php");
     </div>
   </div>
   <div class="col-md-4 d-flex justify-content-center">
-    <div class="card" style="background-color: #dc3545; border: none;"> <!-- Card vermelho -->
+    <div class="card" style="background-color: #dc3545; border: none;"> 
       <div class="card-header text-white">
         <i class="fas fa-times-circle icon"></i> Erros
       </div>
@@ -70,144 +70,89 @@ include("funcoes_php/funcoes_desempenho.php");
 </div>
 
 
-
-      <div class="row mb-4">
-        <div class="col-md-6">
-          <canvas id="myBarChart"></canvas>
-        </div>
-        <div class="col-md-6">
-          <canvas id="myLineChart"></canvas>
-        </div>
-      </div>
-    </main>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const questoes = <?php echo json_encode(array_column($dados_questoes, 'id_questao')); ?>;
-          const tentativas = <?php echo json_encode(array_column($dados_questoes, 'total_tentativas')); ?>;
-          const acertos = <?php echo json_encode(array_column($dados_questoes, 'total_acertos')); ?>;
-          const erros = <?php echo json_encode(array_column($dados_questoes, 'total_erros')); ?>;
-          const ctxBar = document.getElementById('myBarChart').getContext('2d');
-          const ctxLine = document.getElementById('myLineChart').getContext('2d');
-
-          // Gráfico de Barras
-          new Chart(ctxBar, {
-              type: 'bar',
-              data: {
-                  labels: questoes,
-                  datasets: [
-                      {
-                          label: 'Tentativas',
-                          data: tentativas,
-                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                          borderColor: 'rgba(75, 192, 192, 1)',
-                          borderWidth: 1
-                      },
-                      {
-                          label: 'Acertos',
-                          data: acertos,
-                          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                          borderColor: 'rgba(54, 162, 235, 1)',
-                          borderWidth: 1
-                      },
-                      {
-                          label: 'Erros',
-                          data: erros,
-                          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                          borderColor: 'rgba(255, 99, 132, 1)',
-                          borderWidth: 1
-                      }
-                  ]
-              },
-              options: {
-                  responsive: true,
-                  plugins: {
-                      legend: {
-                          position: 'top',
-                      },
-                      tooltip: {
-                          callbacks: {
-                              label: function(tooltipItem) {
-                                  return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
-                              }
-                          }
-                      }
-                  },
-                  scales: {
-                      x: {
-                          stacked: true,
-                      },
-                      y: {
-                          stacked: true,
-                          beginAtZero: true
-                      }
-                  }
-              }
-          });
-
-          // Gráfico de Linhas
-          new Chart(ctxLine, {
-              type: 'line',
-              data: {
-                  labels: questoes,
-                  datasets: [
-                      {
-                          label: 'Tentativas',
-                          data: tentativas,
-                          fill: false,
-                          borderColor: 'rgba(75, 192, 192, 1)',
-                          tension: 0.1
-                      },
-                      {
-                          label: 'Acertos',
-                          data: acertos,
-                          fill: false,
-                          borderColor: 'rgba(54, 162, 235, 1)',
-                          tension: 0.1
-                      },
-                      {
-                          label: 'Erros',
-                          data: erros,
-                          fill: false,
-                          borderColor: 'rgba(255, 99, 132, 1)',
-                          tension: 0.1
-                      }
-                  ]
-              },
-              options: {
-                  responsive: true,
-                  plugins: {
-                      legend: {
-                          position: 'top',
-                      },
-                      tooltip: {
-                          callbacks: {
-                              label: function(tooltipItem) {
-                                  return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
-                              }
-                          }
-                      }
-                  },
-                  scales: {
-                      x: {
-                          title: {
-                              display: true,
-                              text: 'Questões'
-                          }
-                      },
-                      y: {
-                          title: {
-                              display: true,
-                              text: 'Contagem'
-                          },
-                          beginAtZero: true
-                      }
-                  }
-              }
-          });
-      });
-    </script>
+<div class="row mb-4">
+  <div class="col-md-6">
+    <canvas id="myBarChart"></canvas>
   </div>
+  <div class="col-md-6">
+    <canvas id="myLineChart"></canvas>
+  </div>
+</div>
+
+<script>
+  var labels = <?php echo json_encode(array_column($dados_questoes, 'mes_ano')); ?>;  
+  var totalTentativas = <?php echo json_encode(array_column($dados_questoes, 'total_tentativas')); ?>; 
+  var totalAcertos = <?php echo json_encode(array_column($dados_questoes, 'total_acertos')); ?>; 
+  var totalErros = <?php echo json_encode(array_column($dados_questoes, 'total_erros')); ?>;  
+  var ctxBar = document.getElementById('myBarChart').getContext('2d');
+  var barChart = new Chart(ctxBar, {
+    type: 'bar',  
+    data: {
+      labels: labels,  
+      datasets: [{
+        label: 'Total de Tentativas',
+        data: totalTentativas,  
+        backgroundColor: 'rgba(34, 93, 59, 0.8)',  
+        borderColor: 'rgba(34, 93, 59, 1)',  
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Mês/Ano'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Total de Tentativas'
+          }
+        }
+      }
+    }
+  });
+  var ctxLine = document.getElementById('myLineChart').getContext('2d');
+  var lineChart = new Chart(ctxLine, {
+    type: 'line', 
+    data: {
+      labels: labels,  
+      datasets: [{
+        label: 'Total de Acertos',
+        data: totalAcertos,  
+        borderColor: 'rgba(26, 13, 171, 1)',  
+        fill: false,
+        tension: 0.1  
+      }, {
+        label: 'Total de Erros',
+        data: totalErros,  
+        borderColor: 'rgba(186, 12, 47, 1)',  
+        fill: false,
+        tension: 0.1 
+      }]
+    },
+    options: {
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Mês/Ano'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Total'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+</div>
 
   <footer>
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>

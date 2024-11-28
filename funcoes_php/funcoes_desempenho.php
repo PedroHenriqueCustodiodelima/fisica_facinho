@@ -1,9 +1,7 @@
 <?php
 session_start();
 
-
 require_once 'conexao.php';
-
 
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
@@ -12,10 +10,10 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-
 $imagemPerfil = 'img/default-avatar.png';
 $nomeUsuario = 'Usuário';
 
+// Buscar e-mail do usuário
 $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -23,8 +21,10 @@ $result = $stmt->get_result();
 $email = $result->fetch_assoc()['email'] ?? '';
 
 if (strpos($email, 'edu.br') !== false) {
+    // Se for um usuário do tipo professor
     $stmt = $conn->prepare("SELECT foto, nome FROM professores WHERE id = ?");
 } else {
+    // Se for um usuário comum
     $stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
 }
 
@@ -37,18 +37,22 @@ if ($usuario) {
     $imagemPerfil = $usuario['foto'] ?? $imagemPerfil;
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
+
+// Consulta para pegar a quantidade de tentativas, acertos e erros por mês
 $query = "
     SELECT 
-        id_questao,
-        COUNT(*) AS total_tentativas,
-        SUM(CASE WHEN correta = 1 THEN 1 ELSE 0 END) AS total_acertos,
-        SUM(CASE WHEN correta = 0 THEN 1 ELSE 0 END) AS total_erros
+        DATE_FORMAT(data_tentativa, '%Y-%m') AS mes_ano,  -- Formata como 'YYYY-MM'
+        COUNT(*) AS total_tentativas,  -- Conta o total de tentativas
+        SUM(CASE WHEN correta = 1 THEN 1 ELSE 0 END) AS total_acertos,  -- Conta os acertos
+        SUM(CASE WHEN correta = 0 THEN 1 ELSE 0 END) AS total_erros  -- Conta os erros
     FROM 
         tentativas_usuarios
     WHERE 
         id_usuario = ?
     GROUP BY 
-        id_questao;
+        mes_ano
+    ORDER BY 
+        mes_ano;
 ";
 
 $stmt = $conn->prepare($query);
@@ -59,6 +63,7 @@ $result = $stmt->get_result();
 $dados_questoes = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        // Adiciona os dados do mês, tentativas, acertos e erros ao array
         $dados_questoes[] = $row;
     }
 } else {

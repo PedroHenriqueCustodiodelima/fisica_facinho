@@ -1,0 +1,156 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+  }
+  header {
+    background-color: #001A4E;
+    padding: 10px;
+    color: white;
+  }
+  
+  .perfil-header p,
+  .perfil-header #usuario-nome {
+    color: white; 
+  }
+  
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+  }
+  
+  main.container {
+    flex-grow: 1; 
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  
+  footer {
+    background-color: #001A4E;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  #avatar-imagem {
+    border-radius: 50%;
+    object-fit: cover; 
+  }
+  
+  .container {
+    margin-top: 20px;
+  }
+  
+  .card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    color: #001A4E;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .icon-part {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+  }
+  
+  .text-part {
+    width: 70%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #001A4E;
+  }
+  
+  .desempenho-card .icon-part {
+    background-color: #2a9d8f;
+  }
+  
+  .conteudos-card .icon-part {
+    background-color: #264653;
+  }
+  
+  .tarefas-card .icon-part {
+    background-color: #e9c46a;
+  }
+  
+  .missoes-card .icon-part {
+    background-color: #f4a261;
+  }
+  
+  .configuracoes-card .icon-part {
+    background-color: #e76f51;
+  }
+  
+  .sair-card .icon-part {
+    background-color: #d62828;
+  }
+  
+  .card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    margin-top: 5px;
+  }
+  .rank-card .icon-part {
+    background-color: #6a4c93; 
+  }
+  
+  .videos-card .icon-part {
+    background-color: #42a5f5; 
+  }
+  
+  .relatorio-card .icon-part {
+    background-color: #ffca28;
+  }
+  
+  .suporte-card .icon-part {
+    background-color: #66bb6a; /* Cor personalizada para o card de Ajuda */
+  }
+  
+  .primeiro-ano-card .icon-part {
+    background-color: #f4a261; 
+  }
+  
+  .segundo-ano-card .icon-part {
+    background-color: #e76f51; 
+  }
+  
+  .terceiro-ano-card .icon-part {
+    background-color: #d62828; 
+  }
+  
+  .quarto-ano-card .icon-part {
+    background-color: #2a9d8f; 
+  }
+  .row.justify-content-center {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+  }
+  
+  .card {
+    flex: 0 0 calc(33.333% - 20px); 
+    margin: 10px; 
+  }

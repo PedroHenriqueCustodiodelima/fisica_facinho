@@ -11,18 +11,7 @@ include("funcoes_php/funcoes_inicio.php");
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="css/inicio.css">
-  <style>
-    /* Estilo adicional para posicionar o ícone */
-    #sort-icon {
-      float: right; /* Posiciona o ícone à direita */
-      cursor: pointer;
-      font-size: 2rem;
-    }
-    .card {
-      /* Garante que os cards tenham a mesma altura */
-      height: 100%;
-    }
-  </style>
+  <script src="js/inicio.js"></script>
 </head>
 <body>
   <div class="page-container">
@@ -38,12 +27,12 @@ include("funcoes_php/funcoes_inicio.php");
 
     <main class="container">
       <div class="container mt-5">
-        <div class="row justify-content-between align-items-center mb-4">
-          <div class="col-md-10">
-            <!-- O ícone de ordenação agora está flutuando à direita -->
-            <i class="fa-solid fa-arrow-up-a-z" id="sort-icon"></i>
-          </div>
+      <div class="row justify-content-between align-items-center mb-4">
+        <div class="col-md-10">
+          <i class="fa-solid fa-arrow-up-a-z" id="sort-icon"></i>
         </div>
+      </div>
+
         <div class="row justify-content-center">
           <!-- Linha 1: Cards de Conteúdo, Tarefas e Vídeos -->
           <div class="col-md-4 mb-3">
@@ -172,30 +161,9 @@ include("funcoes_php/funcoes_inicio.php");
         </div>
       </div>
     </main>
-    <script>
-      document.getElementById('sort-icon').addEventListener('click', function() {
-        // Obtém todos os cards
-        const cards = Array.from(document.querySelectorAll('.card'));
-        
-        // Ordena os cards pelo título
-        cards.sort((a, b) => {
-            const titleA = a.querySelector('.card-title').textContent.toLowerCase();
-            const titleB = b.querySelector('.card-title').textContent.toLowerCase();
-            return titleA.localeCompare(titleB);
-        });
-
-        // Remove os cards do DOM e armazena na variável
-        const container = document.querySelector('.container.mt-5 .row.justify-content-center');
-        
-        // Limpa o conteúdo atual
-        container.innerHTML = ''; 
-
-        // Reanexa os cards ordenados usando insertBefore
-        cards.forEach(card => {
-            container.appendChild(card); // Isso preserva a formatação original
-        });
-      });
-    </script>
+    <footer>
+      <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+    </footer>
   </div>
 </body>
 </html>

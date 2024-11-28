@@ -7,19 +7,29 @@ if (!isset($usuario)) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
-    $imagem = $_FILES['imagem'];
-    $destino = 'caminho_para_salvar_imagem/' . basename($imagem['name']);
-    
-    // Verificação do tipo e tamanho do arquivo
-    if ($imagem['size'] <= 5000000 && in_array($imagem['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
-        if (move_uploaded_file($imagem['tmp_name'], $destino)) {
-        
+$dadosAtualizados = false;
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Verifica e processa o upload da imagem
+    if (isset($_FILES['imagem'])) {
+        $imagem = $_FILES['imagem'];
+        $destino = 'caminho_para_salvar_imagem/' . basename($imagem['name']);
+
+        if ($imagem['size'] <= 5000000 && in_array($imagem['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
+            if (move_uploaded_file($imagem['tmp_name'], $destino)) {
+                $usuario['foto'] = $destino; // Atualiza a foto no usuário
+            }
         }
-    } else {
-        // Exibe uma mensagem de erro caso o arquivo não seja válido
-        echo "Arquivo inválido ou muito grande.";
     }
+
+    // Processa outros campos
+    $usuario['nome'] = $_POST['nome'] ?? $usuario['nome'];
+    $usuario['email'] = $_POST['email'] ?? $usuario['email'];
+
+    // Aqui você salvaria os dados no banco de dados
+
+    // Sinaliza que os dados foram atualizados
+    $dadosAtualizados = true;
 }
 ?>
 
@@ -32,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="css/configuracoes.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body class="d-flex flex-column" style="min-height: 100vh;"> <!-- Define a altura mínima da página -->
 
@@ -41,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
     </a>
     <div class="perfil-header d-flex align-items-center">
       <img id="avatar-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
-      <p>Olá, <span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span>!</p>
+      <p><span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
     </div>
   </header>
 
@@ -86,9 +97,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
     </div>
   </main>
 
+  <!-- Modal de Feedback -->
+<!-- Adicionando a animação do animate.css -->
+
+
+<div class="modal fade" id="modalFeedback" tabindex="-1" aria-labelledby="modalFeedbackLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content animate__animated animate__zoomIn" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div class="modal-header" style="background-color: #001A4E; color: white; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                <!-- Substituímos o título pelo logo -->
+                <img src="img/logo.png" alt="Logo" width="120px" style="display: block; margin: 0 auto;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 30px; text-align: center; font-size: 18px;">
+                <!-- Ícone de sucesso, pode ser mantido ou alterado -->
+                <i class="fa fa-check-circle" style="font-size: 50px; color: #28a745; margin-bottom: 20px;"></i>
+                <p>Seus dados foram atualizados com sucesso!</p>
+            </div>
+            <div class="modal-footer" style="border-top: none; justify-content: center;">
+                <button type="button" class="btn btn-primary" style="background-color: #001A4E; border-color: #001A4E; padding: 10px 20px; font-size: 16px;" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+v>
+</div>
+
+
   <footer class="mt-auto text-white text-center py-3" style="background-color: #001A4E;">
-  <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-</footer>
+    <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
+  </footer>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -96,6 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['imagem'])) {
     function alterarImagemPerfil() {
       document.getElementById('troca-imagem-form').submit();
     }
+
+    <?php if (!empty($dadosAtualizados)): ?>
+    $(document).ready(function() {
+      $('#modalFeedback').modal('show');
+    });
+    <?php endif; ?>
   </script>
 </body>
 </html>
