@@ -38,7 +38,6 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-// Consulta para pegar a quantidade de tentativas, acertos e erros por mês
 $query = "
     SELECT 
         DATE_FORMAT(data_tentativa, '%Y-%m') AS mes_ano,  -- Formata como 'YYYY-MM'
@@ -67,7 +66,15 @@ if ($result->num_rows > 0) {
         $dados_questoes[] = $row;
     }
 } else {
-    $dados_questoes = null;
+    // Se o usuário não tiver questões resolvidas, atribui valores zerados
+    $dados_questoes = [
+        [
+            'mes_ano' => 'Nenhum dado',  // Pode deixar uma mensagem ou data padrão
+            'total_tentativas' => 0,
+            'total_acertos' => 0,
+            'total_erros' => 0
+        ]
+    ];
 }
 
 $stmt->close();
