@@ -31,6 +31,31 @@ header h1 {
   object-fit: cover; 
 }
 
+.d-flex {
+  display: flex; /* Garante que os itens dentro do container fiquem em linha */
+  justify-content: flex-start; /* Garante que os itens fiquem alinhados à esquerda */
+  gap: 10px; /* Define o espaçamento uniforme entre os botões */
+}
+
+.d-flex .btn-info, 
+.d-flex .btn-secondary {
+  font-size: 12px; /* Tamanho de fonte menor */
+  background-color: white; /* Fundo branco */
+  color: #464646; /* Cor do texto */
+  border: 1px solid #ccc; /* Borda cinza clara */
+  border-radius: 5px; /* Borda arredondada */
+  padding: 5px 10px; /* Padding para dar mais espaço aos botões */
+  text-align: center; /* Alinha o texto dentro do botão */
+  cursor: pointer; /* Cursor de clique */
+}
+
+.d-flex .btn-info:hover, 
+.d-flex .btn-secondary:hover {
+  background-color: #f8f8f8; /* Fundo levemente destacado ao passar o mouse */
+  color: #333; /* Cor do texto ao passar o mouse */
+}
+
+
 
 .questao {
   background-color: #fff; /* Cor de fundo mais limpa e suave */
@@ -45,40 +70,6 @@ header h1 {
 .questao:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Aumenta a sombra quando a questão é focada */
   transform: translateY(-5px); /* Levanta ligeiramente a questão ao passar o mouse */
-}
-
-.materia, .ano, .concurso {
-  color: rgb(0, 0, 0);
-  margin-bottom: 30px;
-  font-size: 10px;
-  background-color: #ffffff;
-  color: white;
-  border: 1px solid #464646;
-  border-radius: 5px;
-  padding: 5px 10px;
-  display: inline-block;
-  text-align: center;
-  cursor: default;
-}
-
-.materia {
-  color: rgb(0, 0, 0);
-  margin-right: 5px;
-}
-
-.ano {
-  color: rgb(0, 0, 0);
-  margin-left: 5px;
-}
-
-.concurso {
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-}
-.concurso:hover, .materia:hover, .ano:hover {
-  background-color: #ffffff; /* Mantém a cor original do fundo ao passar o mouse */
-  color: rgb(0, 0, 0);
-  cursor: default;
 }
 
 
