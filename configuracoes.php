@@ -1,36 +1,5 @@
 <?php
-
 include("funcoes_php/funcoes_confi.php");
-
-if (!isset($usuario)) {
-    header('Location: login.php');
-    exit();
-}
-
-$dadosAtualizados = false;
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Verifica e processa o upload da imagem
-    if (isset($_FILES['imagem'])) {
-        $imagem = $_FILES['imagem'];
-        $destino = 'caminho_para_salvar_imagem/' . basename($imagem['name']);
-
-        if ($imagem['size'] <= 5000000 && in_array($imagem['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
-            if (move_uploaded_file($imagem['tmp_name'], $destino)) {
-                $usuario['foto'] = $destino; // Atualiza a foto no usuário
-            }
-        }
-    }
-
-    // Processa outros campos
-    $usuario['nome'] = $_POST['nome'] ?? $usuario['nome'];
-    $usuario['email'] = $_POST['email'] ?? $usuario['email'];
-
-    // Aqui você salvaria os dados no banco de dados
-
-    // Sinaliza que os dados foram atualizados
-    $dadosAtualizados = true;
-}
 ?>
 
 <!DOCTYPE html>
@@ -44,14 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <link rel="stylesheet" href="css/configuracoes.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
-<body class="d-flex flex-column" style="min-height: 100vh;"> <!-- Define a altura mínima da página -->
+<body class="d-flex flex-column" style="min-height: 100vh;"> 
 
 <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
     <div class="perfil-header d-flex align-items-center">
-        <!-- Verifica se a foto do usuário existe, se não, usa a foto padrão -->
         <img id="avatar-imagem" src="<?php echo htmlspecialchars(empty($usuario['foto']) ? 'img/usuario_perfil.png' : $usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
         <p><span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
     </div>
@@ -70,9 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <div class="row">
       <div class="col-12 container-opcao">
     <div class="col-12 perfil">
-        <!-- Imagem do perfil com função de troca ao clicar -->
         <form id="troca-imagem-form" action="" method="post" enctype="multipart/form-data">
-            <!-- Verifica se a foto do usuário existe, se não, usa a foto padrão -->
             <img id="preview-imagem" src="<?php echo htmlspecialchars(empty($usuario['foto']) ? 'img/usuario_perfil.png' : $usuario['foto']); ?>" alt="Imagem" class="img-thumbnail" onclick="document.getElementById('upload-imagem').click()">
             <input type="file" id="upload-imagem" name="imagem" accept="image/*" style="display: none;" onchange="alterarImagemPerfil()">
         </form>
@@ -82,9 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </p>
     </div>
 </div>
-
-
-        <!-- Formulário de edição de perfil -->
         <div class="col-12 editar-perfil-container mt-4">
           <form action="" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -101,23 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </div>
   </main>
-
-  <!-- Modal de Feedback -->
-<!-- Adicionando a animação do animate.css -->
-
-
 <div class="modal fade" id="modalFeedback" tabindex="-1" aria-labelledby="modalFeedbackLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content animate__animated animate__zoomIn" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
             <div class="modal-header" style="background-color: #001A4E; color: white; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-                <!-- Substituímos o título pelo logo -->
                 <img src="img/logo.png" alt="Logo" width="120px" style="display: block; margin: 0 auto;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" style="padding: 30px; text-align: center; font-size: 18px;">
-                <!-- Ícone de sucesso, pode ser mantido ou alterado -->
                 <i class="fa fa-check-circle" style="font-size: 50px; color: #28a745; margin-bottom: 20px;"></i>
                 <p>Seus dados foram atualizados com sucesso!</p>
             </div>
@@ -127,10 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </div>
-v>
 </div>
-
-
   <footer class="mt-auto text-white text-center py-3" style="background-color: #001A4E;">
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
   </footer>

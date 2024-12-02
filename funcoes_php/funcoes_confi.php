@@ -133,5 +133,24 @@ atualizarEmailUsuario($conn, $usuario_id);
 
 $usuario = obterDadosUsuario($conn, $usuario_id);
 
+if (!isset($usuario)) {
+    header('Location: login.php');
+    exit();
+}
+$dadosAtualizados = false;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_FILES['imagem'])) {
+        $imagem = $_FILES['imagem'];
+        $destino = 'caminho_para_salvar_imagem/' . basename($imagem['name']);
 
+        if ($imagem['size'] <= 5000000 && in_array($imagem['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
+            if (move_uploaded_file($imagem['tmp_name'], $destino)) {
+                $usuario['foto'] = $destino; 
+            }
+        }
+    }
+    $usuario['nome'] = $_POST['nome'] ?? $usuario['nome'];
+    $usuario['email'] = $_POST['email'] ?? $usuario['email'];
+    $dadosAtualizados = true;
+}
 ?>
