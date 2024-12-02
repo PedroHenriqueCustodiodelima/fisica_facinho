@@ -140,58 +140,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     </header>
 
     <main class="container">
-        <div class="voltar-container mb-4">
-            <a href="../assunto_p1.php" class="custom-link">
-                <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
-            </a>
-        </div>
+    <div class="voltar-container mb-4">
+        <a href="../assunto_p1.php" class="custom-link">
+            <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+        </a>
+    </div>
 
-        <h1 class="mt-4 mb-4">Atividades de Introdução à Física</h1>
+    <h1 class="mt-4 mb-4">Atividades de Introdução à Física</h1>
 
-        <?php
-        $mensagem = $mensagem ?? null; 
-        ?>
-        <div class="questoes-container">
-            <?php foreach ($questoes_data as $questao): ?>
-                <div class="questao mb-4 card">
-                    <h5><?php echo htmlspecialchars($questao['enunciado']); ?></h5>
-                    <form class="responder-form" method="POST" action="javascript:void(0);">
-                        <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
-                        <ul>
-                            <?php foreach ($questao['alternativas'] as $alternativa): ?>
-                                <li>
-                                    <label>
-                                        <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
-                                        <?php echo htmlspecialchars($alternativa['texto']); ?>
-                                    </label>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                        <button type="submit" class="btn btn-primary btn-responder">Responder</button>
-                    </form>
-                    <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
-                    <button class="btn btn-info btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
-                </div>
-            <?php endforeach; ?>
-        </div>
+    <?php
+    $mensagem = $mensagem ?? null; 
+    ?>
+    <div class="questoes-container">
+        <?php foreach ($questoes_data as $questao): ?>
+            <div class="questao mb-4 card">
+                <h5><?php echo htmlspecialchars($questao['enunciado']); ?></h5>
+                <form class="responder-form" method="POST" action="javascript:void(0);">
+                    <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
+                    <ul>
+                        <?php foreach ($questao['alternativas'] as $alternativa): ?>
+                            <li>
+                                <label>
+                                    <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
+                                    <?php echo htmlspecialchars($alternativa['texto']); ?>
+                                </label>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <button type="submit" class="btn btn-primary btn-responder">Responder</button>
+                </form>
+                <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
+                <button class="btn btn-info btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
-        <?php if ($total_questoes > $questoes_por_pagina): ?>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
-                        <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
-                            <a class="page-link" href="grandeza_vetores.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                        </li>
-                    <?php endfor; ?>
-                </ul>
-            </nav>
-        <?php endif; ?>
-    </main>
+    <!-- Botão de jogo -->
+    <div class="jogo-container mt-5">
+        <button id="btnJogo" class="btn btn-success">Iniciar Jogo da Adivinhação</button>
+    </div>
+
+    <div id="jogo" class="mt-4" style="display: none;">
+        <h3>Jogo da Adivinhação</h3>
+        <p>Advinhe um número entre 1 e 100!</p>
+        <input type="number" id="numero" class="form-control" placeholder="Digite um número entre 1 e 100">
+        <button id="verificar" class="btn btn-warning mt-2">Verificar</button>
+        <p id="mensagem"></p>
+    </div>
+
+    <?php if ($total_questoes > $questoes_por_pagina): ?>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
+                    <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
+                        <a class="page-link" href="grandeza_vetores.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    <?php endif; ?>
+</main>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    document.getElementById('btnJogo').addEventListener('click', function() {
+    document.getElementById('jogo').style.display = 'block';
+    this.style.display = 'none'; // Esconde o botão de iniciar o jogo
+});
+
+let numeroAleatorio = Math.floor(Math.random() * 100) + 1;
+
+document.getElementById('verificar').addEventListener('click', function() {
+    let numeroDigitado = parseInt(document.getElementById('numero').value);
+    let mensagem = document.getElementById('mensagem');
+    
+    if (isNaN(numeroDigitado) || numeroDigitado < 1 || numeroDigitado > 100) {
+        mensagem.textContent = 'Por favor, digite um número válido entre 1 e 100.';
+        mensagem.style.color = 'red';
+    } else if (numeroDigitado === numeroAleatorio) {
+        mensagem.textContent = 'Parabéns! Você acertou!';
+        mensagem.style.color = 'green';
+    } else if (numeroDigitado < numeroAleatorio) {
+        mensagem.textContent = 'O número digitado é muito baixo. Tente novamente.';
+        mensagem.style.color = 'orange';
+    } else {
+        mensagem.textContent = 'O número digitado é muito alto. Tente novamente.';
+        mensagem.style.color = 'orange';
+    }
+});
+
     $(".btn-resolucao").click(function() {
         var questaoId = $(this).data('questao-id');
         var explicacao = $(this).closest('.questao').find('.explicacao');

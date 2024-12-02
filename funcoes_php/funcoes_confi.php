@@ -36,7 +36,7 @@ function salvarImagemPerfil($conn, $usuario_id) {
             $message = "Erro no upload do arquivo.";
         }
     }
-    return $_SESSION['foto'] ?? 'img/default-avatar.png';
+    return $_SESSION['foto'] ?? 'img/usuario_perfil.png';
 }
 
 

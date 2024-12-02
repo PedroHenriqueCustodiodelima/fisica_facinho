@@ -46,15 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body class="d-flex flex-column" style="min-height: 100vh;"> <!-- Define a altura mínima da página -->
 
-  <header class="d-flex justify-content-between align-items-center">
+<header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
         <img src="img/logo.png" width="200px" alt="Logo">
     </a>
     <div class="perfil-header d-flex align-items-center">
-      <img id="avatar-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
-      <p><span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
+        <!-- Verifica se a foto do usuário existe, se não, usa a foto padrão -->
+        <img id="avatar-imagem" src="<?php echo htmlspecialchars(empty($usuario['foto']) ? 'img/usuario_perfil.png' : $usuario['foto']); ?>" alt="Avatar" width="200px" height="200px">
+        <p><span id="usuario-nome"><?php echo htmlspecialchars($usuario['nome']); ?></span></p>
     </div>
-  </header>
+</header>
+
+
 
   <div class="col-8 voltar-container " style="margin: 20px;">
     <a href="inicio.php" class="custom-link" style="text-decoration: none;color: #001A4E; ">
@@ -65,19 +68,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <main class="d-flex justify-content-center align-items-center ">
     <div class="container">
       <div class="row">
-        <div class="col-12 container-opcao">
-          <div class="col-12 perfil">
-            <!-- Imagem do perfil com função de troca ao clicar -->
-            <form id="troca-imagem-form" action="" method="post" enctype="multipart/form-data">
-              <img id="preview-imagem" src="<?php echo htmlspecialchars($usuario['foto']); ?>" alt="Imagem" class="img-thumbnail" onclick="document.getElementById('upload-imagem').click()">
-              <input type="file" id="upload-imagem" name="imagem" accept="image/*" style="display: none;" onchange="alterarImagemPerfil()">
-            </form>
-            <p>
-              <span id="usuario-nome-main" class="usuario-nome-main"><?php echo htmlspecialchars($usuario['nome']); ?></span>
-              <span class="data-criacao">Conosco desde <?php echo htmlspecialchars($usuario['data_criacao_formatada']); ?></span>
-            </p>
-          </div>
-        </div>
+      <div class="col-12 container-opcao">
+    <div class="col-12 perfil">
+        <!-- Imagem do perfil com função de troca ao clicar -->
+        <form id="troca-imagem-form" action="" method="post" enctype="multipart/form-data">
+            <!-- Verifica se a foto do usuário existe, se não, usa a foto padrão -->
+            <img id="preview-imagem" src="<?php echo htmlspecialchars(empty($usuario['foto']) ? 'img/usuario_perfil.png' : $usuario['foto']); ?>" alt="Imagem" class="img-thumbnail" onclick="document.getElementById('upload-imagem').click()">
+            <input type="file" id="upload-imagem" name="imagem" accept="image/*" style="display: none;" onchange="alterarImagemPerfil()">
+        </form>
+        <p>
+            <span id="usuario-nome-main" class="usuario-nome-main"><?php echo htmlspecialchars($usuario['nome']); ?></span>
+            <span class="data-criacao">Conosco desde <?php echo htmlspecialchars($usuario['data_criacao_formatada']); ?></span>
+        </p>
+    </div>
+</div>
+
 
         <!-- Formulário de edição de perfil -->
         <div class="col-12 editar-perfil-container mt-4">

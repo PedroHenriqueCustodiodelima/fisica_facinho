@@ -12,8 +12,6 @@ $usuario_id = $_SESSION['usuario_id'];
 
 $imagemPerfil = 'img/default-avatar.png';
 $nomeUsuario = 'Usuário';
-
-// Buscar e-mail do usuário
 $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -35,7 +33,7 @@ if ($usuario) {
     $imagemPerfil = $usuario['foto'] ?? $imagemPerfil;
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
-
+setlocale(LC_TIME, 'pt_BR.UTF-8', 'pt_BR');
 $query = "
     SELECT 
         DATE_FORMAT(data_tentativa, '%Y-%m') AS mes_ano,  -- Formata como 'YYYY-MM'
@@ -63,6 +61,8 @@ if ($result->num_rows > 0) {
 
     while ($row = $result->fetch_assoc()) {
         if (substr($row['mes_ano'], 0, 4) == $anoAtual) {
+            $data = DateTime::createFromFormat('Y-m', $row['mes_ano']);
+            $row['mes_ano'] = strftime('%B', $data->getTimestamp()); 
             $dados_questoes[] = $row;
         }
     }
