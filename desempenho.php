@@ -34,40 +34,40 @@ include("funcoes_php/funcoes_desempenho.php");
       <h2 class="text-center">Desempenho</h2>
 
       <div class="row text-center mb-4">
-  <div class="col-md-4 d-flex justify-content-center">
-    <div class="card" style="background-color: #007bff; border: none;"> 
-      <div class="card-header text-white">
-        <i class="fas fa-tasks icon"></i> Tentativas
+        <div class="col-md-4 d-flex justify-content-center">
+          <div class="card" style="background-color: rgba(34, 93, 59, 0.8); border: none;"> 
+            <div class="card-header text-white">
+              <i class="fas fa-tasks icon"></i> Tentativas
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_tentativas'))); ?></h5>
+              <p class="card-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center">
+          <div class="card" style="background-color: rgba(26, 13, 171, 1); border: none;"> 
+            <div class="card-header text-white">
+              <i class="fas fa-check-circle icon"></i> Acertos
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_acertos'))); ?></h5>
+              <p class="card-text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex justify-content-center">
+          <div class="card" style="background-color: rgba(186, 12, 47, 1); border: none;"> 
+            <div class="card-header text-white">
+              <i class="fas fa-times-circle icon"></i> Erros
+            </div>
+            <div class="card-body">
+              <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_erros'))); ?></h5>
+              <p class="card-text"></p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_tentativas'))); ?></h5>
-        <p class="card-text"></p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 d-flex justify-content-center">
-    <div class="card" style="background-color: #28a745; border: none;"> 
-      <div class="card-header text-white">
-        <i class="fas fa-check-circle icon"></i> Acertos
-      </div>
-      <div class="card-body">
-        <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_acertos'))); ?></h5>
-        <p class="card-text"></p>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 d-flex justify-content-center">
-    <div class="card" style="background-color: #dc3545; border: none;"> 
-      <div class="card-header text-white">
-        <i class="fas fa-times-circle icon"></i> Erros
-      </div>
-      <div class="card-body">
-        <h5 class="card-title"><?php echo htmlspecialchars(array_sum(array_column($dados_questoes, 'total_erros'))); ?></h5>
-        <p class="card-text"></p>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <div class="row mb-4">

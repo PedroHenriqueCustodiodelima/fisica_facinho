@@ -1,4 +1,4 @@
-/* Reset de estilos */
+
 * {
   margin: 0;
   padding: 0;
@@ -12,13 +12,12 @@ html, body {
   background-color: #f4f4f4;
 }
 
-/* Estilo do Header */
+
 header {
   background-color: #001A4E;
-  padding: 10px;
   color: white;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -30,61 +29,46 @@ header h1 {
   border-radius: 50%;
   object-fit: cover; 
 }
-
 .d-flex {
-  display: flex; /* Garante que os itens dentro do container fiquem em linha */
-  justify-content: flex-start; /* Garante que os itens fiquem alinhados à esquerda */
-  gap: 10px; /* Define o espaçamento uniforme entre os botões */
+  display: flex; 
+  justify-content: flex-start; 
+  gap: 1px; 
 }
-
 .d-flex .btn-info, 
 .d-flex .btn-secondary {
-  font-size: 12px; /* Tamanho de fonte menor */
-  background-color: white; /* Fundo branco */
-  color: #464646; /* Cor do texto */
-  border: 1px solid #ccc; /* Borda cinza clara */
-  border-radius: 5px; /* Borda arredondada */
-  padding: 5px 10px; /* Padding para dar mais espaço aos botões */
-  text-align: center; /* Alinha o texto dentro do botão */
-  cursor: pointer; /* Cursor de clique */
+  font-size: 12px; 
+  background-color: white; 
+  color: #464646; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  padding: 5px 10px; 
+  text-align: center; 
+  cursor: pointer; 
 }
-
 .d-flex .btn-info:hover, 
 .d-flex .btn-secondary:hover {
-  background-color: #f8f8f8; /* Fundo levemente destacado ao passar o mouse */
-  color: #333; /* Cor do texto ao passar o mouse */
+  background-color: #f8f8f8; 
+  color: #333; 
 }
-
-
-
 .questao {
-  background-color: #fff; /* Cor de fundo mais limpa e suave */
-  border: 2px solid #ddd; /* Cor da borda mais suave */
-  border-radius: 10px; /* Borda arredondada para um visual mais moderno */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para destaque */
-  padding: 20px; /* Padding maior para dar mais espaço interno */
-  margin-bottom: 40px; /* Espaço entre as questões */
-  transition: all 0.3s ease; /* Transição suave para efeitos de hover */
+  background-color: #fff; 
+  border: 2px solid #ddd; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  padding: 20px; 
+  margin-bottom: 40px; 
+  transition: all 0.3s ease; 
 }
-
 .questao:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Aumenta a sombra quando a questão é focada */
-  transform: translateY(-5px); /* Levanta ligeiramente a questão ao passar o mouse */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+  transform: translateY(-5px); 
 }
-
-
-
-
 .questao .enunciado {
-  font-weight: normal; /* Garantir que o enunciado não fique em negrito */
-  font-size: 1.1em; /* Tamanho do enunciado */
-  color: #333; /* Cor do texto do enunciado */
-  margin-bottom: 15px; /* Espaço entre o enunciado e as alternativas */
+  font-weight: normal;
+  font-size: 1.1em;
+  color: #333;
+  margin-bottom: 15px; 
 }
-
-
-
-
 .questao h4 {
   font-size: 1.25rem;
   color: #001A4E;
@@ -206,48 +190,6 @@ header h1 {
 .input-group-prepend .input-group-text i {
   font-size: 16px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

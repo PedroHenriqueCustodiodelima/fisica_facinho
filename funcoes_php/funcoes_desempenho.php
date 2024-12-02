@@ -21,10 +21,8 @@ $result = $stmt->get_result();
 $email = $result->fetch_assoc()['email'] ?? '';
 
 if (strpos($email, 'edu.br') !== false) {
-    // Se for um usuário do tipo professor
     $stmt = $conn->prepare("SELECT foto, nome FROM professores WHERE id = ?");
 } else {
-    // Se for um usuário comum
     $stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
 }
 
@@ -61,15 +59,17 @@ $result = $stmt->get_result();
 
 $dados_questoes = [];
 if ($result->num_rows > 0) {
+    $anoAtual = date("Y");
+
     while ($row = $result->fetch_assoc()) {
-        // Adiciona os dados do mês, tentativas, acertos e erros ao array
-        $dados_questoes[] = $row;
+        if (substr($row['mes_ano'], 0, 4) == $anoAtual) {
+            $dados_questoes[] = $row;
+        }
     }
 } else {
-    // Se o usuário não tiver questões resolvidas, atribui valores zerados
     $dados_questoes = [
         [
-            'mes_ano' => 'Nenhum dado',  // Pode deixar uma mensagem ou data padrão
+            'mes_ano' => 'Nenhum dado',  
             'total_tentativas' => 0,
             'total_acertos' => 0,
             'total_erros' => 0
