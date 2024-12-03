@@ -34,6 +34,7 @@ if ($usuario) {
     $imagemPerfil = !empty($usuario['foto']) ? $usuario['foto'] : $usuario['imagem'] ?? $imagemPerfil;
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
+
 $query = "
     SELECT 
         u.id AS usuario_id, 
@@ -59,7 +60,20 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $ranking[] = $row;
     }
-} 
+}
+
+$usuarioPosicao = null;
+foreach ($ranking as $index => $usuario) {
+    if ($usuario['usuario_id'] == $usuario_id) {
+        $usuarioPosicao = $index + 1; 
+        break;
+    }
+}
+if ($usuarioPosicao !== null) {
+    echo "O usuário está no ranking na posição $usuarioPosicao com {$ranking[$usuarioPosicao - 1]['total_acertos']} pontos.";
+} else {
+    echo "O usuário não está no ranking, mas você pode buscar os pontos diretamente.";
+}
 
 
 $stmt->close();
