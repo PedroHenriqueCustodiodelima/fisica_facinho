@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-$imagemPerfil = 'img/default-avatar.png'; // Imagem padrão
+$imagemPerfil = 'img/usuario_perfil.png'; 
 $nomeUsuario = 'Usuário';
 
 $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
@@ -31,7 +31,6 @@ $result = $stmt->get_result();
 $usuario = $result->fetch_assoc();
 
 if ($usuario) {
-    // Se a foto estiver vazia, usa a imagem padrão
     $imagemPerfil = !empty($usuario['foto']) ? $usuario['foto'] : $usuario['imagem'] ?? $imagemPerfil;
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }

@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $senha = trim($_POST['password']);
     $confirmar_senha = trim($_POST['confirmPassword']);
 
+    // Validação dos campos
     if (strlen($nome) == 0) {
         $message = "Por favor, preencha o campo de nome.";
     } 
@@ -32,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $conn->real_escape_string($email);
         $senha = $conn->real_escape_string($senha);
         $nome = $conn->real_escape_string($nome);
-
         $sql_check = "SELECT * FROM usuarios WHERE email='$email'";
         $result_check = $conn->query($sql_check);
 
@@ -58,22 +58,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $mail->Password   = 'klwr ccgp eoia ustb';
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                         $mail->Port       = 465;
-                        $mail->setFrom('fisicafacinho@gmail.com', 'Fisica facinho');
+                        $mail->setFrom('fisicafacinho@gmail.com', 'Física Facinho');
                         $mail->addAddress($email, $nome);
 
                         $mail->isHTML(true);
-                        $mail->Subject = 'Registro de Usuário';
-                        $body = "Mensagem do Fisica online <br>
-                                 Nome: ". $nome."<br>
-                                 E-mail: ". $email."<br>";
+                        $mail->Subject = 'Confirmação de Registro - Física Facinho';
+                        $body = "
+                            <html>
+                                <head>
+                                    <title>Bem-vindo ao Física Facinho</title>
+                                    <style>
+                                        body { font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; }
+                                        .email-content { background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+                                        .email-header { background-color: #4CAF50; color: white; padding: 10px; text-align: center; border-radius: 8px 8px 0 0; }
+                                        .email-footer { font-size: 12px; color: #777; text-align: center; margin-top: 20px; }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class='email-content'>
+                                        <div class='email-header'>
+                                            <h2>Bem-vindo ao Física Facinho, $nome!</h2>
+                                        </div>
+                                        <p>Parabéns pelo seu registro em nosso site! Estamos muito felizes em tê-lo(a) conosco.</p>
+                                        <p>Agora você pode acessar todas as funcionalidades e conteúdos que preparamos para você.</p>
+                                        <p>Se precisar de alguma ajuda, nossa equipe está à disposição. Não hesite em nos contatar.</p>
+                                        <p>Atenciosamente,<br>Equipe Física Facinho</p>
+                                        <div class='email-footer'>
+                                            <p>&copy; 2024 Física Facinho | Todos os direitos reservados.</p>
+                                        </div>
+                                    </div>
+                                </body>
+                            </html>
+                        ";
                         $mail->Body    = $body;
+
+                        // Enviar o e-mail
                         $mail->send();
                     } catch (Exception $e) {
                         echo "A mensagem não pode ser enviada. Erro: {$mail->ErrorInfo}";
                     }
                 }
                 enviarEmailConfirmacao($email, $nome);
-
                 header("Location: inicio.php");
                 exit(); 
             } else {
