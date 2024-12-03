@@ -174,20 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             </div>
         <?php endforeach; ?>
     </div>
-
-    <!-- Botão de jogo -->
-    <div class="jogo-container mt-5">
-        <button id="btnJogo" class="btn btn-success">Iniciar Jogo da Adivinhação</button>
-    </div>
-
-    <div id="jogo" class="mt-4" style="display: none;">
-        <h3>Jogo da Adivinhação</h3>
-        <p>Advinhe um número entre 1 e 100!</p>
-        <input type="number" id="numero" class="form-control" placeholder="Digite um número entre 1 e 100">
-        <button id="verificar" class="btn btn-warning mt-2">Verificar</button>
-        <p id="mensagem"></p>
-    </div>
-
     <?php if ($total_questoes > $questoes_por_pagina): ?>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
@@ -206,32 +192,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('btnJogo').addEventListener('click', function() {
-    document.getElementById('jogo').style.display = 'block';
-    this.style.display = 'none'; // Esconde o botão de iniciar o jogo
-});
-
-let numeroAleatorio = Math.floor(Math.random() * 100) + 1;
-
-document.getElementById('verificar').addEventListener('click', function() {
-    let numeroDigitado = parseInt(document.getElementById('numero').value);
-    let mensagem = document.getElementById('mensagem');
-    
-    if (isNaN(numeroDigitado) || numeroDigitado < 1 || numeroDigitado > 100) {
-        mensagem.textContent = 'Por favor, digite um número válido entre 1 e 100.';
-        mensagem.style.color = 'red';
-    } else if (numeroDigitado === numeroAleatorio) {
-        mensagem.textContent = 'Parabéns! Você acertou!';
-        mensagem.style.color = 'green';
-    } else if (numeroDigitado < numeroAleatorio) {
-        mensagem.textContent = 'O número digitado é muito baixo. Tente novamente.';
-        mensagem.style.color = 'orange';
-    } else {
-        mensagem.textContent = 'O número digitado é muito alto. Tente novamente.';
-        mensagem.style.color = 'orange';
-    }
-});
-
     $(".btn-resolucao").click(function() {
         var questaoId = $(this).data('questao-id');
         var explicacao = $(this).closest('.questao').find('.explicacao');

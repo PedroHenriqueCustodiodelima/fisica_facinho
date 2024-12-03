@@ -36,10 +36,10 @@ include("funcoes_php/funcoes_eear.php");
                     $video = htmlspecialchars($row['video']); 
                 ?>
                 <div class="questao mb-4" data-ano="<?= $row['ano']; ?>" data-materia="<?= strtolower($row['materia']); ?>">
-                    <div class="d-flex justify-content-between mb-2">
-                    <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
-                    <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
-                    <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
+                    <div class="d-flex justify-content-start mb-2">
+                      <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
+                      <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
+                      <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
                     </div>
                     <h4 class="enunciado mb-3"><?= htmlspecialchars($row['enunciado']); ?></h4>
                     <form class="questao-form" method="POST" data-questao-id="<?= $id_questao; ?>">

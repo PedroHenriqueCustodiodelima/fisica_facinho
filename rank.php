@@ -21,7 +21,7 @@ include("funcoes_php/funcoes_ranking.php");
     </a>
     <div class="perfil-header d-flex align-items-center">
       <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-      <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
+      <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
     </div>
   </header>
 
@@ -61,7 +61,7 @@ include("funcoes_php/funcoes_ranking.php");
     <tbody>
         <?php if (count($ranking) > 0): ?>
             <?php foreach ($ranking as $index => $usuario): ?>
-                <?php if ($usuario['total_acertos'] > 10): ?>  <!-- Filtra usuários com mais de 10 acertos -->
+                <?php if ($usuario['total_acertos'] > 10): ?>  
                     <tr class="<?php
                         if ($usuario['usuario_id'] == $usuario) {
                             echo 'highlight-row'; 

@@ -40,7 +40,7 @@ $query = "
         u.id AS usuario_id, 
         u.nome AS usuario_nome, 
         u.foto AS usuario_foto,
-        COUNT(tu.id) AS total_acertos
+        COUNT(DISTINCT tu.id_questao) AS total_acertos
     FROM 
         usuarios AS u
     LEFT JOIN 
@@ -60,7 +60,8 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $ranking[] = $row;
     }
-}
+} 
+
 
 $stmt->close();
 $conn->close();

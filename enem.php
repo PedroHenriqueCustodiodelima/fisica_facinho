@@ -37,11 +37,11 @@ include("funcoes_php/funcoes_enem.php");
                     $video = htmlspecialchars($row['video']); 
                 ?>
                 <div class="questao mb-4" data-ano="<?= $row['ano']; ?>" data-materia="<?= strtolower($row['materia']); ?>">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
-                        <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
-                        <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
-                    </div>
+                  <div class="d-flex justify-content-start mb-2">
+                      <span class="btn btn-info mr-2"><?= htmlspecialchars($row['concurso']); ?></span>
+                      <span class="btn btn-secondary mr-2"><?= htmlspecialchars($row['materia']); ?></span>
+                      <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
+                  </div>
                     <h4 class="enunciado mb-3"><?= htmlspecialchars($row['enunciado']); ?></h4>
                     <form class="questao-form" method="POST" data-questao-id="<?= $id_questao; ?>">
                         <input type="hidden" name="id_questao" value="<?= $id_questao; ?>">
@@ -137,6 +137,7 @@ include("funcoes_php/funcoes_enem.php");
               </ul>
           </nav>
         </div>
+        
     </div>
 </main>
 

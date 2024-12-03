@@ -30,8 +30,8 @@ $(document).ready(function () {
 });
 function filterByYear(ano) {
   var input = document.getElementById("searchEnunciado");
-  var filter = input.value.toLowerCase();
-  var questoes = document.querySelectorAll(".questao");
+  var filter = input.value.toLowerCase(); // Filtro do enunciado
+  var questoes = document.querySelectorAll(".questao"); // Pega todas as questões, não apenas da página atual
 
   questoes.forEach(function (questao) {
     var questaoAno = questao.getAttribute("data-ano");
@@ -39,13 +39,36 @@ function filterByYear(ano) {
     var materiaElem = questao.querySelector(".materia");
     var enunciado = enunciadoElem ? enunciadoElem.textContent.toLowerCase() : "";
     var materia = materiaElem ? materiaElem.textContent.toLowerCase() : "";
-    if (questaoAno == ano && (enunciado.includes(filter) || materia.includes(filter))) {
-      questao.style.display = "";
+
+    // Aplica o filtro: verifica o ano e se o enunciado ou a matéria correspondem
+    if ((questaoAno == ano || !ano) && (enunciado.includes(filter) || materia.includes(filter))) {
+      questao.style.display = ""; // Exibe a questão
     } else {
-      questao.style.display = "none";
+      questao.style.display = "none"; // Oculta a questão
     }
   });
 }
+
+function filterByText() {
+  var input = document.getElementById("searchEnunciado");
+  var filter = input.value.toLowerCase();
+  var questoes = document.querySelectorAll(".questao"); // Pega todas as questões
+
+  questoes.forEach(function (questao) {
+    var enunciadoElem = questao.querySelector(".enunciado");
+    var materiaElem = questao.querySelector(".materia");
+    var enunciado = enunciadoElem ? enunciadoElem.textContent.toLowerCase() : "";
+    var materia = materiaElem ? materiaElem.textContent.toLowerCase() : "";
+
+    // Aplica o filtro de texto (enunciado ou matéria)
+    if (enunciado.includes(filter) || materia.includes(filter)) {
+      questao.style.display = ""; // Exibe a questão
+    } else {
+      questao.style.display = "none"; // Oculta a questão
+    }
+  });
+}
+
 
 function mostrarResolucao(id) {
 var resolucao = document.getElementById("resolucao-" + id);
@@ -63,20 +86,4 @@ if (videoDiv.style.display === "none" || videoDiv.style.display === "") {
 } else {
   videoDiv.style.display = "none";
 }
-}
-function filterByText() {
-  var input = document.getElementById("searchEnunciado");
-  var filter = input.value.toLowerCase();
-  var questoes = document.querySelectorAll(".questao");
-  questoes.forEach(function (questao) {
-    var enunciadoElem = questao.querySelector(".enunciado");
-    var materiaElem = questao.querySelector(".materia");
-    var enunciado = enunciadoElem ? enunciadoElem.textContent.toLowerCase() : "";
-    var materia = materiaElem ? materiaElem.textContent.toLowerCase() : "";
-    if (enunciado.includes(filter) || materia.includes(filter)) {
-      questao.style.display = "";
-    } else {
-      questao.style.display = "none";
-    }
-  });
 }
