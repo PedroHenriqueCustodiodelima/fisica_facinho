@@ -69,11 +69,6 @@ foreach ($ranking as $index => $usuario) {
         break;
     }
 }
-if ($usuarioPosicao !== null) {
-    echo "O usuário está no ranking na posição $usuarioPosicao com {$ranking[$usuarioPosicao - 1]['total_acertos']} pontos.";
-} else {
-    echo "O usuário não está no ranking, mas você pode buscar os pontos diretamente.";
-}
 
 
 $stmt->close();
