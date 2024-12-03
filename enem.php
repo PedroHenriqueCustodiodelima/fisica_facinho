@@ -25,82 +25,101 @@ include("funcoes_php/funcoes_enem.php");
       </div>
     </header>
     <main class="container mt-4">
-      <div class="row">
-        <!-- Coluna das questões -->
-        <div class="col-md-8">
-          <?php if ($result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-              <?php 
-                $id_questao = $row['id'];
-                $alternativas = ['A', 'B', 'C', 'D', 'E'];
-              ?>
-              <div class="questao mb-4" data-ano="<?= $row['ano']; ?>" data-materia="<?= strtolower($row['materia']); ?>">
-                <div class="d-flex justify-content-between mb-2">
-                  <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
-                  <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
-                  <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
-                </div>
-                <h4 class="enunciado mb-3"><?= htmlspecialchars($row['enunciado']); ?></h4>
-                <form method="POST" action="">
-                  <input type="hidden" name="id_questao" value="<?= $id_questao; ?>">
-                  <div class="alternativas">
-                    <?php 
-                    $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?");
-                    $stmt->bind_param("i", $id_questao);
-                    $stmt->execute();
-                    $alt_result = $stmt->get_result();
-                    $letra_index = 0;
+        <div class="row">
+            <div class="col-md-8">
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php 
+                    $id_questao = $row['id'];
+                    $alternativas = ['A', 'B', 'C', 'D', 'E'];
+                    $resolucao = htmlspecialchars($row['resolucao']); 
+                    $video = htmlspecialchars($row['video']); 
+                ?>
+                <div class="questao mb-4" data-ano="<?= $row['ano']; ?>" data-materia="<?= strtolower($row['materia']); ?>">
+                    <div class="d-flex justify-content-between mb-2">
+                    <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
+                    <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
+                    <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
+                    </div>
+                    <h4 class="enunciado mb-3"><?= htmlspecialchars($row['enunciado']); ?></h4>
+                    <form class="questao-form" method="POST" data-questao-id="<?= $id_questao; ?>">
+                    <input type="hidden" name="id_questao" value="<?= $id_questao; ?>">
+                    <div class="alternativas">
+                        <?php 
+                        $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?");
+                        $stmt->bind_param("i", $id_questao);
+                        $stmt->execute();
+                        $alt_result = $stmt->get_result();
+                        $letra_index = 0;
 
-                    while ($alt_row = $alt_result->fetch_assoc()):
-                      $letra = $alternativas[$letra_index++];
-                    ?>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="resposta" id="alt-<?= $alt_row['id']; ?>" value="<?= $alt_row['id']; ?>">
-                        <label class="form-check-label" for="alt-<?= $alt_row['id']; ?>">
-                          <?= $letra; ?>. <?= htmlspecialchars($alt_row['texto']); ?>
-                        </label>
-                      </div>
-                    <?php endwhile; ?>
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-sm mt-3">Responder</button>
-                  <button type="button" class="btn btn-info btn-sm mt-3 ml-2" onclick="mostrarResolucao(<?= $id_questao; ?>)">Resolução</button>
-                  <button type="button" class="btn btn-danger btn-sm mt-3 ml-2" onclick="verVideo(<?= $id_questao; ?>)">Vídeo</button>
-                </form>
-                <div id="resolucao-<?= $id_questao; ?>" class="resolucao mt-3" style="display: none;">
-                  <h5>Resolução:</h5>
-                  <p><?= htmlspecialchars($row['resolucao']); ?></p>
+                        while ($alt_row = $alt_result->fetch_assoc()):
+                        $letra = $alternativas[$letra_index++];
+                        ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="resposta" id="alt-<?= $alt_row['id']; ?>" value="<?= $alt_row['id']; ?>">
+                            <label class="form-check-label" for="alt-<?= $alt_row['id']; ?>">
+                            <?= $letra; ?>. <?= htmlspecialchars($alt_row['texto']); ?>
+                            </label>
+                        </div>
+                        <?php endwhile; ?>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm mt-3 responder-btn" data-questao-id="<?= $id_questao; ?>">Responder</button>
+                    
+                    <!-- Botões para exibir resolução e vídeo -->
+                    <button 
+                        type="button" 
+                        class="btn btn-info btn-sm mt-3 ml-2" 
+                        onclick="mostrarResolucao(<?= $id_questao; ?>)"
+                        data-toggle="tooltip" 
+                        title="Exibir a resolução da questão"
+                    >
+                        Resolução
+                    </button>
+
+                    <button 
+                        type="button" 
+                        class="btn btn-danger btn-sm mt-3 ml-2" 
+                        onclick="verVideo(<?= $id_questao; ?>)" 
+                        data-toggle="tooltip" 
+                        title="Exibir o vídeo da questão"
+                    >
+                        Vídeo
+                    </button>
+
+                    <!-- Área onde a resolução e o vídeo serão exibidos -->
+                    <div id="resolucao-<?= $id_questao; ?>" class="resolucao" style="display: none;">
+                        <p><strong>Resolução:</strong> <?= $resolucao; ?></p>
+                    </div>
+                    <div id="video-<?= $id_questao; ?>" class="video" style="display: none;">
+                        <p><strong>Vídeo:</strong> <a href="<?= $video; ?>" target="_blank">Assista ao vídeo aqui</a></p>
+                    </div>
+
+                    </form>
                 </div>
-                <div id="video-<?= $id_questao; ?>" class="video mt-3" style="display: none;">
-                  <h5>Vídeo:</h5>
-                  <a href="https://www.youtube.com/watch?v=example" target="_blank" class="btn btn-primary">Assistir</a>
-                </div>
-              </div>
-            <?php endwhile; ?>
-          <?php else: ?>
-            <p class="text-center">Não há questões disponíveis no momento.</p>
-          <?php endif; ?>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p class="text-center">Não há questões disponíveis no momento.</p>
+            <?php endif; ?>
+            </div>
+            <div class="col-md-4">
+            <h5>Filtros</h5>
+            <div class="form-group">
+                <label for="searchEnunciado">Pesquisar Enunciado</label>
+                <input type="text" id="searchEnunciado" class="form-control" placeholder="Digite aqui..." onkeyup="filterByText()">
+            </div>
+            <div class="form-group">
+                <label for="selectAno">Filtrar por Ano</label>
+                <select id="selectAno" class="form-control" onchange="filterByYear(this.value)">
+                <option value="">Selecione</option>
+                <?php for ($ano = 1998; $ano <= 2024; $ano++): ?>
+                    <option value="<?= $ano; ?>"><?= $ano; ?></option>
+                <?php endfor; ?>
+                </select>
+            </div>
+            </div>
         </div>
-        <!-- Filtros -->
-        <div class="col-md-4">
-          <h5>Filtros</h5>
-          <div class="form-group">
-            <label for="searchEnunciado">Pesquisar Enunciado</label>
-            <input type="text" id="searchEnunciado" class="form-control" placeholder="Digite aqui..." onkeyup="filterByText()">
-          </div>
-          <div class="form-group">
-            <label for="selectAno">Filtrar por Ano</label>
-            <select id="selectAno" class="form-control" onchange="filterByYear(this.value)">
-              <option value="">Selecione</option>
-              <?php for ($ano = 1998; $ano <= 2024; $ano++): ?>
-                <option value="<?= $ano; ?>"><?= $ano; ?></option>
-              <?php endfor; ?>
-            </select>
-          </div>
-        </div>
-      </div>
-    </main>
+        </main>
   </div>
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
