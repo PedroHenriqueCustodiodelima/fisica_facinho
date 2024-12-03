@@ -25,8 +25,9 @@ include("funcoes_php/funcoes_enem.php");
       </div>
     </header>
     <main class="container mt-4">
-        <div class="row">
-            <div class="col-md-8">
+    <div class="row">
+        <!-- Coluna das questões -->
+        <div class="col-md-8">
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                 <?php 
@@ -37,71 +38,70 @@ include("funcoes_php/funcoes_enem.php");
                 ?>
                 <div class="questao mb-4" data-ano="<?= $row['ano']; ?>" data-materia="<?= strtolower($row['materia']); ?>">
                     <div class="d-flex justify-content-between mb-2">
-                    <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
-                    <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
-                    <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
+                        <span class="btn btn-info"><?= htmlspecialchars($row['concurso']); ?></span>
+                        <span class="btn btn-secondary"><?= htmlspecialchars($row['materia']); ?></span>
+                        <span class="btn btn-secondary"><?= htmlspecialchars($row['ano']); ?></span>
                     </div>
                     <h4 class="enunciado mb-3"><?= htmlspecialchars($row['enunciado']); ?></h4>
                     <form class="questao-form" method="POST" data-questao-id="<?= $id_questao; ?>">
-                    <input type="hidden" name="id_questao" value="<?= $id_questao; ?>">
-                    <div class="alternativas">
-                        <?php 
-                        $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?");
-                        $stmt->bind_param("i", $id_questao);
-                        $stmt->execute();
-                        $alt_result = $stmt->get_result();
-                        $letra_index = 0;
+                        <input type="hidden" name="id_questao" value="<?= $id_questao; ?>">
+                        <div class="alternativas">
+                            <?php 
+                            $stmt = $conn->prepare("SELECT id, texto, correta FROM alternativas_concurso WHERE id_questao = ?");
+                            $stmt->bind_param("i", $id_questao);
+                            $stmt->execute();
+                            $alt_result = $stmt->get_result();
+                            $letra_index = 0;
 
-                        while ($alt_row = $alt_result->fetch_assoc()):
-                        $letra = $alternativas[$letra_index++];
-                        ?>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="resposta" id="alt-<?= $alt_row['id']; ?>" value="<?= $alt_row['id']; ?>">
-                            <label class="form-check-label" for="alt-<?= $alt_row['id']; ?>">
-                            <?= $letra; ?>. <?= htmlspecialchars($alt_row['texto']); ?>
-                            </label>
+                            while ($alt_row = $alt_result->fetch_assoc()):
+                            $letra = $alternativas[$letra_index++];
+                            ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="resposta" id="alt-<?= $alt_row['id']; ?>" value="<?= $alt_row['id']; ?>">
+                                <label class="form-check-label" for="alt-<?= $alt_row['id']; ?>">
+                                    <?= $letra; ?>. <?= htmlspecialchars($alt_row['texto']); ?>
+                                </label>
+                            </div>
+                            <?php endwhile; ?>
                         </div>
-                        <?php endwhile; ?>
-                    </div>
-                    <button type="button" class="btn btn-primary btn-sm mt-3 responder-btn" data-questao-id="<?= $id_questao; ?>">Responder</button>
+                        <button type="button" class="btn btn-primary btn-sm mt-3 responder-btn" data-questao-id="<?= $id_questao; ?>">Responder</button>
                     
-                    <!-- Botões para exibir resolução e vídeo -->
-                    <button 
-                        type="button" 
-                        class="btn btn-info btn-sm mt-3 ml-2" 
-                        onclick="mostrarResolucao(<?= $id_questao; ?>)"
-                        data-toggle="tooltip" 
-                        title="Exibir a resolução da questão"
-                    >
-                        Resolução
-                    </button>
+                        <!-- Botões para exibir resolução e vídeo -->
+                        <button 
+                            type="button" 
+                            class="btn btn-info btn-sm mt-3 ml-2" 
+                            onclick="mostrarResolucao(<?= $id_questao; ?>)"
+                            data-toggle="tooltip" 
+                            title="Exibir a resolução da questão"
+                        >
+                            Resolução
+                        </button>
 
-                    <button 
-                        type="button" 
-                        class="btn btn-danger btn-sm mt-3 ml-2" 
-                        onclick="verVideo(<?= $id_questao; ?>)" 
-                        data-toggle="tooltip" 
-                        title="Exibir o vídeo da questão"
-                    >
-                        Vídeo
-                    </button>
+                        <button 
+                            type="button" 
+                            class="btn btn-danger btn-sm mt-3 ml-2" 
+                            onclick="verVideo(<?= $id_questao; ?>)" 
+                            data-toggle="tooltip" 
+                            title="Exibir o vídeo da questão"
+                        >
+                            Vídeo
+                        </button>
 
-                    <!-- Área onde a resolução e o vídeo serão exibidos -->
-                    <div id="resolucao-<?= $id_questao; ?>" class="resolucao" style="display: none;">
-                        <p><strong>Resolução:</strong> <?= $resolucao; ?></p>
-                    </div>
-                    <div id="video-<?= $id_questao; ?>" class="video" style="display: none;">
-                        <p><strong>Vídeo:</strong> <a href="<?= $video; ?>" target="_blank">Assista ao vídeo aqui</a></p>
-                    </div>
-
+                        <!-- Área onde a resolução e o vídeo serão exibidos -->
+                        <div id="resolucao-<?= $id_questao; ?>" class="resolucao" style="display: none;">
+                            <p><strong>Resolução:</strong> <?= $resolucao; ?></p>
+                        </div>
+                        <div id="video-<?= $id_questao; ?>" class="video" style="display: none;">
+                            <p><strong>Vídeo:</strong> <a href="<?= $video; ?>" target="_blank">Assista ao vídeo aqui</a></p>
+                        </div>
                     </form>
                 </div>
                 <?php endwhile; ?>
             <?php else: ?>
                 <p class="text-center">Não há questões disponíveis no momento.</p>
             <?php endif; ?>
-            </div>
-            <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
             <h5>Filtros</h5>
             <div class="form-group">
                 <label for="searchEnunciado">Pesquisar Enunciado</label>
@@ -110,15 +110,36 @@ include("funcoes_php/funcoes_enem.php");
             <div class="form-group">
                 <label for="selectAno">Filtrar por Ano</label>
                 <select id="selectAno" class="form-control" onchange="filterByYear(this.value)">
-                <option value="">Selecione</option>
-                <?php for ($ano = 1998; $ano <= 2024; $ano++): ?>
+                    <option value="">Selecione</option>
+                    <?php for ($ano = 1998; $ano <= 2024; $ano++): ?>
                     <option value="<?= $ano; ?>"><?= $ano; ?></option>
-                <?php endfor; ?>
+                    <?php endfor; ?>
                 </select>
             </div>
-            </div>
+            <h5>Paginação das questões</h5>
+            <nav aria-label="Página de navegação">
+              <ul class="pagination justify-content-center">
+                  <li class="page-item <?= $pagina_atual <= 1 ? 'disabled' : ''; ?>">
+                      <a class="page-link" href="?pagina=<?= $pagina_atual - 1; ?>" tabindex="-1">
+                          <i class="fas fa-chevron-left"></i> 
+                      </a>
+                  </li>
+                  <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                      <li class="page-item <?= $i == $pagina_atual ? 'active' : ''; ?>">
+                          <a class="page-link" href="?pagina=<?= $i; ?>"><?= $i; ?></a>
+                      </li>
+                  <?php endfor; ?>
+                  <li class="page-item <?= $pagina_atual >= $total_paginas ? 'disabled' : ''; ?>">
+                      <a class="page-link" href="?pagina=<?= $pagina_atual + 1; ?>">
+                          <i class="fas fa-chevron-right"></i> 
+                      </a>
+                  </li>
+              </ul>
+          </nav>
         </div>
-        </main>
+    </div>
+</main>
+
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

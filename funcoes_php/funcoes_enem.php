@@ -37,9 +37,22 @@ if ($usuario) {
 
 date_default_timezone_set('America/Sao_Paulo');
 
-// Carregar questões do banco de dados
-$sql = "SELECT id, enunciado, resolucao, video, ano, materia, concurso FROM questoes WHERE concurso = 'ENEM'";
-$result = $conn->query($sql);
+// Paginando as questões
+$itens_por_pagina = 4; // Número de questões por página
+$pagina_atual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1; // Página atual
+
+// Definir o OFFSET para a consulta SQL
+$offset = ($pagina_atual - 1) * $itens_por_pagina;
+
+// Consulta para pegar as questões com a limitação de páginas
+$sql = "SELECT id, enunciado, resolucao, video, ano, materia, concurso 
+        FROM questoes 
+        WHERE concurso = 'ENEM'
+        LIMIT ?, ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $offset, $itens_por_pagina);
+$stmt->execute();
+$result = $stmt->get_result();
 
 $feedback = '';
 $mensagem_feedback = '';
@@ -85,4 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['resposta'])) {
 }
 
 $stmt->close();
+
+// Consultar o total de questões para calcular a quantidade de páginas
+$total_questoes = $conn->query("SELECT COUNT(*) AS total FROM questoes WHERE concurso = 'ENEM'")->fetch_assoc()['total'];
+$total_paginas = ceil($total_questoes / $itens_por_pagina);
 ?>
