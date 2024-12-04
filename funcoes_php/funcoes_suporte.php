@@ -45,36 +45,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Validação simples dos campos
   if (!empty($nome) && !empty($mensagem)) {
-      // Buscar o email do usuário na tabela 'usuarios' (já está sendo feito corretamente acima)
+      // Buscar o email do usuário na tabela 'usuarios'
       $sql_email = "SELECT email FROM usuarios WHERE id = ?";
       if ($stmt = $conn->prepare($sql_email)) {
-          // Bind do parâmetro
-          $stmt->bind_param("i", $usuario_id);  // Usar $usuario_id corretamente
-
-          // Executa a consulta
+          $stmt->bind_param("i", $usuario_id);
           if ($stmt->execute()) {
               $stmt->store_result();
               $stmt->bind_result($email_usuario);
 
-              // Verifica se o email foi encontrado
               if ($stmt->fetch()) {
                   // Prepara a consulta SQL para inserir os dados no banco de dados
                   $sql = "INSERT INTO mensagens_suporte (id_usuario, nome, email, mensagem) VALUES (?, ?, ?, ?)";
-
-                  // Usa a função prepared statements para evitar SQL Injection
                   if ($stmt_insert = $conn->prepare($sql)) {
-                      // Bind dos parâmetros
                       $stmt_insert->bind_param("isss", $usuario_id, $nome, $email_usuario, $mensagem);
-
-                      // Executa a consulta
                       if ($stmt_insert->execute()) {
-                          // Após o envio da mensagem, exibe a mensagem de sucesso
+                          // Sucesso ao enviar a mensagem
                           $sucesso = "Sua mensagem foi enviada com sucesso!";
+                          // Redirecionar após o envio para evitar reenvio ao atualizar a página
+                          header("Location: " . $_SERVER['PHP_SELF']);
+                          exit();
                       } else {
                           $erro = "Erro ao salvar a mensagem. Tente novamente mais tarde.";
                       }
-
-                      // Fecha a declaração de inserção
                       $stmt_insert->close();
                   } else {
                       $erro = "Erro na preparação da consulta. Tente novamente mais tarde.";
@@ -82,8 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               } else {
                   $erro = "Não foi possível recuperar o email do usuário.";
               }
-
-              // Fecha a declaração de busca do email
               $stmt->close();
           } else {
               $erro = "Erro ao recuperar o email do usuário.";

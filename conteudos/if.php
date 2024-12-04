@@ -21,8 +21,8 @@ include(__DIR__ . '/../funcoes_php/funcoes_inicio.php');
     </a>
     <div class="perfil-header d-flex align-items-center">
         <a href="../configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-        <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
+        <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="35px" height="35px" class="ml-3">
+        <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
         </a>
       </div>
   </header>

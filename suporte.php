@@ -23,7 +23,7 @@ include("funcoes_php/funcoes_suporte.php");
       <div class="perfil-header d-flex align-items-center">
         <a href="configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
           <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-          <p class="m-0 ml-2" ><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+          <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
         </a>
       </div>
     </header>
@@ -54,9 +54,51 @@ include("funcoes_php/funcoes_suporte.php");
         <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
       </form>
 
-      <h2>Perguntas Frequentes</h2>
+      <!-- Perguntas Frequentes com Accordion -->
+      <h2 class="mt-5">Perguntas Frequentes</h2>
       <div class="accordion" id="faqAccordion">
-        <!-- Perguntas Frequentes aqui -->
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Como atualizar meu perfil?
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#faqAccordion">
+            <div class="card-body">
+              Para atualizar seu perfil, vá até a página de configurações e edite as informações desejadas, como nome, foto de perfil e outros dados pessoais.
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Como acessar relatórios gerados?
+              </button>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+            <div class="card-body">
+              Os relatórios gerados podem ser acessados na seção de relatórios dentro do painel de administração. Lá você poderá visualizar, baixar e compartilhar os relatórios.
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Como entrar em contato com o suporte?
+              </button>
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
+            <div class="card-body">
+              Caso precise de suporte, você pode enviar uma mensagem através do formulário nesta página ou acessar a seção de contato disponível no menu principal.
+            </div>
+          </div>
+        </div>
       </div>
 
       <h2>Guia Rápido</h2>

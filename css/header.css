@@ -1,21 +1,18 @@
-
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-
+}
 header {
     background-color: #001A4E;
     padding: 10px;
-    color: white;
-    
-  }
-  .perfil-header p,
+    color: white;  
+}
+.perfil-header p,
 .perfil-header #usuario-nome {
   color: white; 
-}#avatar-imagem {
+}
+#avatar-imagem {
     border-radius: 50%;
     object-fit: cover; 
-  }
+}

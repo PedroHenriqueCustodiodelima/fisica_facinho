@@ -1,34 +1,25 @@
-
-* {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
-  font-family: 'Roboto', sans-serif;
-  height: 100%;
-  color: #333;
-  background-color: #f4f4f4;
-}
-
-
 header {
   background-color: #001A4E;
-  color: white;
-  text-align: center;
-  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  color: white;  
 }
 
-header h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0;
+.perfil-header p,
+.perfil-header #usuario-nome {
+color: white; 
 }
+
 #avatar-imagem {
   border-radius: 50%;
   object-fit: cover; 
 }
+
 .d-flex {
   display: flex; 
   justify-content: flex-start; 
