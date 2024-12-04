@@ -1,14 +1,15 @@
-body {
-  font-family: Arial, sans-serif;
+html, body {
+  height: 100%;
   margin: 0;
-  padding: 0;
-  background-color: #ffffff;
-  color: branco;
+}
+.container {
+  flex: 1;
+}
+body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; 
+  min-height: 100vh;
 }
-
 header {
   background-color: #001A4E;
   padding: 10px 20px;
@@ -20,7 +21,16 @@ header {
 header img {
   height: 50px;
 }
-
+footer {
+  color: white;
+  background-color: #001A4E; 
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  margin-top: auto; 
+}
 main {
   color: whitesmoke;
   margin: 0 auto;
@@ -124,16 +134,7 @@ main {
   margin-bottom: 20px; 
 }
 
-footer {
-  background-color: #001A4E;
-  padding: 2px;
-  text-align: center;
-  color: white;
-}
-
-footer p {
-  margin-top: 15px;
-}  
+ 
 
 table {
   width: 100%; 

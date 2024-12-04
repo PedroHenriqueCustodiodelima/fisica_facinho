@@ -1,5 +1,6 @@
 <?php
 include("funcoes_php/funcoes_inicio.php");
+include "header.php";
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -14,15 +15,7 @@ include("funcoes_php/funcoes_inicio.php");
 </head>
 <body>
   <div class="page-container">
-    <header class="d-flex justify-content-between align-items-center">
-      <a href="inicio.php">
-        <img src="img/logo.png" width="200px" alt="Logo">
-      </a>
-      <div class="perfil-header d-flex align-items-center">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-        <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
-      </div>
-    </header>
+   
     <main class="container">
     <div class="voltar-container mb-4">
         <a href="inicio.php" class="custom-link">

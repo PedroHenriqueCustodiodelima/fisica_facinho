@@ -1,12 +1,10 @@
-/* Define o estilo geral da página */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
 }
 
-/* Estilo do container do formulário */
 .container {
     width: 80%;
     max-width: 800px;

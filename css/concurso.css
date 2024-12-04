@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -6,11 +7,30 @@
 
 html, body {
     height: 100%;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f9f9f9;
+    font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+    background-color: #f4f6f9; 
     color: #333;
 }
-
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container {
+    flex: 1;
+}
+footer {
+    color: white;
+    background-color: #001A4E; 
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto; 
+  }
 header {
     background-color: #001A4E;
     padding: 20px;

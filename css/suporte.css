@@ -1,4 +1,4 @@
-/* Reset de margens e padding para garantir consistência */
+
 * {
     margin: 0;
     padding: 0;
@@ -8,11 +8,27 @@
 html, body {
     height: 100%;
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f6f9; /* Cor de fundo clara para contraste com cabeçalho e rodapé */
-    color: #333; /* Cor de texto padrão */
+    background-color: #f4f6f9; 
+    color: #333;
 }
-
-/* Estilo do cabeçalho */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container {
+    flex: 1;
+}
+footer {
+    color: white;
+    background-color: #001A4E; 
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto; 
+  }
 header {
     background-color: #001A4E;
     padding: 10px;
@@ -183,9 +199,3 @@ ul li a {
 ul li a:hover {
     color: #004d99;
 }
-footer {
-    background-color: #001A4E;
-    color: white;
-    padding: 10px;
-    text-align: center;
-  }

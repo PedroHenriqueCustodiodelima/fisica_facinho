@@ -1,5 +1,6 @@
 <?php
 include("funcoes_php/funcoes_ime.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +21,10 @@ include("funcoes_php/funcoes_ime.php");
         <img src="img/logo.png" width="200px" alt="Logo do ENEM">
       </a>
       <div class="perfil-header d-flex align-items-center">
-        <img id="avatar-imagem" src="<?= htmlspecialchars($imagemPerfil); ?>" alt="Avatar do usuário" width="50px" height="50px" class="rounded-circle ml-3">
-        <p class="m-0 ml-2"><span id="usuario-nome"><?= htmlspecialchars($nomeUsuario); ?></span></p>
+        <a href="configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
+          <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+          <p class="m-0 ml-2" ><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+        </a>
       </div>
     </header>
     <main class="container mt-4">

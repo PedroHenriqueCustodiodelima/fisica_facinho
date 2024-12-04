@@ -15,7 +15,9 @@ include("funcoes_php/funcoes_index.php");
 </head>
 <body>
     <header>
-        <img src="img/logo.png" alt="Logo">
+        <a href="login.php">
+            <img src="img/logo.png" alt="Logo">
+        </a>
     </header>
     
     <main>

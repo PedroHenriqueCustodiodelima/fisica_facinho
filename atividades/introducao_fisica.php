@@ -134,9 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <img src="../img/logo.png" width="200px" alt="Logo">
         </a>
         <div class="perfil-header d-flex align-items-center">
-            <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-            <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
-        </div>
+        <a href="./configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
+        <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+        <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
+        </a>
+      </div>
     </header>
 
     <main class="container">
