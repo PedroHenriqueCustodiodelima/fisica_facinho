@@ -39,7 +39,7 @@ include("funcoes_php/funcoes_login.php");
                 Entrar com o Google
             </button>
             <p class="register-link">Não tem uma conta? <a href="index.php">Cadastre-se</a></p>
-            <p class="register-link">Cadastro professor <a href="cadastro_prof.php">Cadastre-se</a></p>
+
         </div>
     </main>
 
