@@ -141,14 +141,15 @@ function validateForm(event) {
 function validateEmail() {
     const emailValue = document.getElementById('email').value;
 
-    // Valida se o e-mail é válido e se é do domínio @gmail.com
-    const emailValid = validator.isEmail(emailValue) && emailValue.endsWith('@gmail.com');
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    const emailValid = emailPattern.test(emailValue);
 
     const emailErrorElement = document.getElementById('emailError');
     if (!emailValid) {
-        emailErrorElement.style.display = 'block'; // Exibe a mensagem de erro
+        emailErrorElement.style.display = 'block'; 
     } else {
-        emailErrorElement.style.display = 'none'; // Oculta a mensagem de erro
+        emailErrorElement.style.display = 'none'; 
     }
 
     return emailValid;

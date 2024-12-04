@@ -46,7 +46,7 @@ include("funcoes_php/funcoes_index.php");
                         <li id="special" class="invalid">Pelo menos um caractere especial</li>
                     </ul>
                 </div>
-                <div id="emailError" style="display:none; color: red;">O e-mail deve ser do tipo "usuario@gmail.com".</div>
+                <div id="emailError" style="display:none; color: red;"></div>
                 <div class="input-group">
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required>
                     <i class="fa-solid fa-eye" id="toggleConfirmPassword"></i>
