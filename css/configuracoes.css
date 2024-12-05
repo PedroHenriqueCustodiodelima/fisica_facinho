@@ -12,30 +12,22 @@ body {
 
 
 
-
-/* cabeçalho */
 header {
+  
   background-color: #001A4E;
   padding: 10px;
-  color: white;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: white;  
 }
-
-header h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0;
+.perfil-header p,
+.perfil-header #usuario-nome {
+  font-size: 17px;
+  margin: 0 auto;
+  color: white; 
 }
 #avatar-imagem {
+  margin-right: 20px;
   border-radius: 50%;
   object-fit: cover; 
-}
-#usuario-nome {
-  margin-left: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: capitalize;
 }
 
 main {
@@ -44,8 +36,6 @@ main {
 }
 
 
-
-/* Ajustando o estilo da imagem e nome no header */
 .perfil-header {
   display: flex;
   align-items: center;
@@ -59,14 +49,14 @@ main {
 .perfil-header p {
   color: #ffffff;
   margin-right: 10px;
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .perfil-header img {
   border: #f0f0f0;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   object-fit: cover;
 }
 

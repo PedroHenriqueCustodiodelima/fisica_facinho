@@ -22,6 +22,6 @@ include("funcoes_php/funcoes_header.php");
           <p class="m-0 ml-2" ><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
         </a>
       </div>
-    </header>
+</header>
 </body>
 </html>

@@ -14,8 +14,6 @@ include "header.php";
 </head>
 <body>
   <div class="page-container">
-  
-    
     <main class="container">
       <div class="container mt-5">
         <div class="voltar-container mb-4">
@@ -25,7 +23,12 @@ include "header.php";
         </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2>Atividades</h2>
-          <i class="fa-solid fa-arrow-up-a-z" id="sort-icon" style="font-size: 2rem; cursor: pointer;"></i> <!-- Ícone atualizado e maior -->
+          <div class="d-flex align-items-center">
+            <!-- Barra de pesquisa -->
+            <input type="text" id="search-bar" class="form-control mr-2" placeholder="Pesquisar atividades..." style="width: 200px;">
+            <!-- Ícone de ordenação -->
+            <i class="fa-solid fa-arrow-up-a-z" id="sort-icon" style="font-size: 2rem; cursor: pointer;"></i>
+          </div>
         </div>
 
         <div class="row justify-content-center" id="card-container">
@@ -82,8 +85,25 @@ include "header.php";
     document.addEventListener("DOMContentLoaded", function () {
       const sortIcon = document.getElementById("sort-icon");
       const cardContainer = document.getElementById("card-container");
+      const searchBar = document.getElementById("search-bar");
       let ascending = true;
 
+      // Função para filtrar as atividades com base na pesquisa
+      searchBar.addEventListener("input", function () {
+        const searchQuery = searchBar.value.toLowerCase();
+        const cards = Array.from(cardContainer.getElementsByClassName("card-item"));
+        
+        cards.forEach(card => {
+          const title = card.getAttribute("data-title").toLowerCase();
+          if (title.includes(searchQuery)) {
+            card.style.display = "";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+
+      // Função de ordenação das atividades
       sortIcon.addEventListener("click", function () {
         const cards = Array.from(cardContainer.getElementsByClassName("card-item"));
         cards.sort((a, b) => {
@@ -94,7 +114,7 @@ include "header.php";
 
         cards.forEach(card => cardContainer.appendChild(card));
         ascending = !ascending;
-        
+
         // Alternando entre as classes do ícone
         if (ascending) {
           sortIcon.classList.add("fa-arrow-up-a-z");
