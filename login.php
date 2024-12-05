@@ -15,7 +15,9 @@ include("funcoes_php/funcoes_login.php");
 </head>
 <body>
     <header>
-        <img src="img/logo.png" alt="Logo">
+        <a href="portfolio.php">
+            <img src="img/logo.png" alt="Logo">
+        </a>
     </header>
     <main>
         <div class="login-form">
