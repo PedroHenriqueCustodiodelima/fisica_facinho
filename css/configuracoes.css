@@ -208,3 +208,29 @@ main {
 #feedback-message.hidden, #feedback-message-erro.hidden {
   opacity: 0;  /* Reduz a opacidade para 0 para o efeito de desvanecimento */
 }
+/* Estilo para o container da imagem e o ícone */
+.img-container {
+  position: relative;
+  display: inline-block;
+}
+
+#preview-imagem {
+  width: 100px; /* Tamanho da imagem */
+  height: 100px; /* Tamanho da imagem */
+  border-radius: 50%; /* Tornar a imagem circular */
+  cursor: pointer;
+}
+
+.camera-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  color: white; /* Cor do ícone */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: block; /* Ícone visível de imediato */
+}

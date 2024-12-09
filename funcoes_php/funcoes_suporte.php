@@ -40,11 +40,10 @@ $erro = '';
 
 // Processamento do envio da mensagem
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $nome = $_POST['nome'];
   $mensagem = $_POST['mensagem'];
 
   // Validação simples dos campos
-  if (!empty($nome) && !empty($mensagem)) {
+  if (!empty($mensagem)) {
       // Buscar o email do usuário na tabela 'usuarios'
       $sql_email = "SELECT email FROM usuarios WHERE id = ?";
       if ($stmt = $conn->prepare($sql_email)) {
@@ -57,12 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   // Prepara a consulta SQL para inserir os dados no banco de dados
                   $sql = "INSERT INTO mensagens_suporte (id_usuario, nome, email, mensagem) VALUES (?, ?, ?, ?)";
                   if ($stmt_insert = $conn->prepare($sql)) {
-                      $stmt_insert->bind_param("isss", $usuario_id, $nome, $email_usuario, $mensagem);
+                      $stmt_insert->bind_param("isss", $usuario_id, $nomeUsuario, $email_usuario, $mensagem);
                       if ($stmt_insert->execute()) {
                           // Sucesso ao enviar a mensagem
                           $sucesso = "Sua mensagem foi enviada com sucesso!";
                           // Redirecionar após o envio para evitar reenvio ao atualizar a página
-                          header("Location: " . $_SERVER['PHP_SELF']);
+                          header("Location: " . $_SERVER['PHP_SELF'] . "?sucesso=1");
                           exit();
                       } else {
                           $erro = "Erro ao salvar a mensagem. Tente novamente mais tarde.";

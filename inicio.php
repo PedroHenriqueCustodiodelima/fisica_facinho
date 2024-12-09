@@ -124,17 +124,17 @@ include "header.php";
             </a>
           </div>
           <div class="col-md-4 mb-3">
-            <a href="configuracoes.php" class="card-link">
-              <div class="card configuracoes-card">
-                <div class="icon-part">
-                  <i class="fa-solid fa-gear" style="font-size: 2rem;"></i>
+              <a href="configuracoes.php" class="card-link">
+                <div class="card configuracoes-card">
+                  <div class="icon-part">
+                    <i class="fa-solid fa-user" style="font-size: 2rem;"></i>
+                  </div>
+                  <div class="text-part">
+                    <h5 class="card-title">Perfil</h5> 
+                    <p class="card-text">Ajuste seu perfil.</p> 
+                  </div>
                 </div>
-                <div class="text-part">
-                  <h5 class="card-title">Configurações</h5>
-                  <p class="card-text">Ajuste suas configurações.</p>
-                </div>
-              </div>
-            </a>
+              </a>
           </div>
           <div class="col-md-4 mb-3">
             <a href="logout.php" class="card-link">

@@ -24,7 +24,7 @@ include "header.php";
             <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
         </a>
     </div>
-    <h1>Atividades</h1>
+    <h1>Tarefas</h1>
     <div class="row justify-content-center">
       <div class="col-md-4 mb-3">
         <a href="assunto_p1.php" class="card-link">

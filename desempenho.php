@@ -34,7 +34,7 @@ include("funcoes_php/funcoes_desempenho.php");
       <a href="inicio.php" class="custom-link mb-3">
         <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
       </a>
-      <h2 class="text-center">Desempenho</h2>
+      <h2 class="text-center">Desempenho das tarefas</h2>
 
       <div class="row text-center mb-4">
         <div class="col-md-4 d-flex justify-content-center">

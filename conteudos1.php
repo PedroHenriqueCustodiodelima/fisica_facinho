@@ -8,7 +8,7 @@ include "header.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conteúdos de Física</title>
+  <title>FACINHO</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -26,7 +26,7 @@ include "header.php";
       </a>
     </div>
     <main>
-      <h2 class="text-center mb-4 text-black">Conteúdos de Física</h2>
+      <h2 class="text-center mb-4 text-black">Conteúdos</h2>
 
       <div class="text-center mb-4">
         <span class="sort-icon" onclick="sortCards()">
