@@ -9,8 +9,10 @@ body {
   flex-direction: column;
   min-height: 100vh; 
 }
-
-
+.form-container {
+  width: 200px; 
+  margin: 0 auto; 
+}
 
 header {
   
@@ -139,4 +141,70 @@ main {
   border-color: #001A4E;
   padding: 10px 20px;
   font-size: 16px;
+}
+#feedback-message {
+  background-color: #4CAF50; 
+  color: white;
+  font-size: 18px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  width: 70%;
+  max-width: 550px;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 1s ease-in-out, transform 0.5s ease;
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+/* Mensagem de erro */
+#feedback-message-erro {
+  background-color: #c53934; 
+  color: white;
+  font-size: 18px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  width: 70%;
+  max-width: 550px;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 1s ease-in-out, transform 0.5s ease;
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+#feedback-message p {
+  margin: 0;
+}
+
+/* Inicialmente as mensagens são invisíveis */
+#feedback-message, #feedback-message-erro {
+  opacity: 1;
+  transition: opacity 1s ease-out;  /* Adiciona transição suave para a opacidade */
+}
+
+/* A classe show vai garantir que as mensagens apareçam */
+#feedback-message.show, #feedback-message-erro.show {
+  display: block;
+  opacity: 1;
+}
+
+#feedback-message.hidden, #feedback-message-erro.hidden {
+  opacity: 0;  /* Reduz a opacidade para 0 para o efeito de desvanecimento */
 }

@@ -3,11 +3,13 @@
 include("conexao.php");
 session_start();
 
-
 date_default_timezone_set('America/Sao_Paulo');
 
 $message = ''; 
 $usuario_id = $_SESSION['usuario_id'];
+
+$sucesso = ''; 
+$erroEmail = ''; 
 
 
 function salvarImagemPerfil($conn, $usuario_id) {
@@ -39,7 +41,6 @@ function salvarImagemPerfil($conn, $usuario_id) {
     return $_SESSION['foto'] ?? 'img/usuario_perfil.png';
 }
 
-
 function atualizarNomeUsuario($conn, $usuario_id) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
         $novoNome = $_POST['nome'];
@@ -52,6 +53,7 @@ function atualizarNomeUsuario($conn, $usuario_id) {
     }
 }
 
+// Função para verificar se o e-mail já existe
 function emailExiste($conn, $email) {
     $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -67,10 +69,13 @@ function atualizarEmailUsuario($conn, $usuario_id) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         $novoEmail = $_POST['email'];
 
-      
-        if (emailExiste($conn, $novoEmail)) {
-            global $message;
-            $message = "Este e-mail já está em uso. Por favor, escolha outro.";
+        // Verificar se o e-mail contém "@gmail.com"
+        if (strpos($novoEmail, '@gmail.com') === false) {
+            global $erroEmail;
+            $erroEmail = "O e-mail deve ser do domínio @gmail.com.";
+        } elseif (emailExiste($conn, $novoEmail)) {
+            global $erroEmail;
+            $erroEmail = "Este e-mail já está em uso. Por favor, escolha outro.";
         } else {
             $stmt = $conn->prepare("UPDATE usuarios SET email = ? WHERE id = ?");
             $stmt->bind_param("si", $novoEmail, $usuario_id);
@@ -78,7 +83,8 @@ function atualizarEmailUsuario($conn, $usuario_id) {
             $stmt->close();
 
             $_SESSION['email'] = $novoEmail;
-            $message = "E-mail atualizado com sucesso.";
+            global $sucesso;
+            $sucesso = "E-mail atualizado com sucesso.";
         }
     }
 }
@@ -92,7 +98,6 @@ function obterDadosUsuario($conn, $usuario_id) {
     $usuario = $result->fetch_assoc();
     $stmt->close();
     
-   
     if (isset($usuario['data_criacao'])) {
         $usuario['data_criacao_formatada'] = date('d/m/Y', strtotime($usuario['data_criacao']));
     } else {
@@ -101,31 +106,6 @@ function obterDadosUsuario($conn, $usuario_id) {
 
     return $usuario;
 }
-
-function contarRespostas($conn, $usuario_id) {
-
-    $stmt = $conn->prepare("SELECT COUNT(*) AS total_corretas FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 1");
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $total_corretas = $row['total_corretas'];
-    $stmt->close();
-
-
-    $stmt = $conn->prepare("SELECT COUNT(*) AS total_erradas FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 0");
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $total_erradas = $row['total_erradas'];
-    $stmt->close();
-
-    return ['corretas' => $total_corretas, 'erradas' => $total_erradas];
-}
-
-$contagemRespostas = contarRespostas($conn, $usuario_id);
-
 
 salvarImagemPerfil($conn, $usuario_id);
 atualizarNomeUsuario($conn, $usuario_id);
@@ -138,6 +118,7 @@ if (!isset($usuario)) {
     exit();
 }
 $dadosAtualizados = false;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['imagem'])) {
         $imagem = $_FILES['imagem'];
@@ -152,5 +133,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usuario['nome'] = $_POST['nome'] ?? $usuario['nome'];
     $usuario['email'] = $_POST['email'] ?? $usuario['email'];
     $dadosAtualizados = true;
+}
+$dadosAtualizados = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['email'])) {
+        $email = $_POST['email'];
+        
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $erroEmail = 'E-mail inválido.';
+        } elseif (strpos($email, '@gmail.com') === false) {
+            $erroEmail = 'O e-mail deve ser @gmail.com.';
+        } else {
+            $dadosAtualizados = true;
+        }
+    }
 }
 ?>

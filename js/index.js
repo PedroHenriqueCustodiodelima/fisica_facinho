@@ -60,35 +60,49 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     passwordField.addEventListener('input', validatePassword);
-
-    // Função para validar o formulário de cadastro
-    // Validação do formulário
-function validateForm(event) {
-    const passwordValue = passwordField.value;
-    const confirmPasswordValue = confirmPasswordField.value;
-    const emailValid = validateEmail(); // Chama a função de validação de e-mail
-
-    // Verificar se a senha atende aos requisitos
-    const isPasswordValid = passwordValue.length >= 8 && passwordValue.length <= 15
-        && /[A-Z]/.test(passwordValue)
-        && /[a-z]/.test(passwordValue)
-        && /[0-9]/.test(passwordValue)
-        && /[!@#$%^&*(),.?":{}|<>]/.test(passwordValue);
-
-    // Verificar se as senhas coincidem
-    const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
-
-    // Se as senhas ou o e-mail não forem válidos, mostrar um alerta e impedir o envio do formulário
-    if (!isPasswordValid || !isConfirmPasswordValid || !emailValid) {
-        event.preventDefault(); // Impede o envio do formulário
-        Swal.fire({
-            title: 'Erro',
-            text: 'Verifique os campos de senha e e-mail. O e-mail deve ser do tipo "usuario@gmail.com".',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
+    function validateForm(event) {
+        const passwordValue = passwordField.value;
+        const confirmPasswordValue = confirmPasswordField.value;
+        const emailValid = validateEmail(); // Valida o e-mail
+    
+        // Verificar se a senha atende aos requisitos
+        const isPasswordValid = passwordValue.length >= 8 && passwordValue.length <= 15
+            && /[A-Z]/.test(passwordValue)
+            && /[a-z]/.test(passwordValue)
+            && /[0-9]/.test(passwordValue)
+            && /[!@#$%^&*(),.?":{}|<>]/.test(passwordValue);
+    
+        // Verificar se as senhas coincidem
+        const isConfirmPasswordValid = passwordValue === confirmPasswordValue;
+    
+        // Mensagens de erro separadas
+        if (!emailValid) {
+            event.preventDefault(); // Impede o envio do formulário
+            Swal.fire({
+                title: 'Erro no E-mail',
+                text: 'O e-mail deve ser do tipo "usuario@gmail.com".',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        } else if (!isPasswordValid) {
+            event.preventDefault(); // Impede o envio do formulário
+            Swal.fire({
+                title: 'Erro na Senha',
+                text: 'A senha deve ter entre 8 e 15 caracteres, incluir letras maiúsculas, minúsculas, números e caracteres especiais.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        } else if (!isConfirmPasswordValid) {
+            event.preventDefault(); // Impede o envio do formulário
+            Swal.fire({
+                title: 'Erro na Confirmação de Senha',
+                text: 'As senhas digitadas não coincidem.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
     }
-}
+    
 
     
 
@@ -154,3 +168,22 @@ function validateEmail() {
 
     return emailValid;
 }
+document.addEventListener("DOMContentLoaded", function() {
+    const errorMessage = document.getElementById("error-message");
+    if (errorMessage) {
+        // Adiciona a classe `show` após um pequeno atraso para acionar a transição
+        setTimeout(() => {
+            errorMessage.classList.add("show");
+        }, 100);
+
+        // Remove a mensagem após 3 segundos
+        setTimeout(() => {
+            errorMessage.classList.remove("show");
+        }, 6000);
+
+        // Remove o elemento do DOM após a transição
+        setTimeout(() => {
+            errorMessage.remove();
+        }, 3500);
+    }
+});

@@ -23,6 +23,11 @@ include("funcoes_php/funcoes_index.php");
     <main>
         <div class="register-form">
             <h2>Crie sua conta para começar sua jornada de aprendizado</h2>
+            <?php if (!empty($message)): ?>
+                <div id="error-message" class="error-message">
+                    <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+                </div>
+            <?php endif; ?>
             <form action="" method="POST">
                 <div class="input-group">
                     <input type="text" id="name" name="name" placeholder="Digite aqui seu Nome" required>
