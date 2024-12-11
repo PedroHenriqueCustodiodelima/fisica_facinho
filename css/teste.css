@@ -1,0 +1,145 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+}
+
+.card-custom {
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    padding: 0.8rem;
+    background-color: white;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-custom .card-top {
+    background-color: white;
+    flex: 1;
+    padding: 1.2rem;
+}
+
+.card-custom .card-bottom {
+    background: linear-gradient(135deg, rgba(0, 153, 204, 0.7) 25%, rgba(0, 102, 204, 0.7) 100%);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 0 8px 8px;
+}
+
+.card-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.card-text {
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.fas {
+    color: #333;
+}
+
+.card .card-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.list-group-item {
+    font-size: 0.9rem;
+    font-weight: 500;
+    background-color: #f8f9fa;
+    border: none;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+canvas {
+    max-height: 250px;
+    max-width: 100%;
+}
+
+.card-custom {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-custom:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-custom .card-body {
+    padding: 20px;
+}
+
+.card-custom .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+.card-custom .card-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-custom .d-flex {
+    align-items: center;
+    justify-content: center;
+}
+
+.card-custom .d-flex i {
+    margin-right: 15px;
+}
+
+.fas.fa-check-circle {
+    color: #28a745;
+}
+
+.fas.fa-thumbs-up {
+    color: #17a2b8;
+}
+
+.fas.fa-thumbs-down {
+    color: #dc3545;
+}
+
+.fas.fa-question-circle {
+    color: #ffc107;
+}
+
+.fas.fa-exchange-alt {
+    color: #fd7e14;
+}
+
+.fas.fa-clock {
+    color: #6c757d;
+}
