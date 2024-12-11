@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const passwordValue = passwordField.value;
 
-        length.classList.toggle('valid', passwordValue.length >= 8 && passwordValue.length <= 15);
-        length.classList.toggle('invalid', passwordValue.length < 8 || passwordValue.length > 15);
+        length.classList.toggle('valid', passwordValue.length >= 8 && passwordValue.length <= 50);
+        length.classList.toggle('invalid', passwordValue.length < 8 || passwordValue.length > 50);
 
         uppercase.classList.toggle('valid', /[A-Z]/.test(passwordValue));
         uppercase.classList.toggle('invalid', !/[A-Z]/.test(passwordValue));
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const emailValid = validateEmail(); // Valida o e-mail
     
         // Verificar se a senha atende aos requisitos
-        const isPasswordValid = passwordValue.length >= 8 && passwordValue.length <= 15
+        const isPasswordValid = passwordValue.length >= 8 && passwordValue.length <= 50
             && /[A-Z]/.test(passwordValue)
             && /[a-z]/.test(passwordValue)
             && /[0-9]/.test(passwordValue)
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault(); // Impede o envio do formulário
             Swal.fire({
                 title: 'Erro na Senha',
-                text: 'A senha deve ter entre 8 e 15 caracteres, incluir letras maiúsculas, minúsculas, números e caracteres especiais.',
+                text: 'A senha deve ter entre 8 e 50 caracteres, incluir letras maiúsculas, minúsculas, números e caracteres especiais.',
                 icon: 'error',
                 confirmButtonText: 'OK'
             });

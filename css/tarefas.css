@@ -1,16 +1,19 @@
+/* Estilo global */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: #f4f6f9; /* Fundo claro para contraste */
 }
 
 header {
     background-color: #001A4E;
-    padding: 10px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 header img {
@@ -19,28 +22,24 @@ header img {
 
 footer {
     background-color: #001A4E;
-    padding: 2px;
+    padding: 10px;
     text-align: center;
     color: white;
+    font-size: 0.875rem;
 }
 
-
-.custom-link{
-    align-items: left;
+/* Links personalizados */
+.custom-link {
     color: #001A4E;
     text-decoration: none;
-  }
-  custom-link:hover{
-    color: #001A4E;
-    text-decoration: none;
-  }
+}
 
+.custom-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
 
-
-/* botão de responder */
-
-
-
+/* Estilos do botão "Responder" */
 .btn-responder {
     display: inline-block;
     padding: 10px 20px;
@@ -51,211 +50,97 @@ footer {
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+    font-size: 1rem;
 }
+
 .btn-responder:hover {
     background-color: #0056b3;
 }
 
-
-
-.question-container {
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.btn-responder {
-    margin-top: 10px;
-}
-
-
-/* botão de resolução */
-.btn-resolucao {
-    background-color: #001f3f; 
-    color: white; 
-    border: none; 
-    padding: 5px 10px; 
-    margin-top: 10px; 
-    border-radius: 20px; 
-    cursor: pointer; 
-    font-size: 12px; 
-    transition: background-color 0.3s ease; 
-}
-
-.btn-resolucao:hover {
-    background-color: #001f3f; 
-}
-
-.btn-resolucao:focus {
-    outline: none; 
-}
-
-
-main {
+/* Container de perguntas */
+.main-container {
     flex: 1;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding: 20px;
     overflow-y: auto;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
-
-/* Quando o radio está selecionado */
-.question-container input[type="radio"]:checked + label {
-    background-color: #001A4E;
-    border-color: #0f2758;
-    color: white;
-}
-.question-container {
-    background-color: white;
+/* Estilo do card de questão */
+.questao.card {
+    border: 1px solid #dee2e6;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px;
+    max-width: 600px; /* Limita o tamanho máximo da questão */
 }
 
-.question-container h3 {
-    margin-top: 0;
-    color: #001A4E;
-    font-size: 18px;
+.questao.card h5 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: #333;
 }
 
-.question-container p {
-    margin: 10px 0;
-    line-height: 1.5;
-}
-
-.question-container ul {
+.questao.card ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
-.question-container li {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
+.questao.card ul li {
+    margin: 8px 0;
+}
+
+.questao.card label {
+    font-size: 1rem;
+    color: #555;
     cursor: pointer;
 }
 
-.question-container li label {
-    display: block;
-    width: 100%;
-    padding: 10px 15px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    transition: background-color 0.3s, border-color 0.3s;
-    font-size: 16px;
-    cursor: pointer;
-}
-
+/* Efeito de hover nas alternativas */
 .question-container li:hover label {
     background-color: #e6f7ff;
     border-color: #001f3f;
 }
 
-.question-container input[type="radio"] {
-    display: none;
-}
-
-/* Contêiner flexível para os botões */
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-/* Botão Responder */
-.btn-responder {
-    padding: 8px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-/* Botão Ver Resolução */
+/* Estilo para o botão "Ver Resolução" */
 .btn-resolucao {
-    padding: 8px 12px;
     background-color: #001f3f;
     color: white;
     border: none;
+    padding: 8px 12px;
+    margin-top: 10px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
-}
-
-/* Estilo ao passar o mouse nos botões */
-.btn-responder:hover {
-    background-color: #218838;
 }
 
 .btn-resolucao:hover {
-    background-color: #001f3f;
+    background-color: #003366;
 }
-.custom-link:hover {
-    color: #001f3f;
-    background: none; 
-  }
-  
-  .custom-link span {
-    margin-left: 10px; 
-  }
-  
-  .voltar-container {
-    margin-top: 20px; 
-    margin-bottom: 20px; 
-  }
-  .questao.card {
-    border: 1px solid #dee2e6;
-    border-radius: 0.375rem;
-    padding: 15px;
+
+.btn-resolucao:focus {
+    outline: none;
+}
+
+/* Estilos para o alerta de mensagem */
+.alert-message {
+    background-color: #e7f1ff;
+    border: 1px solid #b3d4ff;
+    padding: 10px;
+    border-radius: 4px;
     margin-bottom: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  }
-  
-  .questao.card h5 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
-  }
-  
-  .questao.card ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .questao.card ul li {
-    margin: 5px 0;
-  }
-  
-  .questao.card .btn-resolver,
-  .questao.card .btn-responder {
-    margin-top: 10px;
-  }
-  .alert-message {
-    background-color: #e7f1ff; /* Um fundo suave */
-    border: 1px solid #b3d4ff; /* Uma borda azul clara */
 }
 
 .alert-message .card-body {
-    padding: 15px; /* Espaçamento interno */
-}
-#jogo {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 1rem;
 }
 
-#mensagem {
-    font-weight: bold;
-    margin-top: 10px;
-}

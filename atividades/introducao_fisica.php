@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarefas - Introdução à Física</title>
+    <title>Tarefas - Física</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -131,64 +131,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <div class="page-container">
     <header class="d-flex justify-content-between align-items-center">
         <a href="../inicio.php">
-            <img src="../img/logo.png" width="200px" alt="Logo">
+            <img src="../img/logo.png" width="150px" alt="Logo">
         </a>
         <div class="perfil-header d-flex align-items-center">
-        <a href="./configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-        <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
-        </a>
-      </div>
+            <a href="./configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
+                <img id="avatar-imagem" src="<?php echo htmlspecialchars('../' . $imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
+                <p class="m-0 ml-2">Olá, <span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span>!</p>
+            </a>
+        </div>
     </header>
 
-    <main class="container">
-    <div class="voltar-container mb-4">
-        <a href="../assunto_p1.php" class="custom-link">
-            <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
-        </a>
-    </div>
+    <main class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="font-weight-bold">Introdução a física</h3>
+            <a href="../assunto_p1.php" class="btn btn-secondary d-flex align-items-center">
+                <i class="fa-solid fa-circle-arrow-left"></i> Voltar
+            </a>
+        </div>
 
-    <h1 class="mt-4 mb-4">Atividades de Introdução à Física</h1>
+        <?php if (isset($mensagem)): ?>
+            <div class="alert alert-info"><?php echo htmlspecialchars($mensagem); ?></div>
+        <?php endif; ?>
 
-    <?php
-    $mensagem = $mensagem ?? null; 
-    ?>
-    <div class="questoes-container">
-        <?php foreach ($questoes_data as $questao): ?>
-            <div class="questao mb-4 card">
-                <h5><?php echo htmlspecialchars($questao['enunciado']); ?></h5>
-                <form class="responder-form" method="POST" action="javascript:void(0);">
-                    <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
-                    <ul>
-                        <?php foreach ($questao['alternativas'] as $alternativa): ?>
-                            <li>
-                                <label>
-                                    <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
-                                    <?php echo htmlspecialchars($alternativa['texto']); ?>
-                                </label>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <button type="submit" class="btn btn-primary btn-responder">Responder</button>
-                </form>
-                <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
-                <button class="btn btn-info btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <?php if ($total_questoes > $questoes_por_pagina): ?>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
-                    <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
-                        <a class="page-link" href="grandeza_vetores.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php endfor; ?>
-            </ul>
-        </nav>
-    <?php endif; ?>
-</main>
+        <div class="questoes-container">
+            <?php foreach ($questoes_data as $questao): ?>
+                <div class="questao mb-3 card p-3">
+                    <h6 class="font-weight-bold"><?php echo htmlspecialchars($questao['enunciado']); ?></h6>
+                    <form class="responder-form" method="POST" action="javascript:void(0);">
+                        <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
+                        <ul class="list-unstyled">
+                            <?php foreach ($questao['alternativas'] as $alternativa): ?>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
+                                        <?php echo htmlspecialchars($alternativa['texto']); ?>
+                                    </label>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <button type="submit" class="btn btn-primary btn-block btn-sm">Responder</button>
+                    </form>
+                    <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
+                    <button class="btn btn-info btn-resolucao mt-2 btn-sm" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
+        <?php if ($total_questoes > $questoes_por_pagina): ?>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <?php for ($i = 1; $i <= ceil($total_questoes / $questoes_por_pagina); $i++): ?>
+                        <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
+                            <a class="page-link" href="grandeza_vetores.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
+    </main>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -199,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         var explicacao = $(this).closest('.questao').find('.explicacao');
         explicacao.toggle();
     });
+
     $(".responder-form").submit(function (event) {
         event.preventDefault(); 
 
@@ -213,6 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             });
             return;
         }
+
         $.ajax({
             url: "", 
             method: "POST",

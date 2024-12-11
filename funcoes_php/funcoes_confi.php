@@ -67,29 +67,42 @@ function emailExiste($conn, $email) {
 
 function atualizarEmailUsuario($conn, $usuario_id) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
-        $novoEmail = $_POST['email'];
+        $novoEmail = trim($_POST['email']);
 
-        // Verificar se o e-mail contém "@gmail.com"
-        if (strpos($novoEmail, '@gmail.com') === false) {
-            global $erroEmail;
-            $erroEmail = "O e-mail deve ser do domínio @gmail.com.";
-        } elseif (emailExiste($conn, $novoEmail)) {
-            global $erroEmail;
-            $erroEmail = "Este e-mail já está em uso. Por favor, escolha outro.";
-        } else {
-            $stmt = $conn->prepare("UPDATE usuarios SET email = ? WHERE id = ?");
-            $stmt->bind_param("si", $novoEmail, $usuario_id);
-            $stmt->execute();
-            $stmt->close();
 
-            $_SESSION['email'] = $novoEmail;
+        $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $stmt->bind_result($emailAtual);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Verificar se o novo e-mail é o mesmo que o atual
+        if ($novoEmail === $emailAtual) {
             global $sucesso;
-            $sucesso = "E-mail atualizado com sucesso.";
+            $sucesso = "Dados atualizados com sucesso.";
+        } else {
+            // Verificar se o e-mail contém "@gmail.com"
+            if (strpos($novoEmail, '@gmail.com') === false) {
+                global $erroEmail;
+                $erroEmail = "O e-mail deve ser do domínio @gmail.com.";
+            } elseif (emailExiste($conn, $novoEmail)) {
+                global $erroEmail;
+                $erroEmail = "Este e-mail já está em uso. Por favor, escolha outro.";
+            } else {
+                // Atualizar o e-mail no banco de dados
+                $stmt = $conn->prepare("UPDATE usuarios SET email = ? WHERE id = ?");
+                $stmt->bind_param("si", $novoEmail, $usuario_id);
+                $stmt->execute();
+                $stmt->close();
+
+                $_SESSION['email'] = $novoEmail;
+                global $sucesso;
+                $sucesso = "E-mail atualizado com sucesso.";
+            }
         }
     }
 }
-
-
 function obterDadosUsuario($conn, $usuario_id) {
     $stmt = $conn->prepare("SELECT nome, foto, email, data_criacao FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $usuario_id);
@@ -149,4 +162,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 ?>

@@ -59,7 +59,7 @@ include("funcoes_php/funcoes_confi.php");
           <div class="img-container">
             <img id="preview-imagem" src="<?php echo htmlspecialchars(empty($usuario['foto']) ? 'img/usuario_perfil.png' : $usuario['foto']); ?>" alt="Imagem" class="img-thumbnail" onclick="document.getElementById('upload-imagem').click()">
             <!-- Ícone de câmera dentro do círculo -->
-            <i class="fas fa-camera camera-icon"></i>
+            <i class="fas fa-camera camera-icon" onclick="document.getElementById('upload-imagem').click()"></i>
           </div>
           <input type="file" id="upload-imagem" name="imagem" accept="image/*" style="display: none;" onchange="alterarImagemPerfil()">
         </form>
@@ -68,6 +68,7 @@ include("funcoes_php/funcoes_confi.php");
           <span class="data-criacao">Conosco desde <?php echo htmlspecialchars($usuario['data_criacao_formatada']); ?></span>
         </p>
       </div>
+
 
       </div>
       
