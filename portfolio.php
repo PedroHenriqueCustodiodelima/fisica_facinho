@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Landing Page Moderna</title>
     <link rel="stylesheet" href="css/land.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -45,27 +46,27 @@
         <div class="slider-container">
             <div class="cards-container">
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200" alt="Imagem Card 1">
+                    <i class="fas fa-user fa-5x"></i>
                     <h3>Card 1</h3>
                     <p>Descrição do Card 1</p>
                 </div>
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200" alt="Imagem Card 2">
+                    <i class="fas fa-user-nurse fa-5x"></i>
                     <h3>Card 2</h3>
                     <p>Descrição do Card 2</p>
                 </div>
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200" alt="Imagem Card 3">
+                    <i class="fas fa-user-tie fa-5x"></i>
                     <h3>Card 3</h3>
                     <p>Descrição do Card 3</p>
                 </div>
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200" alt="Imagem Card 4">
+                    <i class="fas fa-user-graduate fa-5x"></i>
                     <h3>Card 4</h3>
                     <p>Descrição do Card 4</p>
                 </div>
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200" alt="Imagem Card 5">
+                    <i class="fas fa-user-astronaut fa-5x"></i>
                     <h3>Card 5</h3>
                     <p>Descrição do Card 5</p>
                 </div>
@@ -84,6 +85,32 @@
         </div>
     </div>
 </section>
+<script>
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    const cardsContainer = document.querySelector('.cards-container');
+
+    let currentPosition = 0;
+    const cardWidth = 300; // Largura de cada card
+    const visibleCards = 3; // Número de cards visíveis ao mesmo tempo
+
+    prevBtn.addEventListener('click', () => {
+        if (currentPosition < 0) {
+            currentPosition += cardWidth;
+            cardsContainer.style.transform = `translateX(${currentPosition}px)`;
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentPosition > -cardWidth * (5 - visibleCards)) {
+            currentPosition -= cardWidth;
+            cardsContainer.style.transform = `translateX(${currentPosition}px)`;
+        }
+    });
+</script>
+
+
+
 
 
 
@@ -115,87 +142,6 @@
         </div>
     </footer>
 </body>
-<script>
-        window.onload = function() {
-        var textElement = document.querySelector('.typing-effect');
-        textElement.style.animationPlayState = 'running'; // Inicia a animação assim que a página for carregada
-    };
-    let currentIndex = 0;
-    const cards = document.querySelectorAll('.card');
-    const totalCards = cards.length;
-
-    function showCards() {
-        // Esconde todos os cards
-        cards.forEach(card => {
-            card.classList.remove('active');
-        });
-
-        // Exibe os 3 cards que devem ser visíveis
-        for (let i = currentIndex; i < currentIndex + 3; i++) {
-            if (i < totalCards) {
-                cards[i].classList.add('active');
-            }
-        }
-    }
-
-    document.querySelector('.next').addEventListener('click', function() {
-        currentIndex = (currentIndex + 1) % totalCards;
-        showCards();
-    });
-
-    document.querySelector('.prev').addEventListener('click', function() {
-        currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-        showCards();
-    });
-
-    // Exibir os cards inicialmente
-    showCards();
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const prevButton = document.querySelector('.prev');
-    const nextButton = document.querySelector('.next');
-    const cardsContainer = document.querySelector('.cards-container');
-    const cards = document.querySelectorAll('.card');
-    const totalCards = cards.length;
-    const visibleCards = 3; // Apenas 3 cards visíveis por vez
-    const dots = document.querySelectorAll('.pagination-dots .dot');
-    let currentIndex = 0;
-
-    // Função para atualizar os cards visíveis
-    function updateCardVisibility() {
-        const offset = -currentIndex * 320; // Cada card tem 300px + 20px de gap
-        cardsContainer.style.transform = `translateX(${offset}px)`;
-
-        // Desabilitar/Ativar os botões de navegação
-        prevButton.disabled = currentIndex === 0;
-        nextButton.disabled = currentIndex >= totalCards - visibleCards;
-
-        // Atualiza as bolinhas de navegação
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[Math.floor(currentIndex / visibleCards)].classList.add('active');
-    }
-
-    // Navegar para o próximo conjunto de cards
-    nextButton.addEventListener('click', () => {
-        if (currentIndex < totalCards - visibleCards) {
-            currentIndex++;
-            updateCardVisibility();
-        }
-    });
-
-    // Navegar para o conjunto anterior de cards
-    prevButton.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCardVisibility();
-        }
-    });
-
-    // Inicializar a visibilidade dos cards
-    updateCardVisibility();
-});
-
-
-    </script>
+<script src="js/desempenho.js"></script>
 
 </html>

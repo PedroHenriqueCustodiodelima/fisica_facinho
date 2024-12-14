@@ -200,7 +200,6 @@ body {
 
 
 
-/* Estilo geral da seção sobre */
 #sobre {
     padding: 60px 0;
     background-color: #f4f4f4;
@@ -240,54 +239,83 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Estilo dos cards */
+/* Cards maiores */
 .card {
     background-color: #fff;
     border-radius: 10px;
-    padding: 20px;
-    width: 300px; /* Tamanho do card */
+    padding: 40px; /* Aumentar o espaçamento interno */
+    width: 400px; /* Aumentar a largura */
+    height: 400px; /* Aumentar a altura */
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Imagem dentro do card */
-.card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 5px;
+/* Ícones grandes centralizados */
+.card i {
+    color: #001A4E; /* Cor do ícone */
+    margin-bottom: 20px; /* Espaço entre ícone e título */
+    transition: transform 0.3s ease;
 }
 
-/* Efeito de hover nos cards */
-.card:hover {
-    transform: translateY(-10px); /* Eleva o card quando o usuário passa o mouse */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+/* Efeito hover no ícone */
+.card:hover i {
+    transform: scale(1.1); /* Aumentar levemente o tamanho no hover */
 }
 
-/* Estilo dos títulos dos cards */
+/* Ajustar os títulos e descrições */
 .card h3 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
+    font-size: 2rem; /* Tamanho maior para o título */
+    margin-bottom: 10px;
     color: #333;
 }
 
-/* Estilo das descrições dos cards */
 .card p {
-    font-size: 1rem;
+    font-size: 1.2rem; /* Texto maior */
     color: #666;
 }
 
-/* Estilo das setas ao lado dos cards */
+.slider-container {
+    display: flex;
+    overflow: hidden; /* Oculta os cards que estão fora do container */
+    position: relative;
+    width: 100%; /* Ajusta a largura para 100% do container */
+}
+
+/* Cards lado a lado */
+.cards-container {
+    display: flex;
+    width: calc(300px * 5); /* Multiplicado pelo número total de cards */
+    transition: transform 0.3s ease;
+}
+
+/* Cards individuais */
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    width: 300px; /* Ajuste para garantir que cabem no slider */
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+
+
+/* Botões de navegação */
 .slider-buttons {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     left: 10px;
     right: 10px;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    transform: translateY(-50%);
 }
 
 .slider-buttons button {
