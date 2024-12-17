@@ -26,7 +26,7 @@ include "header.php";
       </a>
     </div>
     <main>
-      <h2 class="text-center mb-4 text-black">Conteúdos</h2>
+      <h2 class="text-center mb-4 text-black">Primeiro ano</h2>
 
       <div class="text-center mb-4">
         <span class="sort-icon" onclick="sortCards()">
