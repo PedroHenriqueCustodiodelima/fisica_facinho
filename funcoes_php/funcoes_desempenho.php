@@ -205,7 +205,6 @@ function ultimas10Questoes($usuario_id, $conn) {
         ORDER BY tc.data_tentativa DESC
         LIMIT 10
     ");
-
     if ($stmt === false) {
         die('Erro na preparação da consulta: ' . $conn->error);
     }
@@ -215,12 +214,10 @@ function ultimas10Questoes($usuario_id, $conn) {
     if ($stmt->error) {
         die('Erro na execução da consulta: ' . $stmt->error);
     }
-
     $result = $stmt->get_result();
     if ($result->num_rows === 0) {
         return []; 
     }
-
     $ultimasQuestoes = [];
     while ($row = $result->fetch_assoc()) {
         $correta = $row['correta'] == 1 ? 'Certa' : 'Errada'; 
@@ -233,6 +230,139 @@ function ultimas10Questoes($usuario_id, $conn) {
 
     return $ultimasQuestoes;
 }
+function ultimas10TentativasConcursos($usuario_id, $conn) {
+    $stmt = $conn->prepare("
+        SELECT t.id_questao, t.correta, t.data_tentativa, 
+               qn.enunciado, qn.materia, qn.ano, 'concurso' AS origem
+        FROM tentativas_concursos t
+        JOIN questoes qn ON t.id_questao = qn.id
+        WHERE t.id_usuario = ?
+        ORDER BY t.data_tentativa DESC
+        LIMIT 10
+    ");
 
+    if ($stmt === false) {
+        die('Erro na preparação da consulta: ' . $conn->error);
+    }
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die('Erro na execução da consulta: ' . $stmt->error);
+    }
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        return [];
+    }
+    $ultimasTentativas = [];
+    while ($row = $result->fetch_assoc()) {
+        $correta = $row['correta'] == 1 ? 'Certa' : 'Errada';
+        $enunciadoResumido = substr($row['enunciado'], 0, 20) . (strlen($row['enunciado']) > 20 ? '...' : '');
+        $ultimasTentativas[] = [
+            'id_questao' => $row['id_questao'],
+            'correta' => $correta, 
+            'data_tentativa' => $row['data_tentativa'],
+            'origem' => 'Concurso',
+            'enunciado' => $enunciadoResumido,
+            'materia' => $row['materia'],
+            'ano' => $row['ano'], 
+        ];
+    }
+
+    $stmt->close();
+
+    return $ultimasTentativas;
+}
+
+function ultimas10TentativasCorretasConcursos($usuario_id, $conn) {
+    $stmt = $conn->prepare("
+        SELECT t.id_questao, t.correta, t.data_tentativa, 
+               qn.enunciado, qn.materia, qn.ano, 'concurso' AS origem
+        FROM tentativas_concursos t
+        JOIN questoes qn ON t.id_questao = qn.id
+        WHERE t.id_usuario = ? AND t.correta = 1  -- Filtra apenas as tentativas corretas
+        ORDER BY t.data_tentativa DESC
+        LIMIT 10
+    ");
+    if ($stmt === false) {
+        die('Erro na preparação da consulta: ' . $conn->error);
+    }
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die('Erro na execução da consulta: ' . $stmt->error);
+    }
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        return [];
+    }
+    $ultimasTentativas = [];
+    while ($row = $result->fetch_assoc()) {
+        $enunciadoResumido = substr($row['enunciado'], 0, 20) . (strlen($row['enunciado']) > 20 ? '...' : '');
+        $ultimasTentativas[] = [
+            'id_questao' => $row['id_questao'],
+            'correta' => 'Certa', 
+            'data_tentativa' => $row['data_tentativa'],
+            'origem' => 'Concurso',
+            'enunciado' => $enunciadoResumido,
+            'materia' => $row['materia'],
+            'ano' => $row['ano'], 
+        ];
+    }
+
+    $stmt->close();
+
+    return $ultimasTentativas;
+}
+
+function ultimas10TentativasErradasConcursos($usuario_id, $conn) {
+    $stmt = $conn->prepare("
+        SELECT t.id_questao, t.correta, t.data_tentativa, 
+               qn.enunciado, qn.materia, qn.ano, 'concurso' AS origem
+        FROM tentativas_concursos t
+        JOIN questoes qn ON t.id_questao = qn.id
+        WHERE t.id_usuario = ? AND t.correta = 0  -- Filtra apenas as tentativas erradas
+        ORDER BY t.data_tentativa DESC
+        LIMIT 10
+    ");
+
+    if ($stmt === false) {
+        die('Erro na preparação da consulta: ' . $conn->error);
+    }
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+
+    if ($stmt->error) {
+        die('Erro na execução da consulta: ' . $stmt->error);
+    }
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        return [];
+    }
+
+    $ultimasTentativasErradas = [];
+    while ($row = $result->fetch_assoc()) {
+        $enunciadoResumido = substr($row['enunciado'], 0, 20) . (strlen($row['enunciado']) > 20 ? '...' : '');
+        $ultimasTentativasErradas[] = [
+            'id_questao' => $row['id_questao'],
+            'correta' => 'Errada', 
+            'data_tentativa' => $row['data_tentativa'],
+            'origem' => 'Concurso',
+            'enunciado' => $enunciadoResumido,
+            'materia' => $row['materia'],
+            'ano' => $row['ano'], 
+        ];
+    }
+
+    $stmt->close();
+
+    return $ultimasTentativasErradas;
+}
 $stmt->close();
 ?>

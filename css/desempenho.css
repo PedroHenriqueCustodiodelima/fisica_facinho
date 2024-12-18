@@ -143,3 +143,17 @@ canvas {
 .fas.fa-clock {
   color: #6c757d;
 }
+.btn-link i {
+  transition: transform 0.2s, color 0.2s;
+}
+
+.btn-link:hover i {
+  transform: scale(1.2); /* Aumenta o ícone ao passar o mouse */
+}
+
+
+
+
+
+
+

@@ -1,262 +1,281 @@
-
-* {
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f6f9; 
-    color: #333;
-}
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-.container {
-    flex: 1;
-}
-footer {
-    color: white;
-    background-color: #001A4E; 
-    text-align: center;
-    padding: 10px;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    margin-top: auto; 
-  }
-main p {
-    font-size: 16px;
-    color: #555; 
-    margin-top: 8px;
-}
-  
 header {
     background-color: #001A4E;
-    padding: 10px 20px;
+    color: white;
+    padding: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-  
-header img {
-    height: 50px;
-}
-  
-.conteudo-cabecalho h1 {
-    margin: 0;
-    color: #ffcd38;
-}
-.container {
-    max-width: 1200px;  /* Limita a largura do contêiner principal */
-    margin: 0 auto;     /* Centraliza o contêiner na tela */
-}
-.centralizado {
-    display: flex;                  /* Ativa o flexbox */
-    flex-direction: column;         /* Alinha os itens em coluna */
-    align-items: center;           /* Centraliza horizontalmente */
-    margin: 20px auto;            /* Margens superior e inferior */
-    max-width: 800px;              /* Limita a largura do contêiner */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-  
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-  
-nav ul li {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    padding: 10px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: left; 
-}
-  
-nav ul li:hover {
-    transition: 0.5s;
-    background-color: #b6b6b6ea;
-}
-  
-nav ul li a {
-    display: flex;
-    align-items: center;
-    color: white;
-    text-decoration: none;
-}
-  
-nav ul li a:hover {
-    color: white;
-}
-  
-nav ul li i {
-    font-size: 24px; 
-    margin-right: 10px; 
-}
-  
-.custom-link:hover {
-    color: #001f3f;
-    background: none; 
-}
-  
-.custom-link span {
-    margin-left: 10px; 
-}
-  
-.voltar-container {
-    margin-top: 20px; 
-    margin-bottom: 20px; 
-}
-  
-main {
-    color: rgb(0, 0, 0);
-    margin: 0 auto;
-}
-  
 .perfil-header {
     display: flex;
     align-items: center;
 }
-  
-.perfil-header span {
-    color: #ffffff;
+
+.perfil-header p,
+.perfil-header #usuario-nome {
+    color: white;
     margin-right: 10px;
-    font-size: 16px;
+    align-items: center; 
 }
-  
+
 .perfil-header img {
-    border: #f0f0f0;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    object-fit: cover;
 }
-  
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main.container {
+    flex-grow: 1;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
 footer {
     background-color: #001A4E;
-    padding: 2px;
-    text-align: center;
     color: white;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto;
 }
-  
-footer p {
-    margin-top: 15px;
+
+.container {
+    margin: 30px auto;
+    max-width: 1200px;
+    padding: 0 15px;
 }
-  
+
+.voltar-container {
+    margin-bottom: 20px;
+}
+
+.voltar-container a {
+    text-decoration: none;
+    color: #001A4E;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.voltar-container a:hover {
+    color: #001A4E;
+}
+
 .top-ranking {
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin: 20px 0;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }
 
 .rank-item {
-    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin: 0 10px;
+    padding: 15px;
+    flex: 1;
+    margin-right: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinha conteúdo ao centro */
+    justify-content: center; /* Centraliza conteúdo */
 }
-
-.rank-item:nth-child(1) {
-    order: 1;
-    flex-grow: 2;
-}
-
-.rank-item:nth-child(2) {
-    order: 0;
-    flex-grow: 1;
-}
-
-.rank-item:nth-child(3) {
-    order: 2;
-    flex-grow: 1;
-}
-
-.rank-bar {
-    display: flex; /* Ativa o flexbox */
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    width: 100%;
-    height: 80px; /* Altura da barra (ajuste conforme necessário) */
-    margin: 10px 0; /* Espaçamento acima e abaixo da barra */
-    border-radius: 5px; /* Bordas arredondadas */
-    color: white; /* Cor do texto */
-    font-weight: bold; /* Texto em negrito */
-    text-align: center; /* Centraliza o texto */
-}
-
 
 .rank-item img {
     border-radius: 50%;
-    width: 220px; 
-    height: 220px; 
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
 }
+
 .rank-number {
-    font-size: 50px; /* Altere para o tamanho desejado */
-    font-weight: bold; /* Para deixar o número em negrito */
-    display: block; /* Para que o número ocupe uma linha inteira se necessário */
-    text-align: center; /* Centraliza o texto */
-}
-.table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-}
-
-.table th, .table td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #dee2e6;
-}
-
-.table th {
-    background-color: #001A4E; /* Cabeçalho com cor #001A4E */
+    font-size: 2rem;
+    font-weight: 700;
     color: white;
+    position: absolute;
+    top: 15px;
+    left: 15px;
 }
 
-.table th:nth-child(1) {
-    width: 10%;
+.rank-bar {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
-.table th:nth-child(3) {
-    width: 15%;
+.rank-1 {
+    background-color: #FFD700;
 }
 
-.table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+.rank-2 {
+    background-color: #C0C0C0;
 }
 
-.table tbody tr:hover {
-    background-color: #e9ecef;
+.rank-3 {
+    background-color: #CD7F32;
 }
 
-.table td {
-    vertical-align: middle;
+h2 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 20px;
 }
 
-/* Cores destacadas para os três primeiros lugares */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+}
+
+table th {
+    background-color: #f1f1f1;
+    font-weight: 500;
+}
+
+.highlight-row {
+    background-color: #e6f7ff;
+}
+
 .gold-row {
-    color: #000000; /* Texto em preto para contraste */
-    font-weight: bold;
+    background-color: #fff6e5;
 }
 
 .silver-row {
-    color: #000000;
-    font-weight: bold;
+    background-color: #f1f1f1;
 }
 
 .bronze-row {
-    color: #000000;
-    font-weight: bold;
+    background-color: #f4f0e3;
 }
-/* Destaque a linha do usuário logado */
-.highlight-row {
-    background-color: yellow; /* Altere a cor para a que preferir */
-    font-weight: bold;
+
+.modal-body ul {
+    padding-left: 20px;
 }
+
+/* Estilos para os ícones de medalha */
+.fa-medal {
+    font-size: 40px; /* Ajusta o tamanho do ícone */
+    position: absolute; /* Posiciona os ícones de medalha */
+    top: 10px; /* Ajusta a altura do ícone */
+    right: 10px; /* Alinha à direita */
+}
+
+.gold-medal {
+    color: gold; /* Cor dourada para a medalha de ouro */
+}
+
+.silver-medal {
+    color: silver; /* Cor prata para a medalha de prata */
+}
+
+.bronze-medal {
+    color: #cd7f32; /* Cor bronze para a medalha de bronze */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.rank-item {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 15px;
+    flex: 1;
+    margin: 0 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid transparent; /* Borda transparente por padrão */
+}
+
+.rank-1 {
+    border-color: #FFD700; /* Borda dourada */
+}
+
+.rank-2 {
+    border-color: #C0C0C0; /* Borda prateada */
+}
+
+.rank-3 {
+    border-color: #CD7F32; /* Borda bronze */
+}
+
+.rank-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.rank-item.rank-1 .rank-number {
+    color: #FFD700; /* Número dourado para o primeiro lugar */
+}
+
+.rank-item.rank-2 .rank-number {
+    color: #C0C0C0; /* Número prateado para o segundo lugar */
+}
+
+.rank-item.rank-3 .rank-number {
+    color: #CD7F32; /* Número bronze para o terceiro lugar */
+}
+
+
+h2 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex; /* Utiliza flexbox para alinhar o ícone e o texto */
+    justify-content: flex-end; /* Alinha o conteúdo à direita */
+    align-items: center; /* Alinha verticalmente o ícone e o texto */
+}
+
+.fa-trophy {
+    font-size: 36px;
+    color: #FFD700;
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+}
+

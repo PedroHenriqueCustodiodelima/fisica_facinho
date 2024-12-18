@@ -8,6 +8,9 @@ include("funcoes_php/funcoes_ranking.php");
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ranking de Usuários</title>
+
+  <!-- Links para bibliotecas externas -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -15,189 +18,184 @@ include("funcoes_php/funcoes_ranking.php");
 </head>
 <body>
 
-  <header class="d-flex justify-content-between align-items-center">
+  <header>
     <a href="inicio.php">
-        <img src="img/logo.png" width="200px" alt="Logo">
+        <img src="img/logo.png" alt="Logo">
     </a>
-    <div class="perfil-header d-flex align-items-center">
-        <a href="configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
-          <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-          <p class="m-0 ml-2" ><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+    <div class="perfil-header">
+        <a href="configuracoes.php" class="d-flex align-items-center">
+          <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="35px" height="35px">
+          <p><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
         </a>
-      </div>
+    </div>
   </header>
 
   <div class="container">
-    <div class="voltar-container mb-4">
-        <a href="inicio.php" class="custom-link">
-            <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
-        </a>
+    <div class="voltar-container">
+        <a href="inicio.php"><i class="fa-solid fa-circle-arrow-left"></i> Voltar</a>
     </div>
 
-    <main class="centralizado">
-      <h2 class="mb-4">Ranking de Estudantes</h2>
+    <h2>
+        <i class="fa fa-trophy"></i> Ranking 
+    </h2>
 
-      <div class="top-ranking">
+
+
+
+    <div class="top-ranking">
     <?php for ($i = 0; $i < 3 && $i < count($ranking); $i++): ?>
-        <div class="rank-item rank-<?php echo $i + 1; ?>">
-            <img src="<?php echo htmlspecialchars($ranking[$i]['usuario_foto'] ?? 'img/usuario_perfil.png'); ?>" alt="Foto de <?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?>" class="avatar">
-            <p><?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?></p>
-            <div class="rank-bar" style="background-color: <?php echo ($i == 0) ? '#FFD700' : (($i == 1) ? '#C0C0C0' : '#CD7F32'); ?>; height: <?php echo (80 - ($i * 5)) . 'px'; ?>;">
-                <span class="rank-number"><?php echo ($i + 1); ?></span>
-            </div>
+    <div class="rank-item rank-<?php echo $i + 1; ?>">
+        <!-- Verifica se o usuário tem foto, senão exibe ícone -->
+        <?php if (empty($ranking[$i]['usuario_foto'])): ?>
+            <i class="fa fa-user-circle" style="font-size: 80px; color: #333;"></i> <!-- Ícone de usuário preto -->
+        <?php else: ?>
+            <img src="<?php echo htmlspecialchars($ranking[$i]['usuario_foto']); ?>" alt="Foto de <?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?>" class="avatar">
+        <?php endif; ?>
+
+        <p><?php echo htmlspecialchars($ranking[$i]['usuario_nome']); ?></p>
+        <div class="rank-bar">
+            <span class="rank-number"><?php echo ($i + 1); ?></span>
         </div>
+        <!-- Ícones de medalha ao lado direito -->
+        <?php if ($i == 0): ?>
+            <i class="fa fa-medal gold-medal" aria-hidden="true"></i>
+        <?php elseif ($i == 1): ?>
+            <i class="fa fa-medal silver-medal" aria-hidden="true"></i>
+        <?php elseif ($i == 2): ?>
+            <i class="fa fa-medal bronze-medal" aria-hidden="true"></i>
+        <?php endif; ?>
+    </div>
     <?php endfor; ?>
 </div>
 
 
-      <h4 class="mt-4">Estudantes</h4>
-      <table class="table table-striped">
+
+
+    <table>
     <thead>
         <tr>
-            <th style="width: 10%;">Ranking</th>
+            <th>Ranking</th>
             <th>Usuário</th>
-            <th style="width: 15%;">Pontos</th>
-            <th>Patente <i class="fa-solid fa-exclamation-circle" title="Patente do usuário" style="color: white; margin-left: 5px; cursor: pointer;"></i></th>
+            <th>Pontos</th>
+            <th>Patente</th>
         </tr>
     </thead>
     <tbody>
-        <?php 
-        // Exibindo os usuários no ranking (com total_acertos > 10)
-        foreach ($ranking as $index => $usuario):
-            if ($usuario['total_acertos'] > 10): ?>  
-                <tr class="<?php
-                    if ($usuario['usuario_id'] == $usuario_id) {
-                        echo 'highlight-row'; 
-                    } elseif ($index == 0) {
-                        echo 'gold-row'; 
-                    } elseif ($index == 1) {
-                        echo 'silver-row'; 
-                    } elseif ($index == 2) {
-                        echo 'bronze-row'; 
-                    }
-                ?>">
-                    <td><?php echo $index + 1; ?></td>
-                    <td><?php echo htmlspecialchars($usuario['usuario_nome']); ?></td>
-                    <td><?php echo $usuario['total_acertos']; ?></td>
-                    <td>
-                        <?php
-                        $acertos = $usuario['total_acertos'];
-                        $icone = "";
-                        if ($acertos < 2) {
-                            $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 20) {
-                            $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 40) {
-                            $icone = "<img src='img/aventurero.png' alt='Aventureiro' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 60) {
-                            $icone = "<img src='img/explorador.png' alt='Explorador' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 80) {
-                            $icone = "<img src='img/desbravador.png' alt='Desbravador' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 100) {
-                            $icone = "<img src='img/valente.png' alt='Valente' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 120) {
-                            $icone = "<img src='img/heroi.png' alt='Herói' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 140) {
-                            $icone = "<img src='img/campeao.png' alt='Campeão' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 160) {
-                            $icone = "<img src='img/mestre.png' alt='Mestre' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } elseif ($acertos <= 180) {
-                            $icone = "<img src='img/lendario.png' alt='Lendário' style='width:30px; height:20px; vertical-align: middle;'>";
-                        } else {
-                            $icone = "<img src='img/supremo.png' alt='Supremo' style='width:30px; height:20px; vertical-align: middle;'>";
-                        }
+        <?php
+        $usuario_exibido = false; // Flag para verificar se o usuário logado já foi exibido
 
-                        echo $icone;
-                        ?>
-                    </td>
-                </tr>
-            <?php endif; ?>
-        <?php endforeach; ?>
-        
-        <?php 
-        // Exibindo o usuário atual, mesmo que ele não esteja no ranking
-        $usuarioAtual = null;
-        foreach ($ranking as $usuario) {
+        foreach ($ranking as $index => $usuario):
+            // Exibe o usuário logado sempre, mesmo que tenha menos de 20 acertos
             if ($usuario['usuario_id'] == $usuario_id) {
-                $usuarioAtual = $usuario;
-                break;
+                $usuario_exibido = true;
             }
-        }
-        
-        // Caso o usuário atual não esteja no ranking, exiba ele na última posição
-        if (!$usuarioAtual):
-            $usuarioAtual = [
-                'usuario_id' => $usuario_id,
-                'usuario_nome' => $nomeUsuario,
-                'total_acertos' => 0 // Atribuindo 0 pontos caso ele não tenha acertos
-            ];
-            ?>
-            <tr class="highlight-row">
-                <td><?php echo count($ranking) + 1; ?></td>
-                <td><?php echo htmlspecialchars($usuarioAtual['usuario_nome']); ?></td>
-                <td><?php echo $usuarioAtual['total_acertos']; ?></td>
+
+            // Exibe os usuários com mais de 10 acertos no ranking
+            if ($usuario['total_acertos'] > 10 || $usuario['usuario_id'] == $usuario_id):
+        ?>
+            <tr class="<?php
+                // Highlight para o usuário logado
+                if ($usuario['usuario_id'] == $usuario_id) {
+                    echo 'highlight-row'; 
+                } elseif ($index == 0) {
+                    echo 'gold-row'; 
+                } elseif ($index == 1) {
+                    echo 'silver-row'; 
+                } elseif ($index == 2) {
+                    echo 'bronze-row'; 
+                }
+            ?>">
+                <td><?php echo $index + 1; ?></td>
+                <td><?php echo htmlspecialchars($usuario['usuario_nome']); ?></td>
+                <td><?php echo $usuario['total_acertos']; ?></td>
                 <td>
-                    <img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'> <!-- Ícone para 0 pontos -->
+                    <?php
+                    $acertos = $usuario['total_acertos'];
+                    $icone = "";
+                    // Exibe os ícones de patente com base no número de acertos
+                    if ($acertos < 2) {
+                        $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 20) {
+                        $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 40) {
+                        $icone = "<img src='img/aventurero.png' alt='Aventureiro' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 60) {
+                        $icone = "<img src='img/explorador.png' alt='Explorador' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 80) {
+                        $icone = "<img src='img/desbravador.png' alt='Desbravador' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 100) {
+                        $icone = "<img src='img/valente.png' alt='Valente' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 120) {
+                        $icone = "<img src='img/heroi.png' alt='Herói' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 140) {
+                        $icone = "<img src='img/campeao.png' alt='Campeão' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 160) {
+                        $icone = "<img src='img/mestre.png' alt='Mestre' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } elseif ($acertos <= 180) {
+                        $icone = "<img src='img/lendario.png' alt='Lendário' style='width:30px; height:20px; vertical-align: middle;'>";
+                    } else {
+                        $icone = "<img src='img/supremo.png' alt='Supremo' style='width:30px; height:20px; vertical-align: middle;'>";
+                    }
+                    echo $icone;
+                    ?>
                 </td>
             </tr>
-        <?php endif; ?>
-        
-        <?php if (count($ranking) === 0): ?>
-            <tr>
-                <td colspan="4" class="text-center">Não há usuários suficientes para mostrar.</td>
+        <?php endif; endforeach; ?>
+
+        <!-- Caso o usuário logado tenha menos de 10 acertos, ele será exibido separadamente -->
+        <?php if (!$usuario_exibido): ?>
+            <tr class="highlight-row">
+                <td> - </td>
+                <td><?php echo htmlspecialchars($usuario_logado['usuario_nome']); ?></td>
+                <td><?php echo $usuario_logado['total_acertos']; ?></td>
+                <td>
+                    <?php
+                    // Definir o ícone de patente para o usuário com menos de 10 acertos
+                    $icone = "<img src='img/iniciante3.png' alt='Iniciante' style='width:30px; height:20px; vertical-align: middle;'>";
+                    echo $icone;
+                    ?>
+                </td>
             </tr>
         <?php endif; ?>
     </tbody>
 </table>
 
-
-
-
-      <!-- Modal -->
-      <div class="modal fade" id="patenteModal" tabindex="-1" role="dialog" aria-labelledby="patenteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="patenteModalLabel">Patentes e Pontos Necessários</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <ul>
-                <li>Iniciante: 0 - 1 ponto</li>
-                <li>Aventureiro: 2 - 20 pontos</li>
-                <li>Explorador: 21 - 40 pontos</li>
-                <li>Desbravador: 41 - 60 pontos</li>
-                <li>Valente: 61 - 80 pontos</li>
-                <li>Herói: 81 - 100 pontos</li>
-                <li>Campeão: 101 - 120 pontos</li>
-                <li>Mestre: 121 - 140 pontos</li>
-                <li>Lendário: 141 - 160 pontos</li>
-                <li>Supremo: 161+ pontos</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
   </div>
 
-  <footer class="text-center mt-4">
+  <footer>
     <p>&copy; 2024 Todos os direitos reservados.</p>
   </footer>
 
+  <!-- Modal -->
+  <div class="modal fade" id="patenteModal" tabindex="-1" role="dialog" aria-labelledby="patenteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="patenteModalLabel">Patentes e Pontos Necessários</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li>Iniciante: 0 - 2 pontos</li>
+            <li>Aventureiro: 3 - 20 pontos</li>
+            <li>Explorador: 21 - 40 pontos</li>
+            <li>Desbravador: 41 - 60 pontos</li>
+            <li>Valente: 61 - 80 pontos</li>
+            <li>Herói: 81 - 100 pontos</li>
+            <li>Campeão: 101 - 120 pontos</li>
+            <li>Mestre: 121 - 140 pontos</li>
+            <li>Lendário: 141 - 160 pontos</li>
+            <li>Supremo: 161+ pontos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    $(document).ready(function() {
-        // Exibição do modal de patente
-        $('[title="Patente"]').on('click', function() {
-            $('#patenteModal').modal('show');
-        });
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>
 </html>
