@@ -1,220 +1,118 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-  
-html, body {
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
-}
-  
-header {
-    background-color: #001A4E;
-    padding: 10px;
-    color: white;
-}
-  
-.perfil-header p,
-.perfil-header #usuario-nome {
-    color: white; 
-}
-  
-.custom-link {
-    color: #001A4E;
-    text-decoration: none;
-}
 
-.custom-link:hover {
-    color: #001A4E;
-    text-decoration: none;
-}
-
-h1 {
-    text-align: center;
-    padding: 15px;
-}
-
-.page-container {
+.header-content {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-}
-
-main.container {
-    flex-grow: 1; 
-    margin-top: 20px;
-}
-
-footer {
-    background-color: #001A4E;
-    color: white;
-    padding: 10px;
-    text-align: center;
-}
-
-#avatar-imagem {
-    border-radius: 50%;
-    object-fit: cover; 
-}
-
-.container {
-    margin-top: 20px;
-}
-
-/* Estilo dos cards */
-.card {
-    background-color: #001A4E; /* Cor de fundo do card */
-    color: white; /* Texto branco */
-    border: none;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); 
-    display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    animation: fadeIn 0.5s ease-out; /* Animação de entrada */
-    max-width: 320px;
-    height: 200px;
-    margin: 15px auto;
-    position: relative;
-}
-
-.card:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
-}
-
-/* Efeito de fade-in nos cards */
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Estilo do ícone dentro do card */
-.card .icon-part {
-    background-color: #3498DB; /* Cor do fundo do ícone */
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
+    margin-bottom: 30px;
+  }
+  
+  .header-content .search-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-}
-
-.card .icon-part:hover {
-    transform: scale(1.1); 
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
-}
-
-/* Estilo do título do card */
-.card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: white;
-}
-
-/* Estilo da descrição do card */
-.card-description {
+  }
+  
+  .header-content .search-container input {
+    width: 250px;
+    margin-right: 15px;
+    padding: 8px;
     font-size: 1rem;
-    color: #f8f9fa;
-}
-
-/* Estilo do conteúdo do card */
-.card-body {
-    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .header-content .search-container i {
+    font-size: 1.5rem;
+  }
+  
+  .header-content .title-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-content .title-container h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  }
+  
+  .card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f1f1f1; 
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.sort-icon {
-    position: absolute; 
-    top: 130px; 
-    right: 135px; 
-    cursor: pointer;
-    font-size: 2rem;
-    color: #001A4E;
-    margin-bottom: 20px;
-}
-
-.card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-/* Estilo específico para diferentes tipos de cards */
-.primeiro-ano-card .icon-part {
-    background-color: #3498DB;
-}
-
-.segundo-ano-card .icon-part {
-    background-color: #28A745;
-}
-
-.terceiro-ano-card .icon-part {
-    background-color: #F39C12;
-}
-
-.desempenho-card .icon-part {
-    background-color: #2a9d8f;
-}
-
-.conteudos-card .icon-part {
-    background-color: #264653;
-}
-
-.tarefas-card .icon-part {
-    background-color: #e9c46a;
-}
-
-.missoes-card .icon-part {
-    background-color: #f4a261;
-}
-
-.configuracoes-card .icon-part {
-    background-color: #e76f51;
-}
-
-.sair-card .icon-part {
-    background-color: #d62828;
-}
-
-.rank-card .icon-part {
-    background-color: #6a4c93;
-}
-
-.videos-card .icon-part {
-    background-color: #42a5f5;
-}
-
-.relatorio-card .icon-part {
-    background-color: #ffca28;
-}
-
-.suporte-card .icon-part {
-    background-color: #66bb6a;
-}
+    min-height: 250px; 
+  }
+  
+  .card .icon-part {
+    background-color: #001A4E;
+    padding: 15px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .card .icon-part i {
+    color: #fff;
+    font-size: 2.5rem;
+  }
+  
+  .card .text-part {
+    padding: 20px;
+    flex-grow: 1; 
+  }
+  
+  .card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card .card-text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px; 
+  }
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .header-content .search-container input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  .sort-icon {
+    cursor: pointer; 
+    display: inline-block;  
+    padding: 10px;  
+    transition: transform 0.2s ease-in-out;  
+  }
+  
+  .sort-icon:hover {
+    transform: scale(1.2);  
+  }
+  
+  .sort-icon i {
+    font-size: 20px;  
+    color: #FFC100;  
+  }
+  .voltar-container {
+    margin-top: 20px;  
+  }
+  

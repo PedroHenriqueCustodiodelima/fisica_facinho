@@ -12,66 +12,142 @@ include "header.php";
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="css/conteudos1.css">
   <script src="js/conteudos.js"></script>
+  <link rel="stylesheet" href="css/conteudos1.css">
+
 </head>
 <body>
 
- 
-
   <div class="container">
-    <div class="voltar-container mb-4">
+  <div class="voltar-container mb-4">
       <a href="conteudos.php" class="custom-link mb-3">
-          <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+        <i class="fa-solid fa-circle-arrow-left" style="color: #001A4E;"></i> 
+        <span style="color: #001A4E;">Voltar</span>
       </a>
     </div>
+    
     <main>
-      <h2 class="text-center mb-4 text-black">Terceiro ano</h2>
+      <!-- Cabeçalho com título e barra de pesquisa -->
+      <div class="header-content">
+        <!-- Barra de Pesquisa -->
+        <div class="search-container">
+          <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar conteúdo...">
+          <span class="sort-icon" onclick="sortCards()">
+            <i class="fa-solid fa-sort-alpha-down" id="sort-icon"></i>
+          </span>
+        </div>
 
-      <div class="text-center mb-4">
-        <span class="sort-icon" onclick="sortCards()">
-          <i class="fa-solid fa-sort-alpha-down" id="sort-icon"></i>
-        </span>
+        <!-- Título -->
+        <div class="title-container">
+          <h2 class="text-black">Terceiro ano</h2>
+        </div>
       </div>
 
       <div class="row justify-content-center" id="conteudos-lista">
         <?php
           $conteudos = [
-              ["titulo" => "Introdução à Física", "descricao" => "Compreenda os fundamentos e conceitos iniciais da física.", "cor" => "#1F77B4", "icone" => "fas fa-book", "url" => "conteudos/if.php"],
-              ["titulo" => "Grandezas e Vetores", "descricao" => "Aprenda sobre grandezas físicas e a representação vetorial.", "cor" => "#FF7F0E", "icone" => "fas fa-vector-square", "url" => "conteudos/gv.php"],
-              ["titulo" => "Cinemática – conceitos básicos", "descricao" => "Entenda os conceitos iniciais da cinemática.", "cor" => "#2CA02C", "icone" => "fas fa-arrows-alt", "url" => "conteudos/cb.php"],
-              ["titulo" => "Cinemática – identificando os movimentos", "descricao" => "Classifique e analise diferentes tipos de movimentos.", "cor" => "#D62728", "icone" => "fas fa-shoe-prints", "url" => "conteudos/cm.php"],
-              ["titulo" => "Movimento retilíneo uniforme (MRU)", "descricao" => "Estude os movimentos retilíneos uniformes.", "cor" => "#9467BD", "icone" => "fas fa-ruler-horizontal", "url" => "conteudos/mruc.php"],
-              ["titulo" => "Movimento retilíneo uniformemente variado (MRUV)", "descricao" => "Explore os movimentos uniformemente variados.", "cor" => "#8C564B", "icone" => "fas fa-wave-square", "url" => "conteudos/mruvc.php"],
-              ["titulo" => "Movimentos sob ação da gravidade", "descricao" => "Analise os movimentos causados pela gravidade.", "cor" => "#E377C2", "icone" => "fas fa-feather-alt", "url" => "conteudos/gc.php"],
-              ["titulo" => "As Leis de Newton e suas aplicações", "descricao" => "Entenda as leis fundamentais da mecânica.", "cor" => "#7F7F7F", "icone" => "fas fa-balance-scale", "url" => "conteudos/ln.php"],
-              ["titulo" => "Movimento Circular Uniforme", "descricao" => "Estude movimentos circulares com velocidade constante.", "cor" => "#BCBD22", "icone" => "fas fa-sync-alt", "url" => "conteudos/mc.php"],
-              ["titulo" => "Dinâmica do movimento circular", "descricao" => "Explore as forças que agem em movimentos circulares.", "cor" => "#17BECF", "icone" => "fas fa-compact-disc", "url" => "conteudos/dc.php"],
-              ["titulo" => "Trabalho energia potência", "descricao" => "Compreenda os conceitos de trabalho, energia e potência.", "cor" => "#FFA07A", "icone" => "fas fa-plug", "url" => "conteudos/ep.php"],
-              ["titulo" => "Impulso e Quantidade de Movimento", "descricao" => "Analise o impacto de forças e o movimento dos corpos.", "cor" => "#CD5C5C", "icone" => "fas fa-forward", "url" => "conteudos/im.php"],
-              ["titulo" => "Gravitação Universal", "descricao" => "Estude as interações gravitacionais entre os corpos.", "cor" => "#4682B4", "icone" => "fas fa-globe", "url" => "conteudos/gravitacaoc.php"],
-              ["titulo" => "Estática", "descricao" => "Entenda o equilíbrio dos corpos em repouso.", "cor" => "#708090", "icone" => "fas fa-anchor", "url" => "conteudos/estaticac.php"],
-              ["titulo" => "Hidrostática", "descricao" => "Explore a mecânica dos fluidos em repouso.", "cor" => "#00CED1", "icone" => "fas fa-water", "url" => "conteudos/hidrostaticac.php"],
-              ["titulo" => "Hidrodinâmica", "descricao" => "Estude o comportamento dos fluidos em movimento.", "cor" => "#20B2AA", "icone" => "fas fa-tint", "url" => "conteudos/hidrodinamicac.php"],
-          ];
+            ["titulo" => "Ondulatória – Conceitos e definições", "descricao" => "Entenda os conceitos e definições das ondas.", "cor" => "#001A4E", "icone" => "fas fa-wave-square", "url" => "conteudos/ondulatoria_conceitos.php"],
+            ["titulo" => "Ondulatória – Equação de Onda", "descricao" => "Estude a equação que descreve o comportamento das ondas.", "cor" => "#001A4E", "icone" => "fas fa-wave-square", "url" => "conteudos/ondulatoria_equacao.php"],
+            ["titulo" => "Ondulatória – Reflexão e refração de ondas", "descricao" => "Explore os fenômenos de reflexão e refração das ondas.", "cor" => "#001A4E", "icone" => "fas fa-mirror", "url" => "conteudos/reflexao_reflexao.php"],
+            ["titulo" => "Ondulatória – Interferência de Ondas", "descricao" => "Compreenda como as ondas podem interferir umas com as outras.", "cor" => "#001A4E", "icone" => "fas fa-random", "url" => "conteudos/ondulatoria_interferencia.php"],
+            ["titulo" => "Ondulatória – Interferência luminosa – experimento de Young", "descricao" => "Estude a interferência de luz no experimento de Young.", "cor" => "#001A4E", "icone" => "fas fa-lightbulb", "url" => "conteudos/interferencia_young.php"],
+            ["titulo" => "Ondulatória – Difração e dispersão", "descricao" => "Compreenda os fenômenos de difração e dispersão das ondas.", "cor" => "#001A4E", "icone" => "fas fa-project-diagram", "url" => "conteudos/difracao_dispersao.php"],
+            ["titulo" => "Ondulatória – Polarização e ressonância", "descricao" => "Estude os fenômenos de polarização e ressonância das ondas.", "cor" => "#001A4E", "icone" => "fas fa-random", "url" => "conteudos/polarizacao_resonancia.php"],
+            ["titulo" => "Ondulatória – Ondas sonoras", "descricao" => "Explore o comportamento das ondas sonoras.", "cor" => "#001A4E", "icone" => "fas fa-volume-up", "url" => "conteudos/ondas_sonoras.php"],
+            ["titulo" => "Ondulatória – Ondas estacionárias", "descricao" => "Estude as ondas estacionárias e suas propriedades.", "cor" => "#001A4E", "icone" => "fas fa-wave-square", "url" => "conteudos/ondas_estacionarias.php"],
+            ["titulo" => "Ondulatória – Cordas vibrantes", "descricao" => "Compreenda o comportamento das ondas em cordas vibrantes.", "cor" => "#001A4E", "icone" => "fas fa-guitar", "url" => "conteudos/cordas_vibrantes.php"],
+            ["titulo" => "Ondulatória – Qualidades fisiológicas do som", "descricao" => "Estude como o som afeta a percepção humana.", "cor" => "#001A4E", "icone" => "fas fa-headphones", "url" => "conteudos/qualidades_fisiologicas.php"],
+            ["titulo" => "Ondulatória – Efeito Doppler", "descricao" => "Entenda o efeito Doppler e suas implicações nas ondas.", "cor" => "#001A4E", "icone" => "fas fa-random", "url" => "conteudos/efeito_doppler.php"],
+            ["titulo" => "Ondulatória – Tubos sonoros", "descricao" => "Estude o comportamento do som em tubos sonoros.", "cor" => "#001A4E", "icone" => "fas fa-microphone", "url" => "conteudos/tubos_sonoros.php"],
+            ["titulo" => "Eletricidade – Eletrostática – Carga elétrica e processos de eletrização", "descricao" => "Estude a carga elétrica e os processos de eletrização.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/carga_eletrica.php"],
+            ["titulo" => "Eletricidade – Eletrostática – Força elétrica", "descricao" => "Compreenda a força elétrica e sua aplicação.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/forca_eletrica.php"],
+            ["titulo" => "Eletricidade – Eletrostática – Campo elétrico", "descricao" => "Estude o conceito de campo elétrico.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/campo_eletrico.php"],
+            ["titulo" => "Eletricidade – Eletrostática – Potencial eletrostático", "descricao" => "Explore o conceito de potencial eletrostático.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/potencial_eletrico.php"],
+            ["titulo" => "Eletricidade – Eletrostática – Superfícies eletrostáticas", "descricao" => "Estude as superfícies eletrostáticas e suas características.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/superficies_eletrostaticas.php"],
+            ["titulo" => "Eletricidade – Eletrostática – Condutor em equilíbrio eletrostático", "descricao" => "Compreenda o equilíbrio eletrostático em condutores.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/condutor_equilibrio.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Corrente elétrica", "descricao" => "Estude o conceito de corrente elétrica.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/corrente_eletrica.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Potência elétrica", "descricao" => "Entenda o conceito de potência elétrica.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/potencia_eletrica.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Primeira Lei de Ohm", "descricao" => "Compreenda a primeira Lei de Ohm.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/ohm_primeira_lei.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Segunda Lei de Ohm", "descricao" => "Estude a segunda Lei de Ohm.", "cor" => "#001A4E", "icone" => "fas fa-bolt", "url" => "conteudos/ohm_segunda_lei.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Resistor equivalente", "descricao" => "Estude o conceito de resistor equivalente.", "cor" => "#001A4E", "icone" => "fas fa-plug", "url" => "conteudos/resistor_equivalente.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Geradores", "descricao" => "Entenda os geradores de corrente elétrica.", "cor" => "#001A4E", "icone" => "fas fa-plug", "url" => "conteudos/geradores.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Receptores", "descricao" => "Compreenda o funcionamento dos receptores de corrente elétrica.", "cor" => "#001A4E", "icone" => "fas fa-plug", "url" => "conteudos/receptores.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Galvanômetros", "descricao" => "Estude o funcionamento dos galvanômetros.", "cor" => "#001A4E", "icone" => "fas fa-plug", "url" => "conteudos/galvanometros.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Circuitos compostos", "descricao" => "Entenda os circuitos compostos.", "cor" => "#001A4E", "icone" => "fas fa-plug", "url" => "conteudos/circuitos_compostos.php"],
+            ["titulo" => "Eletricidade – Eletrodinâmica – Capacitores", "descricao" => "Estude o conceito de capacitores.", "cor" => "#001A4E", "icone" => "fas fa-plug", "url" => "conteudos/capacitores.php"],
+            ["titulo" => "Eletricidade – Eletromagnetismo – Campo magnético", "descricao" => "Estude o campo magnético.", "cor" => "#001A4E", "icone" => "fas fa-magnet", "url" => "conteudos/campo_magnetico.php"]
+        ];
+        
+        
 
           foreach ($conteudos as $conteudo) {
-              echo '<div class="col-md-4 mb-4 d-flex justify-content-center conteudo-item">';
-              echo '  <a href="' . htmlspecialchars($conteudo["url"]) . '" style="text-decoration: none;">';
-              echo '    <div class="card" style="--cor: ' . htmlspecialchars($conteudo["cor"]) . ';">';
-              echo '      <div class="card-body">';
-              echo '        <i class="' . htmlspecialchars($conteudo["icone"]) . ' icon"></i>';
-              echo '        <h5 class="card-title">' . htmlspecialchars($conteudo["titulo"]) . '</h5>';
-              echo '        <p class="card-description">' . htmlspecialchars($conteudo["descricao"]) . '</p>';
-              echo '      </div>';
-              echo '    </div>';
-              echo '  </a>';
-              echo '</div>';
+            echo '
+            <div class="col-md-4 mb-3 card-item" data-title="' . $conteudo['titulo'] . '">
+              <a href="' . $conteudo['url'] . '" class="card-link">
+                <div class="card" style="background-color: ' . $conteudo['cor'] . ';">
+                  <div class="icon-part">
+                    <i class="' . $conteudo['icone'] . '" style="font-size: 2rem;"></i>
+                  </div>
+                  <div class="text-part">
+                    <h5 class="card-title text-white">' . $conteudo['titulo'] . '</h5>
+                    <p class="card-text text-white">' . $conteudo['descricao'] . '</p>
+                  </div>
+                </div>
+              </a>
+            </div>';
           }
         ?>
       </div>
     </main>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const sortIcon = document.getElementById("sort-icon");
+      const cardContainer = document.getElementById("conteudos-lista");
+      const searchInput = document.getElementById("searchInput");
+      let ascending = true;
+
+      // Função para filtrar os conteúdos com base na pesquisa
+      searchInput.addEventListener("input", function () {
+        const searchQuery = searchInput.value.toLowerCase();
+        const cards = Array.from(cardContainer.getElementsByClassName("card-item"));
+        
+        cards.forEach(card => {
+          const title = card.getAttribute("data-title").toLowerCase();
+          if (title.includes(searchQuery)) {
+            card.style.display = "";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+
+      // Função de ordenação dos conteúdos
+      sortIcon.addEventListener("click", function () {
+        const cards = Array.from(cardContainer.getElementsByClassName("card-item"));
+        cards.sort((a, b) => {
+          const titleA = a.getAttribute("data-title").toLowerCase();
+          const titleB = b.getAttribute("data-title").toLowerCase();
+          return ascending ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
+        });
+
+        cards.forEach(card => cardContainer.appendChild(card));
+        ascending = !ascending;
+
+        // Alternando entre as classes do ícone
+        if (ascending) {
+          sortIcon.classList.add("fa-sort-alpha-down");
+          sortIcon.classList.remove("fa-sort-alpha-up");
+        } else {
+          sortIcon.classList.add("fa-sort-alpha-up");
+          sortIcon.classList.remove("fa-sort-alpha-down");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

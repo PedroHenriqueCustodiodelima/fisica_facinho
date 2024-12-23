@@ -27,24 +27,25 @@ include("funcoes_php/funcoes_login.php");
                     <input type="email" id="email" name="email" placeholder="Digite aqui o seu Email" required>
                     <i class="fa-solid fa-envelope"></i>
                 </div>
-                
+
                 <div class="input-group">
                     <input type="password" id="password" name="password" placeholder="Digite aqui sua senha" required>
                     <i class="fa-solid fa-eye" id="togglePassword"></i>
                     <i class="fa-solid fa-eye-slash" id="togglePasswordSlash" style="display: none;"></i>
                 </div>
-                
+
                 <button class="login-button" type="submit">Entrar</button>
             </form>
+
             <button class="google-login" id="googleSignInBtn">
                 <i class="fa-brands fa-google"></i>
                 Entrar com o Google
             </button>
-            <p class="register-link">Não tem uma conta? <a href="index.php">Cadastre-se</a></p>
 
+            <p class="register-link">Não tem uma conta? <a href="index.php">Cadastre-se</a></p>
+            <!-- <p class="forgot-password"><a href="recuperar_senha.php">Esqueceu sua senha?</a></p> -->
         </div>
     </main>
-
 
     <!-- footer -->
     <footer>
@@ -69,6 +70,7 @@ include("funcoes_php/funcoes_login.php");
                 eyeIcon.style.display = 'inline';
                 eyeSlashIcon.style.display = 'none';
             });
+
             <?php if (isset($_SESSION['loginErro'])): ?>
                 Swal.fire({
                     title: 'Erro no login',
@@ -79,6 +81,7 @@ include("funcoes_php/funcoes_login.php");
                     <?php unset($_SESSION['loginErro']); ?>
                 });
             <?php endif; ?>
+
             gapi.load('auth2', function() {
                 console.log('Google API loaded'); 
                 const auth2 = gapi.auth2.init({
@@ -90,7 +93,7 @@ include("funcoes_php/funcoes_login.php");
                     console.log('Google Sign-In button clicked'); 
                     auth2.signIn().then(function(googleUser) {
                         const id_token = googleUser.getAuthResponse().id_token;
-                        
+
                         fetch('verify_google_token.php', {
                             method: 'POST',
                             headers: {

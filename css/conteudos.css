@@ -116,7 +116,7 @@ footer {
 }
 
 .primeiro-ano-card .icon-part {
-  background-color: #3498DB;
+  background-color: #001A4E;
 }
 
 .segundo-ano-card {
@@ -124,7 +124,7 @@ footer {
 }
 
 .segundo-ano-card .icon-part {
-  background-color: #28A745;
+  background-color: #001A4E;
 }
 
 .terceiro-ano-card {
@@ -132,7 +132,7 @@ footer {
 }
 
 .terceiro-ano-card .icon-part {
-  background-color: #F39C12;
+  background-color: #001A4E;
 }
 
 .card-title {
@@ -152,12 +152,12 @@ footer {
 
 .card-link {
   text-decoration: none;
-  color: #3498DB;
+  color: #001A4E;
   transition: color 0.3s ease;
 }
 
 .card-link:hover {
-  color: #1D6FB9;
+  color: #001A4E;
 }
 
 .cards-container {
