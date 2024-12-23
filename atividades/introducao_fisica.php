@@ -35,7 +35,7 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-$tabela = 'questoes_nivel1';
+$tabela = 'tarefas'; // Alterando para a tabela 'tarefas'
 $questoes_por_pagina = 3;
 
 $pagina_atual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
@@ -48,7 +48,7 @@ $total_questoes_result = $conn->query($total_questoes_sql);
 $total_questoes_row = $total_questoes_result->fetch_assoc();
 $total_questoes = $total_questoes_row['total'];
 
-$questao_sql = "SELECT id, enunciado, explicacao FROM $tabela WHERE materia = 'Introdução à Física' LIMIT $offset, $questoes_por_pagina";
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado FROM $tabela WHERE materia = 'Introdução à Física' LIMIT $offset, $questoes_por_pagina";
 $questao_result = $conn->query($questao_sql);
 
 $questoes_data = [];
@@ -57,14 +57,18 @@ if ($questao_result->num_rows > 0) {
     while ($questao = $questao_result->fetch_assoc()) {
         $questao_id = $questao['id'];
         $enunciado = $questao['enunciado'];
-        $explicacao = $questao['explicacao'];
+        $resolucao = $questao['resolucao'];
+        $foto_enunciado = $questao['foto_enunciado'];
+
+        // Buscando as alternativas relacionadas à questão
         $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
         $alternativas_result = $conn->query($alternativas_sql);
 
         $questao_data = [
             'id' => $questao_id,
             'enunciado' => $enunciado,
-            'explicacao' => $explicacao,
+            'resolucao' => $resolucao,
+            'foto_enunciado' => $foto_enunciado,
             'alternativas' => []
         ];
 
@@ -114,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -171,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         </ul>
                         <button type="submit" class="btn btn-primary btn-block btn-sm">Responder</button>
                     </form>
-                    <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['explicacao']); ?></p>
+                    <p class="explicacao mt-2" style="display: none;"><?php echo htmlspecialchars($questao['resolucao']); ?></p>
                     <button class="btn btn-info btn-resolucao mt-2 btn-sm" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
                 </div>
             <?php endforeach; ?>

@@ -1,18 +1,21 @@
 <?php
 session_start();
 
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
 }
 
-require_once 'conexao.php';
+require_once 'conexao.php';  // Conexão com o banco de dados
 
 $usuario_id = $_SESSION['usuario_id'];
 
+// Dados do usuário
 $imagemPerfil = 'img/default-avatar.png';
 $nomeUsuario = 'Usuário';
 
+// Pega os dados do usuário
 $stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -24,36 +27,29 @@ if ($usuario) {
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
+// Processa o formulário
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nivel = $_POST['nivel'];
     $enunciado = $_POST['enunciado'];
-    $explicacao = $_POST['explicacao'];
-    $materia = $_POST['materia'];  // Novo campo de matéria
-    $alternativas = $_POST['alternativa'];
-    $correta = $_POST['correta'];
+    $resolucao = $_POST['resolucao'];
+    $ano = $_POST['ano'];
+    $materia = $_POST['materia'];
+    $alternativas = $_POST['alternativa'];  // Alternativas da questão
+    $correta = $_POST['correta'];  // Índice da alternativa correta
+    $foto_enunciado = ''; // Se você tiver a lógica para fazer upload de imagem, adicione-a aqui
 
-    $tabela_questoes = "questoes_nivel" . $nivel;
-    $tabela_alternativas = "alternativas" . ($nivel > 1 ? "_$nivel" : '');
-
-    if (!in_array($tabela_questoes, ['questoes_nivel1', 'questoes_nivel2', 'questoes_nivel3'])) {
-        die("Tabela de questões inválida.");
-    }
-
-    if (!in_array($tabela_alternativas, ['alternativas', 'alternativas_2', 'alternativas_3'])) {
-        die("Tabela de alternativas inválida.");
-    }
-
-    $stmt = $conn->prepare("INSERT INTO $tabela_questoes (enunciado, explicacao, materia) VALUES (?, ?, ?)");
+    // Inserir a questão na tabela 'tarefas'
+    $stmt = $conn->prepare("INSERT INTO tarefas (enunciado, resolucao, ano, materia, foto_enunciado) VALUES (?, ?, ?, ?, ?)");
     if (!$stmt) {
-        die("Erro na preparação da consulta de questões: " . $conn->error);
+        die("Erro na preparação da consulta de tarefas: " . $conn->error);
     }
-    $stmt->bind_param("sss", $enunciado, $explicacao, $materia);
+    $stmt->bind_param("ssiss", $enunciado, $resolucao, $ano, $materia, $foto_enunciado);
     $stmt->execute();
-    $questao_id = $stmt->insert_id;
+    $questao_id = $stmt->insert_id;  // Pega o ID da questão inserida
 
+    // Inserir as alternativas na tabela 'alternativas'
     foreach ($alternativas as $indice => $texto_alternativa) {
-        $correta_flag = ($indice == $correta) ? 1 : 0;
-        $stmt = $conn->prepare("INSERT INTO $tabela_alternativas (questao_id, texto, correta) VALUES (?, ?, ?)");
+        $correta_flag = ($indice == $correta) ? 1 : 0;  // Define se a alternativa é correta (1) ou errada (0)
+        $stmt = $conn->prepare("INSERT INTO alternativas (questao_id, texto, correta) VALUES (?, ?, ?)");
         if (!$stmt) {
             die("Erro na preparação da consulta de alternativas: " . $conn->error);
         }
@@ -64,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
     $conn->close();
 
-    echo "Questão de Nível $nivel adicionada com sucesso!";
+    echo "Questão adicionada com sucesso!";
 }
 ?>
 
@@ -73,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Questão</title>
+    <title>Adicionar Nova Questão</title>
     <link rel="stylesheet" href="css/add.css">
 </head>
 <body>
@@ -91,38 +87,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <main>
         <h1>Adicionar Nova Questão</h1>
         <form action="adicionar_questao.php" method="POST">
-            <label for="nivel">Escolha o Nível da Questão:</label><br>
-            <select id="nivel" name="nivel" required>
-                <option value="1">Nível 1</option>
-                <option value="2">Nível 2</option>
-                <option value="3">Nível 3</option>
-            </select><br><br>
+            <label for="ano">Ano:</label><br>
+            <input type="number" id="ano" name="ano" required><br><br>
 
-            <label for="materia">Escolha a Matéria:</label><br>
-            <select id="materia" name="materia" required>
-                <option value="Introdução à Física">Introdução à Física</option>
-                <option value="Grandezas e vetores">Grandezas e vetores</option>
-                <option value="Cinemática – conceitos básicos">Cinemática – conceitos básicos</option>
-                <option value="Cinemática – identificando os movimentos">Cinemática – identificando os movimentos</option>
-                <option value="Movimento retilíneo uniforme (MRU)">Movimento retilíneo uniforme (MRU)</option>
-                <option value="Movimento retilíneo uniformemente variado (MRUV)">Movimento retilíneo uniformemente variado (MRUV)</option>
-                <option value="Movimentos sob ação da gravidade">Movimentos sob ação da gravidade</option>
-                <option value="As Leis de Newton e suas aplicações">As Leis de Newton e suas aplicações</option>
-                <option value="Movimento Circular Uniforme">Movimento Circular Uniforme</option>
-                <option value="Dinâmica do movimento circular">Dinâmica do movimento circular</option>
-                <option value="Trabalho energia potência">Trabalho energia potência</option>
-                <option value="Impulso e Quantidade de Movimento">Impulso e Quantidade de Movimento</option>
-                <option value="Gravitação Universal">Gravitação Universal</option>
-                <option value="Estática">Estática</option>
-                <option value="Hidrostática">Hidrostática</option>
-                <option value="Hidrodinâmica">Hidrodinâmica</option>
-            </select><br><br>
+            <label for="materia">Matéria:</label><br>
+            <input type="text" id="materia" name="materia" required><br><br>
 
             <label for="enunciado">Enunciado da Questão:</label><br>
             <textarea id="enunciado" name="enunciado" rows="4" cols="50" required></textarea><br><br>
 
-            <label for="explicacao">Explicação da Questão:</label><br>
-            <textarea id="explicacao" name="explicacao" rows="4" cols="50" required></textarea><br><br>
+            <label for="resolucao">Resolução da Questão:</label><br>
+            <textarea id="resolucao" name="resolucao" rows="4" cols="50" required></textarea><br><br>
 
             <h3>Alternativas:</h3>
 
@@ -157,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </main>
 </div>
+
 <footer>
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
 </footer>
