@@ -34,22 +34,19 @@ include "header.php";
         <div class="row justify-content-center" id="card-container">
           <?php
           $cards = [
-            "Introdução à Física" => ["icon" => "fa-lightbulb", "color" => "bg-warning", "page" => "atividades/introducao_fisica.php"],
-            "Grandezas e vetores" => ["icon" => "fa-ruler", "color" => "bg-info", "page" => "atividades/grandezas_vetores.php"],
-            "Cinemática – conceitos básicos" => ["icon" => "fa-play", "color" => "bg-primary", "page" => "atividades/cinematica_conceitos.php"],
-            "Cinemática – identificando os movimentos" => ["icon" => "fa-arrow-right", "color" => "bg-success", "page" => "atividades/cinematica_identificando.php"],
-            "Movimento retilíneo uniforme (MRU)" => ["icon" => "fa-arrow-right", "color" => "bg-danger", "page" => "atividades/mru.php"],
-            "Movimento retilíneo uniformemente variado (MRUV)" => ["icon" => "fa-random", "color" => "bg-secondary", "page" => "atividades/mruv.php"],
-            "Movimentos sob ação da gravidade" => ["icon" => "fa-arrow-down", "color" => "bg-dark", "page" => "atividades/gravidade.php"],
-            "As Leis de Newton e suas aplicações" => ["icon" => "fa-balance-scale", "color" => "bg-warning", "page" => "atividades/leis_newton.php"],
-            "Movimento Circular Uniforme" => ["icon" => "fa-sync-alt", "color" => "bg-primary", "page" => "atividades/movimento_circular.php"],
-            "Dinâmica do movimento circular" => ["icon" => "fa-circle", "color" => "bg-info", "page" => "atividades/dinamica_circular.php"],
-            "Trabalho energia potência" => ["icon" => "fa-bolt", "color" => "bg-danger", "page" => "atividades/trabalho_energia.php"],
-            "Impulso e Quantidade de Movimento" => ["icon" => "fa-tachometer-alt", "color" => "bg-success", "page" => "atividades/impulso_quantidade.php"],
-            "Gravitação Universal" => ["icon" => "fa-globe", "color" => "bg-dark", "page" => "atividades/gravitação_universal.php"],
-            "Estática" => ["icon" => "fa-equals", "color" => "bg-secondary", "page" => "atividades/estatica.php"],
-            "Hidrostática" => ["icon" => "fa-water", "color" => "bg-info", "page" => "atividades/hidrostática.php"],
-            "Hidrodinâmica" => ["icon" => "fa-tint", "color" => "bg-primary", "page" => "atividades/hidrodinamica.php"]
+            "Temperatura e escalas de medida" => ["icon" => "fa-thermometer-half", "color" => "bg-warning", "page" => "atividades/temperatura_escalas.php"],
+            "Dilatação térmica" => ["icon" => "fa-expand", "color" => "bg-info", "page" => "atividades/dilatacao_termica.php"],
+            "Calor" => ["icon" => "fa-fire", "color" => "bg-primary", "page" => "atividades/calor.php"],
+            "Processos de propagação de calor" => ["icon" => "fa-arrow-right", "color" => "bg-success", "page" => "atividades/propagacao_calor.php"],
+            "Termodinâmica e revolução industrial" => ["icon" => "fa-cogs", "color" => "bg-danger", "page" => "atividades/termodinamica_revolucao.php"],
+            "Primeira Lei da Termodinâmica" => ["icon" => "fa-arrow-right", "color" => "bg-secondary", "page" => "atividades/primeira_lei.php"],
+            "Segunda Lei da Termodinâmica" => ["icon" => "fa-random", "color" => "bg-dark", "page" => "atividades/segunda_lei.php"],
+            "Entropia" => ["icon" => "fa-arrow-down", "color" => "bg-warning", "page" => "atividades/entropia.php"],
+            "Ondas mecânicas" => ["icon" => "fa-wave-square", "color" => "bg-primary", "page" => "atividades/ondas_mecanicas.php"],
+            "Interferência e difração de ondas mecânicas" => ["icon" => "fa-broadcast-tower", "color" => "bg-info", "page" => "atividades/interferencia_difracao.php"],
+            "Acústica" => ["icon" => "fa-volume-up", "color" => "bg-danger", "page" => "atividades/acustica.php"],
+            "Reflexão da luz" => ["icon" => "fa-lightbulb", "color" => "bg-success", "page" => "atividades/reflexao_luz.php"],
+            "Refração da luz" => ["icon" => "fa-prism", "color" => "bg-secondary", "page" => "atividades/reflexao_luz.php"]
           ];
 
           foreach ($cards as $title => $cardDetails) {
