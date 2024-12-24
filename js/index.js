@@ -35,29 +35,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function validatePassword() {
-        const length = document.getElementById('length');
-        const uppercase = document.getElementById('uppercase');
-        const lowercase = document.getElementById('lowercase');
-        const number = document.getElementById('number');
-        const special = document.getElementById('special');
+    const length = document.getElementById('length');
+    const uppercase = document.getElementById('uppercase');
+    const lowercase = document.getElementById('lowercase');
+    const number = document.getElementById('number');
+    const special = document.getElementById('special');
 
-        const passwordValue = passwordField.value;
+    const passwordValue = passwordField.value;
 
-        length.classList.toggle('valid', passwordValue.length >= 8 && passwordValue.length <= 50);
-        length.classList.toggle('invalid', passwordValue.length < 8 || passwordValue.length > 50);
+    length.classList.toggle('valid', passwordValue.length >= 8 && passwordValue.length <= 50);
+    length.classList.toggle('invalid', passwordValue.length < 8 || passwordValue.length > 50);
 
-        uppercase.classList.toggle('valid', /[A-Z]/.test(passwordValue));
-        uppercase.classList.toggle('invalid', !/[A-Z]/.test(passwordValue));
+    uppercase.classList.toggle('valid', /[A-Z]/.test(passwordValue));
+    uppercase.classList.toggle('invalid', !/[A-Z]/.test(passwordValue));
 
-        lowercase.classList.toggle('valid', /[a-z]/.test(passwordValue));
-        lowercase.classList.toggle('invalid', !/[a-z]/.test(passwordValue));
+    lowercase.classList.toggle('valid', /[a-z]/.test(passwordValue));
+    lowercase.classList.toggle('invalid', !/[a-z]/.test(passwordValue));
 
-        number.classList.toggle('valid', /[0-9]/.test(passwordValue));
-        number.classList.toggle('invalid', !/[0-9]/.test(passwordValue));
+    number.classList.toggle('valid', /[0-9]/.test(passwordValue));
+    number.classList.toggle('invalid', !/[0-9]/.test(passwordValue));
 
-        special.classList.toggle('valid', /[!@#$%^&*(),.?":{}|<>]/.test(passwordValue));
-        special.classList.toggle('invalid', !/[!@#$%^&*(),.?":{}|<>]/.test(passwordValue));
-    }
+    // Modificada para incluir o apóstrofo como caractere especial válido
+    special.classList.toggle('valid', /[!@#$%^&*(),.?":{}|<>']/ .test(passwordValue));
+    special.classList.toggle('invalid', !/[!@#$%^&*(),.?":{}|<>']/ .test(passwordValue));
+}
+
 
     passwordField.addEventListener('input', validatePassword);
     function validateForm(event) {
