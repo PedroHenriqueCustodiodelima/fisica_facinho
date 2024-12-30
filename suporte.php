@@ -110,6 +110,25 @@ include("funcoes_php/funcoes_suporte.php");
       <p>Você pode conversar com nosso suporte ao vivo através do chat.</p>
       <button class="btn btn-secondary">Iniciar Chat</button>
     </section>
+      <!-- Botão para abrir o chat -->
+<button id="openChatBtn" class="open-chat-btn">Chat de Suporte</button>
+
+<!-- Modal do chat -->
+<div id="chatModal" class="chat-modal">
+  <div class="chat-modal-content">
+    <div class="chat-header">
+      <h4>Chat de Suporte</h4>
+      <span id="closeChatBtn" class="close-chat">&times;</span>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <!-- Mensagens serão carregadas dinamicamente aqui -->
+    </div>
+    <div class="chat-footer">
+      <textarea id="chatMessage" placeholder="Digite sua mensagem..."></textarea>
+      <button id="sendMessageBtn" class="send-chat-btn">Enviar</button>
+    </div>
+  </div>
+</div>
 
     <hr>
 
@@ -135,7 +154,7 @@ include("funcoes_php/funcoes_suporte.php");
   <footer class="mt-5 py-3 text-center">
     <p>Copyright © 2023 | Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
   </footer>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -156,6 +175,65 @@ include("funcoes_php/funcoes_suporte.php");
         confirmButtonText: 'Ok'
       });
     <?php endif; ?>
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatModal = document.getElementById("chatModal");
+      const openChatBtn = document.getElementById("openChatBtn");
+      const closeChatBtn = document.getElementById("closeChatBtn");
+      const sendMessageBtn = document.getElementById("sendMessageBtn");
+      const chatBody = document.getElementById("chatBody");
+      const chatMessage = document.getElementById("chatMessage");
+
+      // Abrir o modal
+      openChatBtn.addEventListener("click", () => {
+        chatModal.style.display = "block";
+        loadMessages();
+      });
+
+      // Fechar o modal
+      closeChatBtn.addEventListener("click", () => {
+        chatModal.style.display = "none";
+      });
+
+      // Enviar mensagem
+      sendMessageBtn.addEventListener("click", () => {
+        const message = chatMessage.value.trim();
+        if (message !== "") {
+          sendMessage(message);
+          chatMessage.value = "";
+        }
+      });
+
+      // Carregar mensagens
+      function loadMessages() {
+        fetch("carregar_mensagens.php")
+          .then((response) => response.json())
+          .then((data) => {
+            chatBody.innerHTML = "";
+            data.forEach((msg) => {
+              const div = document.createElement("div");
+              div.classList.add("message", msg.remetente === "user" ? "user" : "support");
+              div.textContent = msg.mensagem;
+              chatBody.appendChild(div);
+            });
+            chatBody.scrollTop = chatBody.scrollHeight;
+          });
+      }
+
+      // Enviar mensagem para o servidor
+      function sendMessage(message) {
+        fetch("enviar_mensagem.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mensagem: message }),
+        }).then((response) => {
+          if (response.ok) {
+            loadMessages();
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
