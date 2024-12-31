@@ -27,7 +27,15 @@ include "header.php";
     <main>
       <div class="header-content">
       <div class="search-container">
-        <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar conteúdo...">
+      <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+      <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar conteúdo...">
+    </div>
+
         <span class="sort-icon" onclick="sortCards()">
           <i class="fa-solid fa-sort-alpha-down" id="sort-icon"></i>
         </span>

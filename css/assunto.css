@@ -145,14 +145,38 @@
   .quarto-ano-card .icon-part {
     background-color: #2a9d8f; 
   }
-  .row.justify-content-center {
-    display: flex; 
-    flex-wrap: wrap; 
-    justify-content: center; 
-  }
-  
+/* Configuração para exibir 3 cards por linha */
+.row.justify-content-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  flex: 0 0 calc(33.333% - 20px);  /* Ajuste para 3 cards por linha */
+  margin: 10px; 
+  background-color: #001A4E;  /* Cor de fundo para todos os cards */
+  color: white;  /* Garantir que o texto seja legível com fundo escuro */
+}
+
+/* Estilo para os ícones e a parte do texto dos cards */
+.card .icon-part {
+  color: white;  /* Cor do texto (ícones) dentro do card */
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* Ajustes adicionais de responsividade, caso você queira ajustar o número de cards por linha em telas menores */
+@media (max-width: 768px) {
   .card {
-    flex: 0 0 calc(33.333% - 20px); 
-    margin: 10px; 
+    flex: 0 0 calc(50% - 20px);  /* 2 cards por linha em telas médias */
   }
-  
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 0 0 100%;  /* 1 card por linha em telas pequenas */
+  }
+}

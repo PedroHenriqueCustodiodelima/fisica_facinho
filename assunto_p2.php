@@ -34,32 +34,31 @@ include "header.php";
         <div class="row justify-content-center" id="card-container">
           <?php
           $cards = [
-            "Temperatura e escalas de medida" => ["icon" => "fa-thermometer-half", "color" => "bg-warning", "page" => "atividades/temperatura_escalas.php"],
-            "Dilatação térmica" => ["icon" => "fa-expand", "color" => "bg-info", "page" => "atividades/dilatacao_termica.php"],
-            "Calor" => ["icon" => "fa-fire", "color" => "bg-primary", "page" => "atividades/calor.php"],
-            "Processos de propagação de calor" => ["icon" => "fa-arrow-right", "color" => "bg-success", "page" => "atividades/propagacao_calor.php"],
-            "Termodinâmica e revolução industrial" => ["icon" => "fa-cogs", "color" => "bg-danger", "page" => "atividades/termodinamica_revolucao.php"],
-            "Primeira Lei da Termodinâmica" => ["icon" => "fa-arrow-right", "color" => "bg-secondary", "page" => "atividades/primeira_lei.php"],
-            "Segunda Lei da Termodinâmica" => ["icon" => "fa-random", "color" => "bg-dark", "page" => "atividades/segunda_lei.php"],
-            "Entropia" => ["icon" => "fa-arrow-down", "color" => "bg-warning", "page" => "atividades/entropia.php"],
-            "Ondas mecânicas" => ["icon" => "fa-wave-square", "color" => "bg-primary", "page" => "atividades/ondas_mecanicas.php"],
-            "Interferência e difração de ondas mecânicas" => ["icon" => "fa-broadcast-tower", "color" => "bg-info", "page" => "atividades/interferencia_difracao.php"],
-            "Acústica" => ["icon" => "fa-volume-up", "color" => "bg-danger", "page" => "atividades/acustica.php"],
-            "Reflexão da luz" => ["icon" => "fa-lightbulb", "color" => "bg-success", "page" => "atividades/reflexao_luz.php"],
-            "Refração da luz" => ["icon" => "fa-prism", "color" => "bg-secondary", "page" => "atividades/reflexao_luz.php"]
+            "Temperatura e escalas de medida" => ["icon" => "fa-thermometer-half", "color" => "#001A4E", "page" => "atividades/temperatura_escalas.php"],
+            "Dilatação térmica" => ["icon" => "fa-expand", "color" => "#001A4E", "page" => "atividades/dilatacao_termica.php"],
+            "Calor" => ["icon" => "fa-fire", "color" => "#001A4E", "page" => "atividades/calor.php"],
+            "Processos de propagação de calor" => ["icon" => "fa-arrow-right", "color" => "#001A4E", "page" => "atividades/propagacao_calor.php"],
+            "Termodinâmica e revolução industrial" => ["icon" => "fa-cogs", "color" => "#001A4E", "page" => "atividades/termodinamica_revolucao.php"],
+            "Primeira Lei da Termodinâmica" => ["icon" => "fa-arrow-right", "color" => "#001A4E", "page" => "atividades/primeira_lei.php"],
+            "Segunda Lei da Termodinâmica" => ["icon" => "fa-random", "color" => "#001A4E", "page" => "atividades/segunda_lei.php"],
+            "Entropia" => ["icon" => "fa-arrow-down", "color" => "#001A4E", "page" => "atividades/entropia.php"],
+            "Ondas mecânicas" => ["icon" => "fa-wave-square", "color" => "#001A4E", "page" => "atividades/ondas_mecanicas.php"],
+            "Interferência e difração de ondas mecânicas" => ["icon" => "fa-broadcast-tower", "color" => "#001A4E", "page" => "atividades/interferencia_difracao.php"],
+            "Acústica" => ["icon" => "fa-volume-up", "color" => "#001A4E", "page" => "atividades/acustica.php"],
+            "Reflexão da luz" => ["icon" => "fa-lightbulb", "color" => "#001A4E", "page" => "atividades/reflexao_luz.php"],
+            "Refração da luz" => ["icon" => "fa-prism", "color" => "#001A4E", "page" => "atividades/reflexao_luz.php"]
           ];
 
           foreach ($cards as $title => $cardDetails) {
             echo '
-            <div class="col-md-6 mb-3 card-item" data-title="' . $title . '">
+            <div class="col-md-4 mb-3 card-item" data-title="' . $title . '">
               <a href="' . $cardDetails['page'] . '" class="card-link">
-                <div class="card ' . $cardDetails['color'] . '">
+                <div class="card" style="background-color: ' . $cardDetails['color'] . ';">
                   <div class="icon-part">
                     <i class="fa-solid ' . $cardDetails['icon'] . '" style="font-size: 2rem;"></i>
                   </div>
                   <div class="text-part">
                     <h5 class="card-title text-white">' . $title . '</h5>
-                    <p class="card-text text-white">Atividades relacionadas a ' . $title . '.</p>
                   </div>
                 </div>
               </a>

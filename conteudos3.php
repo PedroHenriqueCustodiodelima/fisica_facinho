@@ -27,21 +27,25 @@ include "header.php";
     </div>
     
     <main>
-      <!-- Cabeçalho com título e barra de pesquisa -->
-      <div class="header-content">
-        <!-- Barra de Pesquisa -->
-        <div class="search-container">
-          <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar conteúdo...">
-          <span class="sort-icon" onclick="sortCards()">
-            <i class="fa-solid fa-sort-alpha-down" id="sort-icon"></i>
-          </span>
-        </div>
-
-        <!-- Título -->
-        <div class="title-container">
-          <h2 class="text-black">Terceiro ano</h2>
-        </div>
+    <div class="header-content">
+      <div class="search-container">
+      <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">
+          <i class="fas fa-search"></i>
+        </span>
       </div>
+      <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar conteúdo...">
+    </div>
+
+        <span class="sort-icon" onclick="sortCards()">
+          <i class="fa-solid fa-sort-alpha-down" id="sort-icon"></i>
+        </span>
+        </div>
+          <div class="title-container">
+            <h2 class="text-black">Terceiro ano</h2>
+          </div>
+        </div>
 
       <div class="row justify-content-center" id="conteudos-lista">
         <?php

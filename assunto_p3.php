@@ -68,15 +68,14 @@ include "header.php";
 
           foreach ($cards as $title => $cardDetails) {
             echo '
-            <div class="col-md-6 mb-3 card-item" data-title="' . $title . '">
+            <div class="col-md-4 mb-3 card-item" data-title="' . $title . '">
               <a href="' . $cardDetails['page'] . '" class="card-link">
-                <div class="card ' . $cardDetails['color'] . '">
+                <div class="card" style="background-color: ' . $cardDetails['color'] . ';">
                   <div class="icon-part">
                     <i class="fa-solid ' . $cardDetails['icon'] . '" style="font-size: 2rem;"></i>
                   </div>
                   <div class="text-part">
                     <h5 class="card-title text-white">' . $title . '</h5>
-                    <p class="card-text text-white">Atividades relacionadas a ' . $title . '.</p>
                   </div>
                 </div>
               </a>

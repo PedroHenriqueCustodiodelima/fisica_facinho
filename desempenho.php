@@ -44,7 +44,7 @@ $tentativas = array_values($tentativasPorConcurso);
                           style="cursor: pointer; border: none; background: none;">
                       <i class="fas fa-list fa-lg"></i>
                   </button>
-                  <h6 class="fw-semibold text-muted mb-1">Questões Respondidas</h6>
+                  <h6 class="fw-semibold text-muted mb-1">Tentativas</h6>
                   <div class="d-flex align-items-center mb-3">
                       <i class="fas fa-comment-dots fa-2x text-teal me-3"></i>
                       <h3 class="fw-bold text-dark mb-0">

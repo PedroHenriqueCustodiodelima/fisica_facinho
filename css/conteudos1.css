@@ -115,4 +115,20 @@
   .voltar-container {
     margin-top: 20px;  
   }
-  
+  /* Estilo personalizado para a barra de pesquisa */
+.input-group {
+  width: 100%;
+  max-width: 400px; /* Tamanho máximo da barra de pesquisa */
+  margin: 0 auto; /* Centraliza a barra de pesquisa */
+}
+
+.input-group-text {
+  background-color: #FFC100; /* Cor de fundo do ícone de lupa */
+  border: none; /* Remove a borda */
+}
+
+.input-group-text i {
+  color: #001A4E; /* Cor do ícone de lupa */
+  font-size: 1.2rem; /* Tamanho do ícone */
+}
+
