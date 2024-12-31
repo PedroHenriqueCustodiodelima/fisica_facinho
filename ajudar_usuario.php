@@ -94,7 +94,7 @@ $stmt->bind_result($userId, $usuarioNome, $usuarioFoto, $ultimaMensagem);
         <!-- Modal de Resposta -->
         <div id="modalResposta" class="modal">
             <div class="modal-content">
-                <!-- Nome e foto do usuário (no topo do modal) -->
+                <!-- Nome e foto do usuário -->
                 <div id="usuarioInfo" class="usuario-info">
                     <img src="" id="usuarioFoto" alt="Foto do Usuário" class="user-photo">
                     <span id="usuarioNome"></span>
@@ -117,68 +117,67 @@ $stmt->bind_result($userId, $usuarioNome, $usuarioFoto, $ultimaMensagem);
             <a href="logout.php">Sair</a>
         </footer>
     </div>
-
 </body>
 </html>
 
-<?php
-// Fecha a conexão
-$stmt->close();
-$conn->close();
-?>
 <script>
     function abrirModal(userId, usuarioNome, usuarioFoto) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'responder_chat.php?user_id=' + userId, true);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'responder_chat.php?user_id=' + userId, true);
 
-        xhr.onload = function() {
-            if (xhr.status == 200) {
-                var mensagens = JSON.parse(xhr.responseText);
+    xhr.onload = function() {
+        if (xhr.status == 200) {
+            var mensagens = JSON.parse(xhr.responseText);
 
-                // Preenche a foto e o nome do usuário no modal
-                document.getElementById('usuarioFoto').src = usuarioFoto;
-                document.getElementById('usuarioNome').textContent = usuarioNome;
+            // Preenche a foto e o nome do usuário no modal
+            document.getElementById('usuarioFoto').src = usuarioFoto;
+            document.getElementById('usuarioNome').textContent = usuarioNome;
 
-                // Preenche o chatId no campo oculto
-                document.getElementById('chatIdModal').value = userId;
+            // Preenche o chatId no campo oculto
+            document.getElementById('chatIdModal').value = userId;
 
-                // Limpa o conteúdo do chat para mostrar todas as mensagens
-                document.getElementById('chatMessages').innerHTML = '';
+            // Limpa o conteúdo do chat para mostrar todas as mensagens
+            document.getElementById('chatMessages').innerHTML = '';
 
-                mensagens.forEach(function(msg) {
-                    var data = new Date(msg.data_envio);
-                    var hora = data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            mensagens.forEach(function(msg) {
+                var dataEnvio = new Date(msg.data_envio);
+                var horaEnvio = dataEnvio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                    var messageDiv = document.createElement('div');
-                    messageDiv.classList.add('message');
-                    messageDiv.innerHTML = `
-                        <div class="message-text">${msg.mensagem}</div>
-                        <div class="message-time">${hora}</div>
+                // Exibe a mensagem do usuário
+                var messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.innerHTML = `
+                    <div class="message-text">${msg.mensagem}</div>
+                    <div class="message-time">${horaEnvio}</div>
+                `;
+                document.getElementById('chatMessages').appendChild(messageDiv);
+
+                // Exibe a resposta do suporte, se houver
+                if (msg.resposta) {
+                    var respostaDiv = document.createElement('div');
+                    respostaDiv.classList.add('response');
+                    var dataResposta = new Date(msg.data_resposta);
+                    var horaResposta = dataResposta.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    respostaDiv.innerHTML = `
+                        <div class="response-text">${msg.resposta}</div>
+                        <div class="response-time">${horaResposta}</div>
                     `;
-                    document.getElementById('chatMessages').appendChild(messageDiv);
+                    document.getElementById('chatMessages').appendChild(respostaDiv);
+                }
+            });
 
-                    if (msg.resposta) {
-                        var respostaDiv = document.createElement('div');
-                        respostaDiv.classList.add('response');
-                        var respostaHora = new Date(msg.data_resposta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            scrollToBottom();
+            document.getElementById('modalResposta').style.display = 'flex';
+        } else {
+            alert('Erro ao carregar as mensagens.');
+        }
+    };
 
-                        respostaDiv.innerHTML = `
-                            <div class="response-text">${msg.resposta}</div>
-                            <div class="response-time">${respostaHora}</div>
-                        `;
-                        document.getElementById('chatMessages').appendChild(respostaDiv);
-                    }
-                });
+    xhr.send();
+}
 
-                scrollToBottom();
-                document.getElementById('modalResposta').style.display = 'flex';
-            } else {
-                alert('Erro ao carregar as mensagens.');
-            }
-        };
 
-        xhr.send();
-    }
 
     function scrollToBottom() {
         var chatMessages = document.getElementById('chatMessages');
@@ -196,17 +195,8 @@ $conn->close();
         const chatId = document.getElementById('chatIdModal').value;
         const resposta = document.querySelector('textarea[name="resposta"]').value;
 
-        // Verifique no console se os valores estão corretos
-        console.log('Chat ID:', chatId);
-        console.log('Resposta:', resposta);
-
-        if (!chatId || !resposta) {
-            alert("Chat ID ou Resposta não estão preenchidos corretamente.");
-            return;
-        }
-
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'resposta_suporte.php', true);  // Enviar para o arquivo que processa a resposta
+        xhr.open('POST', 'resposta_suporte.php', true);
 
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
@@ -214,8 +204,8 @@ $conn->close();
                 var response = JSON.parse(xhr.responseText);
                 if (response.status === 'success') {
                     alert(response.message);
-                    document.querySelector('textarea[name="resposta"]').value = '';  // Limpa o campo de resposta
-                    fecharModal();  // Fecha o modal
+                    document.querySelector('textarea[name="resposta"]').value = '';
+                    fecharModal();
                 } else {
                     alert('Erro ao enviar a resposta.');
                 }

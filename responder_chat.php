@@ -9,25 +9,24 @@ if (isset($_GET['user_id'])) {
         $mensagem = $_POST['mensagem'];
         $dataResposta = date('Y-m-d H:i:s');  // Data e hora atuais
         
-        // Obtém o chat_id do usuário (essa parte pode precisar de ajustes dependendo da estrutura do banco de dados)
-        $sqlChatId = "SELECT id FROM chat_suporte WHERE user_id = ? ORDER BY data_envio DESC LIMIT 1"; 
+        // Obtém o chat_id do usuário
+        $sqlChatId = "SELECT id, session_id FROM chat_suporte WHERE user_id = ? AND status_chat = 'ativo' ORDER BY data_envio DESC LIMIT 1"; 
         $stmtChatId = $conn->prepare($sqlChatId);
         $stmtChatId->bind_param("i", $userId);
         $stmtChatId->execute();
         $stmtChatId->store_result();
-        $stmtChatId->bind_result($chatId);
+        $stmtChatId->bind_result($chatId, $sessionId);
         $stmtChatId->fetch();
         $stmtChatId->close();
 
         // Verifica se um chat_id foi encontrado
         if ($chatId) {
-            // Consulta para inserir a resposta na tabela respostas_suporte
-            $sqlInsert = "INSERT INTO respostas_suporte (chat_id, resposta, data_resposta) VALUES (?, ?, ?)";
+            // Insere a resposta na tabela respostas_suporte
+            $sqlInsert = "INSERT INTO respostas_suporte (chat_id, resposta, data_resposta, session_id) VALUES (?, ?, ?, ?)";
             $stmtInsert = $conn->prepare($sqlInsert);
-            $stmtInsert->bind_param("iss", $chatId, $mensagem, $dataResposta);
+            $stmtInsert->bind_param("isss", $chatId, $mensagem, $dataResposta, $sessionId);
             
             if ($stmtInsert->execute()) {
-                // Mensagem inserida com sucesso
                 echo json_encode(['status' => 'success', 'message' => 'Resposta enviada com sucesso!']);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Erro ao enviar a resposta.']);
@@ -39,9 +38,10 @@ if (isset($_GET['user_id'])) {
         }
     }
 
-    // Consulta para buscar todas as mensagens daquele usuário
-    $sql = "SELECT c.mensagem, c.data_envio
+    // Consulta para buscar todas as mensagens e respostas
+    $sql = "SELECT c.mensagem, c.data_envio, r.resposta, r.data_resposta
             FROM chat_suporte c
+            LEFT JOIN respostas_suporte r ON c.id = r.chat_id
             WHERE c.user_id = ?
             ORDER BY c.data_envio ASC";  // Ordena as mensagens pela data de envio
 
@@ -50,17 +50,19 @@ if (isset($_GET['user_id'])) {
     $stmt->execute();
     $stmt->store_result();
     
-    $stmt->bind_result($mensagem, $dataEnvio);
+    $stmt->bind_result($mensagem, $dataEnvio, $resposta, $dataResposta);
     
     $messages = [];
     while ($stmt->fetch()) {
         $messages[] = [
             'mensagem' => $mensagem,
-            'data_envio' => $dataEnvio
+            'data_envio' => $dataEnvio,
+            'resposta' => $resposta,
+            'data_resposta' => $dataResposta
         ];
     }
 
-    // Retorna as mensagens no formato JSON
+    // Retorna as mensagens e respostas no formato JSON
     echo json_encode($messages);
 } else {
     echo json_encode([]);
