@@ -13,24 +13,33 @@ include "header.php";
   <link rel="stylesheet" href="css/assunto.css">
 </head>
 <body>
-  <div class="page-container">
+<div class="page-container">
     <main class="container">
       <div class="container mt-5">
         <div class="voltar-container mb-4">
-          <a href="tarefas.php" class="custom-link">
-              <i class="fa-solid fa-circle-arrow-left"></i> <span>Voltar</span>
+          <a href="tarefas.php" class="custom-link" style="color: #001A4E;">
+              <i class="fa-solid fa-circle-arrow-left" style="color: #001A4E;"></i> 
+              <span style="color: #001A4E;">Voltar</span>
           </a>
         </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Atividades</h2>
-          <div class="d-flex align-items-center">
-            <!-- Barra de pesquisa -->
-            <input type="text" id="search-bar" class="form-control mr-2" placeholder="Pesquisar atividades..." style="width: 200px;">
-            <!-- Ícone de ordenação -->
-            <i class="fa-solid fa-arrow-up-a-z" id="sort-icon" style="font-size: 2rem; cursor: pointer;"></i>
-          </div>
-        </div>
+            <h2>Atividades</h2>
+            <div class="d-flex align-items-center">
+                <div class="input-group mr-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1" style="background-color: #FFC100;">
+                            <i class="fa fa-search" style="color: #001A4E;"></i>
+                        </span>
+                    </div>
+                    <input type="text" id="search-bar" class="form-control" placeholder="Pesquisar atividades..." style="width: 200px; ">
+                </div>
 
+
+                <!-- Ícone de ordenação -->
+                <i class="fa-solid fa-arrow-up-a-z" id="sort-icon" style="font-size: 2rem; cursor: pointer;"></i>
+            </div>
+        </div>
+    </div>
         <div class="row justify-content-center" id="card-container">
           <?php
           $cards = [

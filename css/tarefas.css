@@ -34,10 +34,6 @@ footer {
     text-decoration: none;
 }
 
-.custom-link:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
 
 /* Estilos do botão "Responder" */
 .btn-responder {
