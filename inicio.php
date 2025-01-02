@@ -137,14 +137,14 @@ include "header.php";
               </a>
           </div>
           <div class="col-md-4 mb-3">
-            <a href="logout.php" class="card-link">
+            <a href="desafios.php" class="card-link">
               <div class="card sair-card">
                 <div class="icon-part">
-                  <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 2rem;"></i>
+                  <i class="fa-solid fa-gamepad" style="font-size: 2rem;" title="Desafios"></i>
                 </div>
                 <div class="text-part">
-                  <h5 class="card-title">Sair</h5>
-                  <p class="card-text">Encerrar sessão.</p>
+                  <h5 class="card-title">Desafios</h5>
+                  <p class="card-text">desafios diários.</p>
                 </div>
               </div>
             </a>

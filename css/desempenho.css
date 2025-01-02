@@ -4,7 +4,27 @@ body {
   margin: 0;
   padding: 0;
 }
+html, body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+header {
+  background-color: #001A4E;
+  padding: 10px;
+  color: white;
+  
+}
 
+.perfil-header p,
+.perfil-header #usuario-nome {
+  color: white; 
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
 .card-custom {
   border-radius: 8px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
