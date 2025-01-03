@@ -47,13 +47,13 @@ $pagina_atual = ($pagina_atual > 0) ? $pagina_atual : 1;
 $offset = ($pagina_atual - 1) * $questoes_por_pagina;
 
 // Total de questões
-$total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'Introdução à Física'";
+$total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'grandezas'";
 $total_questoes_result = $conn->query($total_questoes_sql);
 $total_questoes_row = $total_questoes_result->fetch_assoc();
 $total_questoes = $total_questoes_row['total'];
 
 // Buscar as questões com paginação
-$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade FROM $tabela WHERE materia = 'Introdução à Física' LIMIT $questoes_por_pagina OFFSET $offset";
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade FROM $tabela WHERE materia = 'grandezas' LIMIT $questoes_por_pagina OFFSET $offset";
 $questao_result = $conn->query($questao_sql);
 
 $questoes_data = [];
