@@ -53,74 +53,13 @@ $pagina_atual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
 $pagina_atual = ($pagina_atual > 0) ? $pagina_atual : 1;
 $offset = ($pagina_atual - 1) * $questoes_por_pagina;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-$total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'grandezas'";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'introdução'";
 $total_questoes_result = $conn->query($total_questoes_sql);
 $total_questoes_row = $total_questoes_result->fetch_assoc();
 $total_questoes = $total_questoes_row['total'];
 $total_paginas = ceil($total_questoes / $questoes_por_pagina);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade FROM $tabela WHERE materia = 'grandezas' LIMIT $questoes_por_pagina OFFSET $offset";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade FROM $tabela WHERE materia = 'introdução' LIMIT $questoes_por_pagina OFFSET $offset";
 
 $questao_result = $conn->query($questao_sql);
 $questoes_data = [];
@@ -197,38 +136,7 @@ $pagina_atual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $questoes_por_pagina = 1;
 $offset = ($pagina_atual - 1) * $questoes_por_pagina;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-$count_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'grandezas'";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$count_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'introdução'";
 
 $conditions = [];
 if ($enunciadoFiltro) {
@@ -250,30 +158,7 @@ $total_questoes = $count_result->fetch_assoc()['total'];
 $total_paginas = ceil($total_questoes / $questoes_por_pagina);
 
 $questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade
-
-
-
-
-
-
-
-
-
-
-
-                FROM $tabela WHERE materia = 'grandezas'";
-
-
-
-
-
-
-
-
-
-
-
-
+    FROM $tabela WHERE materia = 'introdução'";
 
 if (count($conditions) > 0) {
     $questao_sql .= " AND " . implode(" AND ", $conditions);
