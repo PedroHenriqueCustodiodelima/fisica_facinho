@@ -1,18 +1,18 @@
 <?php
 session_start();
+require_once('./conexao.php');
 
-require_once __DIR__ . '/../conexao.php';
-
+// Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit();
 }
 
 $usuario_id = $_SESSION['usuario_id'];
-
-$imagemPerfil = 'img/usuario_perfil.png'; 
+$imagemPerfil = '/img/default-avatar.png';
 $nomeUsuario = 'Usuário';
 
+// Buscar dados do usuário
 $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
@@ -20,9 +20,9 @@ $result = $stmt->get_result();
 $email = $result->fetch_assoc()['email'] ?? '';
 
 if (strpos($email, 'edu.br') !== false) {
-    $stmt = $conn->prepare("SELECT foto, nome, imagem FROM professores WHERE id = ?");
+    $stmt = $conn->prepare("SELECT foto, nome FROM professores WHERE id = ?");
 } else {
-    $stmt = $conn->prepare("SELECT foto, nome, imagem FROM usuarios WHERE id = ?");
+    $stmt = $conn->prepare("SELECT foto, nome FROM usuarios WHERE id = ?");
 }
 
 $stmt->bind_param("i", $usuario_id);
@@ -31,208 +31,114 @@ $result = $stmt->get_result();
 $usuario = $result->fetch_assoc();
 
 if ($usuario) {
-    $imagemPerfil = !empty($usuario['foto']) ? $usuario['foto'] : $usuario['imagem'] ?? $imagemPerfil;
+    $imagemPerfil = !empty($usuario['foto']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/img/' . $usuario['foto'])
+        ? '/img/' . $usuario['foto']
+        : '/img/default-avatar.png';
     $nomeUsuario = $usuario['nome'] ?? $nomeUsuario;
 }
 
-function contarRespostas($usuario_id, $conn) {
-    $stmt = $conn->prepare("
-        SELECT COUNT(*) AS corretas
-        FROM (
-            SELECT correta FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 1
-            UNION ALL
-            SELECT correta FROM tentativas_concursos WHERE id_usuario = ? AND correta = 1
-        ) AS respostas_corretas
-    ");
-    $stmt->bind_param("ii", $usuario_id, $usuario_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $corretas = $result->fetch_assoc()['corretas'];
-    $stmt->close();
-    $stmt = $conn->prepare("
-        SELECT COUNT(*) AS erradas
-        FROM (
-            SELECT correta FROM tentativas_usuarios WHERE id_usuario = ? AND correta = 0
-            UNION ALL
-            SELECT correta FROM tentativas_concursos WHERE id_usuario = ? AND correta = 0
-        ) AS respostas_erradas
-    ");
-    $stmt->bind_param("ii", $usuario_id, $usuario_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $erradas = $result->fetch_assoc()['erradas'];
-    $stmt->close();
+// Paginação
+$tabela = 'tarefas'; 
+$questoes_por_pagina = 1;
 
-    return [
-        'corretas' => $corretas,
-        'erradas' => $erradas
-    ];
-}
+$pagina_atual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
+$pagina_atual = ($pagina_atual > 0) ? $pagina_atual : 1;
 
+$offset = ($pagina_atual - 1) * $questoes_por_pagina;
 
-$respostas = contarRespostas($usuario_id, $conn);
-$total = $respostas['corretas'] + $respostas['erradas'];
-$percentualAcerto = $total > 0 ? round(($respostas['corretas'] / $total) * 100, 1) : 0;
+// Total de questões
+$total_questoes_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'grandezas'";
+$total_questoes_result = $conn->query($total_questoes_sql);
+$total_questoes_row = $total_questoes_result->fetch_assoc();
+$total_questoes = $total_questoes_row['total'];
 
-function contarTentativasPorDia($usuario_id, $conn) {
-    $diasSemana = array_fill(0, 7, 0); 
+// Total de páginas
+$total_paginas = ceil($total_questoes / $questoes_por_pagina);
 
-    $stmt = $conn->prepare("
-        SELECT DAYOFWEEK(data_tentativa) AS dia_semana, COUNT(*) AS tentativas
-        FROM (
-            -- Contagem de tentativas na tabela tentativas_usuarios
-            SELECT data_tentativa FROM tentativas_usuarios
-            WHERE id_usuario = ?
-            UNION ALL
-            -- Contagem de tentativas na tabela tentativas_concursos
-            SELECT data_tentativa FROM tentativas_concursos
-            WHERE id_usuario = ?
-        ) AS tentativas_totais
-        GROUP BY dia_semana
-        ORDER BY dia_semana
-    ");
+// Buscar as questões com paginação
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade FROM $tabela WHERE materia = 'grandezas' LIMIT $questoes_por_pagina OFFSET $offset";
+$questao_result = $conn->query($questao_sql);
 
-    if ($stmt === false) {
-        die('Erro na preparação da consulta: ' . $conn->error);
-    }
-    $stmt->bind_param("ii", $usuario_id, $usuario_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+$questoes_data = [];
 
-    while ($row = $result->fetch_assoc()) {
-        $diasSemana[$row['dia_semana'] - 1] = $row['tentativas']; 
-    }
+if ($questao_result->num_rows > 0) {
+    while ($questao = $questao_result->fetch_assoc()) {
+        $questao_id = $questao['id'];
+        $enunciado = $questao['enunciado'];
+        $resolucao = $questao['resolucao'];
+        $foto_enunciado = $questao['foto_enunciado'];
+        $materia = $questao['materia']; // Matéria da questão
+        $ano = $questao['ano'];         // Ano da questão
+        $dificuldade = $questao['dificuldade']; // Dificuldade da questão
 
-    $totalTentativas = array_sum($diasSemana); 
-    $diasComTentativas = count(array_filter($diasSemana, fn($d) => $d > 0)); 
-    $mediaDiaria = $diasComTentativas > 0 ? round($totalTentativas / $diasComTentativas, 1) : 0;
+        // Buscando as alternativas relacionadas à questão
+        $alternativas_sql = "SELECT id, texto, correta FROM alternativas WHERE questao_id = $questao_id";
+        $alternativas_result = $conn->query($alternativas_sql);
 
-    $stmt->close();
-
-    return [
-        'diasSemana' => $diasSemana,
-        'mediaDiaria' => $mediaDiaria
-    ];
-}
-
-
-function contarAcertosPorHora($usuario_id, $conn) {
-    $acertosPorHora = array_fill(0, 24, 0);
-
-    $stmt = $conn->prepare("
-        SELECT HOUR(data_tentativa) AS hora, COUNT(*) AS acertos
-        FROM (
-            -- Contagem de acertos na tabela tentativas_usuarios
-            SELECT data_tentativa FROM tentativas_usuarios
-            WHERE id_usuario = ? AND correta = 1
-            UNION ALL
-            -- Contagem de acertos na tabela tentativas_concursos
-            SELECT data_tentativa FROM tentativas_concursos
-            WHERE id_usuario = ? AND correta = 1
-        ) AS acertos_totais
-        GROUP BY hora
-        ORDER BY hora
-    ");
-
-    if ($stmt === false) {
-        die('Erro na preparação da consulta: ' . $conn->error);
-    }
-
-    $stmt->bind_param("ii", $usuario_id, $usuario_id); 
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    while ($row = $result->fetch_assoc()) {
-        $acertosPorHora[$row['hora']] = $row['acertos'];
-    }
-
-    $stmt->close();
-
-    return $acertosPorHora;
-}
-
-function calcularMediaAcertosPorHora($acertosPorHora) {
-    $totalAcertos = array_sum($acertosPorHora);
-    $mediaAcertosPorHora = $totalAcertos / 24;
-
-    return $mediaAcertosPorHora;
-}
-
-
-function contarTentativasPorConcurso($usuario_id, $conn) {
-    $stmt = $conn->prepare("
-        SELECT q.concurso, COUNT(tc.id) AS tentativas
-        FROM tentativas_concursos tc
-        JOIN questoes q ON tc.id_questao = q.id
-        WHERE tc.id_usuario = ?
-        GROUP BY q.concurso
-        ORDER BY q.concurso
-    ");
-
-    if ($stmt === false) {
-        die('Erro na preparação da consulta: ' . $conn->error);
-    }
-
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-    
-    if ($stmt->error) {
-        die('Erro na execução da consulta: ' . $stmt->error);
-    }
-
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        return []; 
-    }
-
-    $tentativasPorConcurso = [];
-    while ($row = $result->fetch_assoc()) {
-        $tentativasPorConcurso[$row['concurso']] = $row['tentativas'];
-    }
-
-    $stmt->close();
-
-    return $tentativasPorConcurso;
-}
-
-function ultimas10Questoes($usuario_id, $conn) {
-    $stmt = $conn->prepare("
-        SELECT q.id, tc.correta, tc.data_tentativa
-        FROM tentativas_concursos tc
-        JOIN questoes q ON tc.id_questao = q.id
-        WHERE tc.id_usuario = ?
-        ORDER BY tc.data_tentativa DESC
-        LIMIT 10
-    ");
-
-    if ($stmt === false) {
-        die('Erro na preparação da consulta: ' . $conn->error);
-    }
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-
-    if ($stmt->error) {
-        die('Erro na execução da consulta: ' . $stmt->error);
-    }
-
-    $result = $stmt->get_result();
-    if ($result->num_rows === 0) {
-        return []; 
-    }
-
-    $ultimasQuestoes = [];
-    while ($row = $result->fetch_assoc()) {
-        $correta = $row['correta'] == 1 ? 'Certa' : 'Errada'; 
-        $ultimasQuestoes[] = [
-            'id' => $row['id'],
-            'correta' => $correta,
+        $questao_data = [
+            'id' => $questao_id,
+            'enunciado' => $enunciado,
+            'resolucao' => $resolucao,
+            'foto_enunciado' => $foto_enunciado,
+            'materia' => $materia,  // Adicionando a matéria
+            'ano' => $ano,          // Adicionando o ano
+            'dificuldade' => $dificuldade,  // Adicionando a dificuldade
+            'alternativas' => []
         ];
-    }
-    $stmt->close();
 
-    return $ultimasQuestoes;
+        while ($alternativa = $alternativas_result->fetch_assoc()) {
+            $questao_data['alternativas'][] = $alternativa;
+        }
+
+        $questoes_data[] = $questao_data;
+    }
 }
 
-$stmt->close();
+// Responder uma questão
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'responder') {
+    $id_usuario = $usuario_id;
+    $id_questao = intval($_POST['questao_id']);
+    $id_alternativa = intval($_POST['alternativa_id']);
+    
+    // Verificar se a alternativa é correta
+    $query = "SELECT correta FROM alternativas WHERE id = ? AND questao_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $id_alternativa, $id_questao);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $alternativa = $result->fetch_assoc();
+
+    if ($alternativa) {
+        $correta = $alternativa['correta'] == 1;
+        
+        // Inserir tentativa no banco
+        $query_inserir = "INSERT INTO tentativas_usuarios (id_usuario, id_questao, id_alternativa, correta, data_tentativa) 
+                          VALUES (?, ?, ?, ?, NOW())";
+        $stmt_inserir = $conn->prepare($query_inserir);
+        $stmt_inserir->bind_param("iiii", $id_usuario, $id_questao, $id_alternativa, $correta);
+
+        if ($stmt_inserir->execute()) {
+            echo json_encode([
+                'status' => 'success',
+                'correct' => $correta,
+                'message' => $correta ? 'Resposta correta!' : 'Resposta incorreta!',
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao salvar a tentativa: ' . $stmt_inserir->error,
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Alternativa inválida ou questão não encontrada.',
+        ]);
+    }
+    exit;
+}
+include 'header.php';
+
+
+
 ?>

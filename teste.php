@@ -1,345 +1,223 @@
 <?php
 include("funcoes_php/funcoes_teste.php");
-include "header.php";
-$resultado = contarTentativasPorDia($usuario_id, $conn);
-$tentativasPorDia = $resultado['diasSemana']; 
-$mediaDiaria = $resultado['mediaDiaria']; 
-$acertosPorHora = contarAcertosPorHora($usuario_id, $conn); 
-$mediaAcertosPorHora = calcularMediaAcertosPorHora($acertosPorHora); 
-$acertosPorHoraJson = json_encode($acertosPorHora);
-$usuario_id = $_SESSION['usuario_id'];
-$tentativasPorConcurso = contarTentativasPorConcurso($usuario_id, $conn);
-$concursos = array_keys($tentativasPorConcurso); 
-$tentativas = array_values($tentativasPorConcurso); 
 
+$enunciadoFiltro = isset($_GET['enunciado']) ? $_GET['enunciado'] : '';
+$anoFiltro = isset($_GET['ano']) ? $_GET['ano'] : '';
+$dificuldadeFiltro = isset($_GET['dificuldade']) ? $_GET['dificuldade'] : '';
+
+$pagina_atual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+
+$questoes_por_pagina = 1;
+$offset = ($pagina_atual - 1) * $questoes_por_pagina;
+
+$count_sql = "SELECT COUNT(*) AS total FROM $tabela WHERE materia = 'grandezas'";
+
+$conditions = [];
+if ($enunciadoFiltro) {
+    $conditions[] = "enunciado LIKE '%" . $conn->real_escape_string($enunciadoFiltro) . "%'";
+}
+if ($anoFiltro) {
+    $conditions[] = "ano = '" . $conn->real_escape_string($anoFiltro) . "'";
+}
+if ($dificuldadeFiltro) {
+    $conditions[] = "dificuldade = '" . $conn->real_escape_string($dificuldadeFiltro) . "'";
+}
+
+if (count($conditions) > 0) {
+    $count_sql .= " AND " . implode(" AND ", $conditions);
+}
+
+$count_result = $conn->query($count_sql);
+$total_questoes = $count_result->fetch_assoc()['total'];
+
+$total_paginas = ceil($total_questoes / $questoes_por_pagina);
+
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, dificuldade 
+                FROM $tabela WHERE materia = 'grandezas'";
+
+if (count($conditions) > 0) {
+    $questao_sql .= " AND " . implode(" AND ", $conditions);
+}
+
+$questao_sql .= " LIMIT $questoes_por_pagina OFFSET $offset";
+
+$questao_result = $conn->query($questao_sql);
+$questoes_data = [];
+
+while ($questao = $questao_result->fetch_assoc()) {
+    $alternativas_sql = "SELECT id, texto FROM alternativas WHERE questao_id = " . $questao['id'];
+    $alternativas_result = $conn->query($alternativas_sql);
+    
+    $alternativas = [];
+    while ($alternativa = $alternativas_result->fetch_assoc()) {
+        $alternativas[] = $alternativa;
+    }
+    
+    $questao['alternativas'] = $alternativas;
+    $questoes_data[] = $questao;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configurações</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <link rel="stylesheet" href="css/teste.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/teste.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas - Física</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="./css/atividades.css">
 </head>
 <body>
-<main class="container py-5">
-    <h2 class="mb-5 text-center fw-bold">Desempenho</h2>
-    <div class="row g-4">
-        <div class="col-md-3">
-            <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
-                <div class="card-body d-flex flex-column align-items-start position-relative">
-                    <i class="fas fa-list fa-lg text-muted position-absolute top-0 end-0 mt-2 me-2"></i>
-                    <h6 class="fw-semibold text-muted mb-1">Questões Respondidas</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-comment-dots fa-2x text-teal me-3"></i>
-                        <h3 class="fw-bold text-dark mb-0">
-                            <?php echo $respostas['corretas'] + $respostas['erradas']; ?>
-                        </h3>
+<div class="page-container">
+    <main class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="../assunto_p1.php" class="btn btn-voltar d-flex align-items-center">
+                <i class="fa-solid fa-circle-arrow-left"></i> Voltar
+            </a>
+            <h3 class="font-weight-bold">Introdução a Física</h3>
+        </div>
+
+        <div class="filters-container mb-4">
+            <form method="GET" action="">
+                <div class="form-row justify-content-end">
+                    <!-- Filtro Enunciado -->
+                    <div class="form-group col-md-3 d-flex align-items-center">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="background-color: #001A4E; color: white; border: 0;"><i class="fa-solid fa-filter" style="color: #FFC100;"></i></span>
+                            </div>
+                            <input type="text" class="form-control rounded-0" id="enunciado" name="enunciado" value="<?php echo htmlspecialchars($enunciadoFiltro); ?>" placeholder="Filtrar por enunciado">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-2 d-flex align-items-center">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="background-color: #001A4E;  color: white; border: 0;"><i class="fa-solid fa-calendar" style="color: #FFC100;"></i></span>
+                            </div>
+                            <select class="form-control rounded-0" id="ano" name="ano">
+                                <option value="">Ano</option>
+                                <option value="2025" <?php echo ($anoFiltro == '2025') ? 'selected' : ''; ?>>2025</option>
+                                <option value="2024" <?php echo ($anoFiltro == '2024') ? 'selected' : ''; ?>>2024</option>
+                                <option value="2023" <?php echo ($anoFiltro == '2023') ? 'selected' : ''; ?>>2023</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2 d-flex align-items-center">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="background-color: #001A4E; color:  white; border: 0;"><i class="fa-solid fa-chart-line" style="color: #FFC100;"></i></span>
+                            </div>
+                            <select class="form-control rounded-0" id="dificuldade" name="dificuldade">
+                                <option value="">Dificuldade</option>
+                                <option value="Fácil" <?php echo ($dificuldadeFiltro == 'Fácil') ? 'selected' : ''; ?>>Fácil</option>
+                                <option value="Médio" <?php echo ($dificuldadeFiltro == 'Médio') ? 'selected' : ''; ?>>Médio</option>
+                                <option value="Difícil" <?php echo ($dificuldadeFiltro == 'Difícil') ? 'selected' : ''; ?>>Difícil</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-sm" style="background-color: #001A4E; color: white; border: none;">Filtrar</button>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
-                <div class="card-body d-flex flex-column align-items-start position-relative">
-                    <i class="fas fa-list fa-lg text-muted position-absolute top-0 end-0 mt-2 me-2"></i>
-                    <h6 class="fw-semibold text-muted mb-1">Acertos</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-check-square fa-2x text-success me-3"></i>
-                        <h3 class="fw-bold text-dark mb-0"><?php echo $respostas['corretas']; ?></h3>
+        <div class="questoes-container">
+            <?php foreach ($questoes_data as $questao): ?>
+                <div class="questao card p-4 mb-3 container-fluid" data-ano="<?php echo htmlspecialchars($questao['ano']); ?>" data-dificuldade="<?php echo htmlspecialchars($questao['dificuldade']); ?>" data-enunciado="<?php echo htmlspecialchars($questao['enunciado']); ?>">
+                    <p class="font-weight-bold text-muted">Q<?php echo htmlspecialchars($questao['id']); ?></p>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <span class="badge badge-dark py-2 px-3 mr-2"><?php echo htmlspecialchars($questao['materia']); ?></span>
+                            <span class="badge badge-dark py-2 px-3"><?php echo htmlspecialchars($questao['ano']); ?></span>
+                        </div>
+                        <div>
+                            <?php 
+                                $dificuldade = htmlspecialchars($questao['dificuldade']);
+                                if ($dificuldade == 'Fácil') {
+                                    $badge_class = 'badge-success';
+                                } elseif ($dificuldade == 'Médio') {
+                                    $badge_class = 'badge-warning';
+                                } elseif ($dificuldade == 'Difícil') {
+                                    $badge_class = 'badge-danger';
+                                } else {
+                                    $badge_class = 'badge-secondary';
+                                }
+                            ?>
+                            <span class="badge <?php echo $badge_class; ?> py-2 px-3"><?php echo $dificuldade; ?></span>
+                        </div>
                     </div>
+                    <hr class="my-3 hr-dark">
+                    <h6 class="font-weight-bold mb-3 text-dark"><?php echo htmlspecialchars($questao['enunciado']); ?></h6>
+
+                    <form class="responder-form" method="POST" action="javascript:void(0);">
+                        <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
+                        <ul class="list-unstyled">
+                            <?php foreach ($questao['alternativas'] as $key => $alternativa): ?>
+                                <li class="mb-2">
+                                    <label>
+                                        <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
+                                        <strong><?php echo chr(65 + $key); ?>.</strong> <?php echo htmlspecialchars($alternativa['texto']); ?>
+                                    </label>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        
+                        <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-sm btn-responder">Responder</button>
+
+                            <button class="btn btn-info btn-sm btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
+                        </div>
+                    </form>
+                    
+                    <p class="explicacao mt-3" style="display: none;"><?php echo htmlspecialchars($questao['resolucao']); ?></p>
                 </div>
-            </div>
+            <?php endforeach; ?>
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
-                <div class="card-body d-flex flex-column align-items-start position-relative">
-                    <i class="fas fa-list fa-lg text-muted position-absolute top-0 end-0 mt-2 me-2"></i>
-                    <h6 class="fw-semibold text-muted mb-1">Erros</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-times-circle fa-2x text-danger me-3"></i>
-                        <h3 class="fw-bold text-dark mb-0"><?php echo $respostas['erradas']; ?></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <nav>
+          <ul class="pagination justify-content-center">
+              <li class="page-item <?php if ($pagina_atual <= 1) echo 'disabled'; ?>">
+                  <a class="page-link" href="?pagina=1<?php echo $enunciadoFiltro ? '&enunciado=' . urlencode($enunciadoFiltro) : ''; ?>&ano=<?php echo urlencode($anoFiltro); ?>&dificuldade=<?php echo urlencode($dificuldadeFiltro); ?>" tabindex="-1" style="background-color: #001A4E; border-color: #001A4E; color: white;">
+                      <i class="fa-solid fa-chevron-left" style="color: white;"></i>
+                  </a>
+              </li>
+              <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                  <li class="page-item <?php if ($i == $pagina_atual) echo 'active'; ?>" style="background-color: #001A4E; border-color: #001A4E;">
+                      <a class="page-link" href="?pagina=<?php echo $i; ?>&enunciado=<?php echo urlencode($enunciadoFiltro); ?>&ano=<?php echo urlencode($anoFiltro); ?>&dificuldade=<?php echo urlencode($dificuldadeFiltro); ?>" style="color: #001A4E;">
+                          <?php echo $i; ?>
+                      </a>
+                  </li>
+              <?php endfor; ?>
+              <li class="page-item <?php if ($pagina_atual >= $total_paginas) echo 'disabled'; ?>">
+                  <a class="page-link" href="?pagina=<?php echo $total_paginas; ?>&enunciado=<?php echo urlencode($enunciadoFiltro); ?>&ano=<?php echo urlencode($anoFiltro); ?>&dificuldade=<?php echo urlencode($dificuldadeFiltro); ?>" style="background-color: #001A4E; border-color: #001A4E; color: white;">
+                      <i class="fa-solid fa-chevron-right" style="color: white;"></i>
+                  </a>
+              </li>
+          </ul>
+      </nav>
+    </main>
+</div>
 
-        <div class="col-md-3">
-            <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
-                <div class="card-body d-flex flex-column align-items-start position-relative">
-                    <i class="fas fa-list fa-lg text-muted position-absolute top-0 end-0 mt-2 me-2"></i>
-                    <h6 class="fw-semibold text-muted mb-1">Percentual de Acerto</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-chart-pie fa-2x text-info me-3"></i>
-                        <h3 class="fw-bold text-dark mb-0"><?php echo $percentualAcerto . '%'; ?></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-4 mt-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="fw-bold">Tentativas e média diária</h6>
-                    <canvas id="tentativasChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="fw-bold">Acertos por hora</h6>
-                    <canvas id="barrasChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-4 mt-4 align-items-stretch">
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <h6 class="fw-bold">Tentativas por Concurso</h6>
-                    <canvas id="desempenhoChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <h6 class="fw-bold mb-4">Últimas Questões Respondidas</h6>
-                    <canvas id="radarChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<footer>
-    <p>2023 Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte</p>
-</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script src="js/teste.js"></script>
 
 <script>
-  const tentativasPorDia = <?php echo json_encode($tentativasPorDia); ?>;
-  const totalTentativas = tentativasPorDia.reduce((a, b) => a + b, 0);
-  const diasComTentativas = tentativasPorDia.filter(tentativas => tentativas > 0).length;
-  const mediaDiaria = diasComTentativas > 0 ? totalTentativas / diasComTentativas : 0;
-  const mediaDiariaArray = tentativasPorDia.map(tentativas => (tentativas > 0 ? mediaDiaria : 0));
 
-  const ctx2 = document.getElementById('tentativasChart').getContext('2d');
-  new Chart(ctx2, {
-    type: 'line',
-    data: {
-      labels: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-      datasets: [
-        {
-          label: 'Tentativas',
-          data: tentativasPorDia,
-          backgroundColor: 'rgba(0, 26, 78, 0.2)',
-          borderColor: 'rgba(0, 26, 78, 1)',
-          borderWidth: 2,
-          fill: true,
-          tension: 0.4,
-        },
-        {
-          label: 'Média Diária',
-          data: mediaDiariaArray,
-          backgroundColor: 'rgba(255, 193, 0, 0.2)',
-          borderColor: 'rgba(255, 193, 0, 1)',
-          borderWidth: 2,
-          fill: false,
-          tension: 0.4,
-          borderDash: [5, 5],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-
-  const acertosPorHora = <?php echo $acertosPorHoraJson; ?>;
-  const mediaAcertosPorHora = <?php echo $mediaAcertosPorHora; ?>;
-
-  const ctx = document.getElementById('barrasChart').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
-      datasets: [
-        {
-          label: 'Acertos por Hora',
-          data: acertosPorHora,
-          backgroundColor: 'rgba(0, 26, 78, 0.6)',
-          borderColor: 'rgba(0, 26, 78, 1)',
-          borderWidth: 1,
-        },
-        {
-          label: 'Média de Acertos',
-          data: Array(24).fill(mediaAcertosPorHora),
-          type: 'line',
-          fill: false,
-          borderColor: 'rgba(255, 193, 0, 1)',
-          borderWidth: 2,
-          tension: 0.1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Quantidade de Acertos',
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Hora do Dia',
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-      },
-    },
-  });
-
-  var concursos = <?php echo json_encode($concursos); ?>;
-  var tentativas = <?php echo json_encode($tentativas); ?>;
-
-  function alternarCores(index) {
-    return index % 2 === 0 ? '#001A4E' : '#FFC100';
-  }
-
-  function definirBorda(index) {
-    return index % 2 !== 0 ? '#FFC100' : 'transparent';
-  }
-
-  var ctx1 = document.getElementById('desempenhoChart').getContext('2d');
-  new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: concursos,
-      datasets: [
-        {
-          label: 'Tentativas por Concurso',
-          data: tentativas,
-          backgroundColor: function(context) {
-            var index = context.dataIndex;
-            return alternarCores(index);
-          },
-          borderColor: function(context) {
-            var index = context.dataIndex;
-            return definirBorda(index);
-          },
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Concurso',
-          },
-          beginAtZero: true,
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Quantidade de Tentativas',
-          },
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-  <?php
-    $ultimasQuestoes = ultimas10Questoes($usuario_id, $conn);
-    $acertos = 0;
-    $erros = 0;
-    foreach ($ultimasQuestoes as $questao) {
-        if ($questao['correta'] == 'Certa') {
-            $acertos++;
-        } else {
-            $erros++;
-        }
-    }
-    echo "const acertos = $acertos;";
-    echo "const erros = $erros;";
-    ?>
-    window.onload = function() {
-        const ctx = document.getElementById('radarChart').getContext('2d');
-        const radarChart = new Chart(ctx, {
-            type: 'radar', 
-            data: {
-                labels: ['Acertos', 'Erros'], 
-                datasets: [{
-                    label: 'Últimas Questões Respondidas',
-                    data: [acertos, erros], 
-                    backgroundColor: 'rgba(0, 26, 78, 0.2)', 
-                    borderColor: '#001A4E', 
-                    borderWidth: 2,
-                    pointBackgroundColor: '#001A4E', 
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4
-                }, {
-                    label: 'Erros',
-                    data: [erros, 0], 
-                    backgroundColor: 'rgba(255, 193, 0, 0.2)', 
-                    borderColor: '#FFC100',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#FFC100', 
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true, 
-                        },
-                        suggestedMin: 0, 
-                        suggestedMax: 10, 
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
-                }
+    $(document).ready(function () {
+        $('input, select').on('keypress', function (e) {
+            if (e.which == 13) {  
+                $(this).closest('form').submit(); 
             }
         });
-    }
+    });
 </script>
+
 </body>
 </html>

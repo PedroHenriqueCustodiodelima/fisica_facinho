@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-$imagemPerfil = 'img/usuario_perfil.png'; // Imagem padrão
+$imagemPerfil = 'img/usuario_perfil.png'; 
 $nomeUsuario = 'Usuário';
 
 $stmt = $conn->prepare("SELECT email FROM usuarios WHERE id = ?");
