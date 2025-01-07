@@ -93,16 +93,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label for="materia">Matéria:</label><br>
             <select id="materia" name="materia" required>
-                <!-- <option value="grandezas">Grandezas e vetores</option> -->
-                <!-- <option value="cinematica_conceitos_basico">Cinemática – conceitos básicos</option> -->
-                <!-- <option value="Cinemática – identificando os movimentos">Cinemática – identificando os movimentos</option> -->
-                <!-- <option value="Movimento retilíneo uniforme (MRU)">Movimento retilíneo uniforme (MRU)</option> -->
-                <!-- <option value="Movimento retilíneo uniformemente variado (MRUV)">Movimento retilíneo uniformemente variado (MRUV)</option> -->
-                <!-- <option value="Movimentos sob ação da gravidade">Movimentos sob ação da gravidade</option> -->
-                <!-- <option value="As Leis de Newton e suas aplicações">As Leis de Newton e suas aplicações</option> -->
-                <!-- <option value="Movimento Circular Uniforme">Movimento Circular Uniforme</option> -->
-                <!-- <option value="Dinâmica do movimento circular">Dinâmica do movimento circular</option> -->
-                <!-- <option value="Trabalho energia potência">Trabalho energia potência</option> -->
+                <option value="grandezas">Grandezas e vetores</option> 
+                <option value="introdução">introdução a fisica</option> 
+                <option value="Dinamica circular">Dinamica circular</option> 
+                <option value="cinematica_conceitos_basico">Cinemática – conceitos básicos</option> 
+                <option value="Cinemática – identificando os movimentos">Cinemática – identificando os movimentos</option> 
+                <option value="Movimento retilíneo uniforme (MRU)">Movimento retilíneo uniforme (MRU)</option> 
+                <option value="Movimento retilíneo uniformemente variado (MRUV)">Movimento retilíneo uniformemente variado (MRUV)</option> 
+                <option value="Movimentos sob ação da gravidade">Movimentos sob ação da gravidade</option> 
+                <option value="As Leis de Newton e suas aplicações">As Leis de Newton e suas aplicações</option> 
+                <option value="Movimento Circular Uniforme">Movimento Circular Uniforme</option> 
+                <option value="Dinâmica do movimento circular">Dinâmica do movimento circular</option> 
+                <option value="Trabalho energia potência">Trabalho energia potência</option> 
                 <option value="Impulso e Quantidade de Movimento">Impulso e Quantidade de Movimento</option>
                 <option value="Gravitação Universal">Gravitação Universal</option>
                 <option value="Estática">Estática</option>
