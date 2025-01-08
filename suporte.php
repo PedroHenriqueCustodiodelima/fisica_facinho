@@ -1,5 +1,6 @@
 <?php
 include("funcoes_php/funcoes_suporte.php");
+include 'header.php';
 ?>
 
 <!DOCTYPE html>
@@ -14,20 +15,14 @@ include("funcoes_php/funcoes_suporte.php");
   <link rel="stylesheet" href="css/suporte.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="d-flex justify-content-between align-items-center p-3">
-    <a href="inicio.php">
-      <img src="img/logo.png" width="200px" alt="Logo">
-    </a>
-    <div class="perfil-header d-flex align-items-center">
-      <a href="configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
-        <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-        <p class="m-0 ml-2"><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
+  
+  <main class="container mt-4">
+  <div class="voltar-container mb-4">
+      <a href="inicio.php" class="custom-link mb-3">
+        <i class="fa-solid fa-circle-arrow-left" style="color: #001A4E;"></i> 
+        <span style="color: #001A4E;">Voltar</span>
       </a>
     </div>
-  </header>
-
-  <main class="container mt-4">
     <h1>Central de Ajuda</h1>
     <p>Envie sua mensagem para a nossa equipe de suporte. Se você tiver dúvidas, consulte também as perguntas frequentes abaixo.</p>
 

@@ -6,13 +6,32 @@
 header {
     background-color: #001A4E;
     padding: 10px;
-    color: white;  
-}
-.perfil-header p,
-.perfil-header #usuario-nome {
-  color: white; 
-}
-#avatar-imagem {
+    color: white;
+  }
+  .header-conteudo {
+    display: flex;
+    align-items: center;  
+    gap: 15px;  
+    padding: 10px;
+  }
+  
+  .icon-voltar {
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0; 
+  }
+  
+  .perfil-header p,
+  .perfil-header #usuario-nome {
+    color: white;
+  }
+  #avatar-imagem {
     border-radius: 50%;
     object-fit: cover; 
-}
+  }

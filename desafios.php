@@ -47,6 +47,12 @@ include 'header.php';
     </script>
 </head>
 <body onload="mostrarFeedbackModal()">
+<div class="voltar-container mb-4">
+      <a href="inicio.php" class="custom-link mb-3">
+        <i class="fa-solid fa-circle-arrow-left" style="color: #001A4E;"></i> 
+        <span style="color: #001A4E;">Voltar</span>
+      </a>
+    </div>
   <h4>DESAFIOS DIÁRIOS PARA VOCÊ</h4>
     <div class="container">
         <div class="questao-cabecalho">
