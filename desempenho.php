@@ -33,7 +33,7 @@ $tentativas = array_values($tentativasPorConcurso);
 <body>
 <main class="container py-5">
     <div class="voltar-container mb-4">
-        <a href="conteudos.php" class="custom-link mb-3">
+        <a href="inicio.php" class="custom-link mb-3">
             <i class="fa-solid fa-circle-arrow-left" style="color: #001A4E; text-decoration: none;"></i> 
             <span style="color: #001A4E; text-decoration: none;">Voltar</span>
         </a>
