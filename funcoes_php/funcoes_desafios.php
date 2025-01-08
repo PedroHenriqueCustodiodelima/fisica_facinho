@@ -92,11 +92,9 @@ while ($alternativa = $alternativas_result->fetch_assoc()) {
 
 $stmt->close();
 
-// Variáveis de feedback
 $feedback = '';
 $imagemCabecalho = 'img/cara.png'; // Imagem por padrão para erro
 
-// Lógica de verificação de resposta
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $alternativa_usuario = $_POST['alternativa'] ?? null;
     $id_questao = $_POST['id_questao'] ?? null;
@@ -112,19 +110,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $correta = $alternativa['correta'];
 
             if ($correta == 1) {
-                $feedback = "Você acertou a questão!";
+                $feedback = "✨ Parabéns! Você acertou a questão!";
                 $imagemCabecalho = 'img/cara.png'; // Imagem para quando o usuário acerta
             } else {
-                $feedback = "Você errou a questão. Tente novamente!";
+                $feedback = "😞 Infelizmente, você errou a questão. Tente novamente!";
                 $imagemCabecalho = 'img/triste.png';
             }
         } else {
-            $feedback = "Questão ou alternativa inválida.";
+            $feedback = "❌ Questão ou alternativa inválida.";
         }
 
         $stmt->close();
     } else {
-        $feedback = "Resposta ou questão inválida.";
+        $feedback = "⚠️ Resposta ou questão inválida.";
     }
 }
 ?>

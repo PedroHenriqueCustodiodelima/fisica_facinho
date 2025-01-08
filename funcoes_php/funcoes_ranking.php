@@ -70,7 +70,5 @@ foreach ($ranking as $index => $usuario) {
     }
 }
 
-
 $stmt->close();
-$conn->close();
 ?>

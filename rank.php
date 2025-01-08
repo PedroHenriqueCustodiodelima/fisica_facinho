@@ -1,5 +1,6 @@
 <?php
 include("funcoes_php/funcoes_ranking.php");
+include 'header.php';
 ?>
 
 <!DOCTYPE html>
@@ -7,9 +8,7 @@ include("funcoes_php/funcoes_ranking.php");
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ranking de Usuários</title>
-
-  <!-- Links para bibliotecas externas -->
+  <title>Ranking</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,18 +16,6 @@ include("funcoes_php/funcoes_ranking.php");
   <link rel="stylesheet" href="css/rank.css">
 </head>
 <body>
-
-  <header>
-    <a href="inicio.php">
-        <img src="img/logo.png" alt="Logo">
-    </a>
-    <div class="perfil-header">
-        <a href="configuracoes.php" class="d-flex align-items-center">
-          <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="35px" height="35px">
-          <p><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
-        </a>
-    </div>
-  </header>
 
   <div class="container">
     <div class="voltar-container">
