@@ -54,127 +54,113 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Questões - Concurso</title>
     <style>
-        /* Reseta margens e paddings para garantir um layout mais limpo */
+        /* Reset básico para remover margens e paddings indesejados */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Container do formulário */
-.container {
-    width: 100%;
-    max-width: 900px;
-    background-color: white;
+/* Estilização geral do body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Título */
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4CAF50;
-}
-
-/* Estilo do formulário */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Estilo dos campos de entrada */
-label {
-    font-weight: bold;
-    font-size: 14px;
-    color: #555;
-}
-
-textarea, input[type="text"], input[type="file"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 100%;
-    margin-top: 5px;
-    resize: vertical;
-}
-
-/* Tamanho mínimo das caixas de texto */
-textarea {
-    min-height: 80px;
-}
-
-input[type="text"] {
-    height: 35px;
-}
-
-input[type="file"] {
-    height: auto;
-}
-
-/* Estilo do botão */
-button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-button[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* Estilo para mensagens de feedback */
-.alert {
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.alert.success {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.alert.error {
-    background-color: #f44336;
-    color: white;
-}
-
-/* Estilo das alternativas */
-h2 {
-    margin-top: 20px;
-    font-size: 18px;
     color: #333;
 }
 
-/* Estilo das alternativas */
-div {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Cabeçalho da página */
+h1 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-textarea[name^="alternativa_"] {
-    width: 90%;
+/* Mensagem de feedback */
+.alert {
+    padding: 10px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+/* Formulário */
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* Textarea e Input */
+textarea, input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botão */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Botão hover */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Divs para alternativas */
+div > div {
+    margin-bottom: 20px;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+    margin-left: 10px;
+}
+
+/* Adição de espaçamento entre os campos */
+div > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Ajuste para campos de texto */
+input[type="file"] {
+    padding: 10px;
+}
+
+/* Textarea */
+textarea {
+    min-height: 100px;
+    resize: vertical;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-
-    button[type="submit"] {
-        width: 100%;
+    form {
+        padding: 20px;
     }
 }
 

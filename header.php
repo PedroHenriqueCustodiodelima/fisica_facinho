@@ -99,18 +99,23 @@ $primeiroNome = explode(" ", $nomeUsuario)[0];
             transform: rotate(90deg);
         }
 
-        @media screen and (max-width: 768px) {
+       @media screen and (max-width: 768px) {
             .header-menu {
                 flex-direction: column;
             }
-
+        
             .perfil-header {
                 justify-content: flex-end;
             }
-
+        
             .lista-dropdown {
                 width: 90%;
                 top: 50px;
+            }
+        
+            .logo {
+                max-width: 60%; /* Ajuste para dispositivos menores */
+                max-height: 40px;
             }
         }
     </style>
@@ -118,7 +123,11 @@ $primeiroNome = explode(" ", $nomeUsuario)[0];
 <body>
 <header class="d-flex justify-content-between align-items-center">
     <a href="inicio.php">
-        <img src="img/logo.png" width="200px" alt="Logo">
+        <img src="img/logo.png" 
+     srcset="img/logo.png 100w, img/logo.png 200w" 
+     sizes="(max-width: 768px) 100px, 200px" 
+     alt="Logo">
+
     </a>
     <div class="perfil-header d-flex align-items-center">
         <a href="#" class="d-flex align-items-center" style="text-decoration: none;" id="menu-button">
