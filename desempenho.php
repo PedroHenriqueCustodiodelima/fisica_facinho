@@ -32,6 +32,12 @@ $tentativas = array_values($tentativasPorConcurso);
 </head>
 <body>
 <main class="container py-5">
+    <div class="voltar-container mb-4">
+        <a href="conteudos.php" class="custom-link mb-3">
+            <i class="fa-solid fa-circle-arrow-left" style="color: #001A4E; text-decoration: none;"></i> 
+            <span style="color: #001A4E; text-decoration: none;">Voltar</span>
+        </a>
+    </div>
     <h2 class="mb-5 text-center fw-bold">Desempenho</h2>
     <div class="row g-4">
       <div class="col-md-3">
@@ -61,64 +67,74 @@ $tentativas = array_values($tentativasPorConcurso);
                       <h5 class="modal-title" id="questoesRespondidasModalLabel" style="font-weight: 600;">Últimas Tentativas</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border: none;"></button>
                   </div>
-                  <div class="modal-body" style="font-size: 14px; padding: 30px;">
-                      <h6 class="fw-bold" style="font-size: 16px; color: #333;">Últimas Tentativas:</h6>
-                      <table class="table table-hover" style="border-collapse: collapse; margin-top: 20px;">
-                          <thead class="table-light" style="background-color: #f9f9f9; color: #333;">
-                              <tr>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Enunciado
-                                      <i class="bi bi-file-earmark-text ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Matéria
-                                      <i class="bi bi-book ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Ano
-                                      <i class="bi bi-calendar-year ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Data
-                                      <i class="bi bi-calendar ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Resultado
-                                      <i class="bi bi-check-circle ms-2"></i>
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <?php
-                              $ultimasTentativas = ultimas10TentativasConcursos($usuario_id, $conn);
 
-                              if (count($ultimasTentativas) > 0) {
-                                  foreach ($ultimasTentativas as $tentativa) {
-                                      echo '<tr style="border-bottom: 1px solid #ddd; transition: background-color 0.3s ease;">';
-                                      echo '<td>' . htmlspecialchars($tentativa['enunciado']) . '</td>';
-                                      echo '<td>' . htmlspecialchars($tentativa['materia']) . '</td>';
-                                      echo '<td>' . htmlspecialchars($tentativa['ano']) . '</td>';
-                                      echo '<td>' . date('d/m/Y H:i:s', strtotime($tentativa['data_tentativa'])) . '</td>';
-                                      if ($tentativa['correta'] == 'Certa') {
-                                          echo '<td><i class="fa-solid fa-check text-success"></i></td>';
-                                      } else {
-                                          echo '<td><i class="fa-solid fa-xmark text-danger"></i></td>';
-                                      }
-                                      echo '</tr>';
-                                  }
-                              } else {
-                                  echo '<tr><td colspan="5" class="text-center">Nenhuma tentativa encontrada.</td></tr>';
-                              }
-                              ?>
-                          </tbody>
-                      </table>
-                  </div>
+
+
+                  <div class="modal-body" style="font-size: 14px; padding: 30px;">
+                        <h6 class="fw-bold" style="font-size: 16px; color: #333;">Últimas Tentativas:</h6>
+                        <table class="table table-hover" style="border-collapse: collapse; margin-top: 20px;">
+                            <thead class="table-light" style="background-color: #f9f9f9; color: #333;">
+                                <tr>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">
+                                        Enunciado
+                                        <i class="bi bi-file-earmark-text ms-2"></i>
+                                    </th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">
+                                        Matéria
+                                        <i class="bi bi-book ms-2"></i>
+                                    </th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">
+                                        Ano
+                                        <i class="bi bi-calendar-year ms-2"></i>
+                                    </th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">
+                                        Data
+                                        <i class="bi bi-calendar ms-2"></i>
+                                    </th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">
+                                        Origem
+                                        <i class="bi bi-link-45deg ms-2"></i>
+                                    </th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">
+                                        Resultado
+                                        <i class="bi bi-check-circle ms-2"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $ultimasTentativas = ultimas10Tentativas($usuario_id, $conn);
+
+                                if (count($ultimasTentativas) > 0) {
+                                    foreach ($ultimasTentativas as $tentativa) {
+                                        echo '<tr style="border-bottom: 1px solid #ddd; transition: background-color 0.3s ease;">';
+                                        echo '<td>' . htmlspecialchars($tentativa['enunciado']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tentativa['materia']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tentativa['ano']) . '</td>';
+                                        echo '<td>' . date('d/m/Y H:i:s', strtotime($tentativa['data_tentativa'])) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tentativa['origem']) . '</td>';
+                                        if ($tentativa['correta'] == 'Certa') {
+                                            echo '<td><i class="fa-solid fa-check text-success"></i></td>';
+                                        } else {
+                                            echo '<td><i class="fa-solid fa-xmark text-danger"></i></td>';
+                                        }
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="6" class="text-center">Nenhuma tentativa encontrada.</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                   <div class="modal-footer" style="border-top: 1px solid #ddd;">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 5px;">Fechar</button>
                   </div>
               </div>
           </div>
       </div>
+
+
       <div class="col-md-3">
           <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
               <div class="card-body d-flex flex-column align-items-start position-relative">
@@ -137,68 +153,52 @@ $tentativas = array_values($tentativasPorConcurso);
               </div>
           </div>
       </div>
-
       <div class="modal fade" id="acertosModal" tabindex="-1" aria-labelledby="acertosModalLabel" aria-hidden="true">
-          <div class="modal-dialog" style="max-width: 90%; border-radius: 15px;">
-              <div class="modal-content" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                  <div class="modal-header" style="background-color: #FFC100; color: white; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                      <h5 class="modal-title" id="acertosModalLabel" style="font-weight: 600;">Detalhes dos Acertos</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border: none;"></button>
-                  </div>
-                  <div class="modal-body" style="font-size: 14px; padding: 30px;">
-                      <h6 class="fw-bold" style="font-size: 16px; color: #333;">Acertos Recentes:</h6>
-                      <table class="table table-hover" style="border-collapse: collapse; margin-top: 20px;">
-                          <thead class="table-light" style="background-color: #f9f9f9; color: #333;">
-                              <tr>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Enunciado
-                                      <i class="bi bi-file-earmark-text ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Matéria
-                                      <i class="bi bi-book ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Ano
-                                      <i class="bi bi-calendar-year ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Data
-                                      <i class="bi bi-calendar ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Resultado
-                                      <i class="bi bi-check-circle ms-2"></i>
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <?php
-                              $acertos = ultimas10TentativasCorretasConcursos($usuario_id, $conn);
+            <div class="modal-dialog" style="max-width: 90%; border-radius: 15px;">
+                <div class="modal-content" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <div class="modal-header" style="background-color: #FFC100; color: white; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <h5 class="modal-title" id="acertosModalLabel" style="font-weight: 600;">Detalhes dos Acertos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border: none;"></button>
+                    </div>
+                    <div class="modal-body" style="font-size: 14px; padding: 30px;">
+                        <h6 class="fw-bold" style="font-size: 16px; color: #333;">Acertos Recentes:</h6>
+                        <table class="table table-hover" style="border-collapse: collapse; margin-top: 20px;">
+                            <thead class="table-light" style="background-color: #f9f9f9; color: #333;">
+                                <tr>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">Enunciado <i class="bi bi-file-earmark-text ms-2"></i></th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">Matéria <i class="bi bi-book ms-2"></i></th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">Ano <i class="bi bi-calendar-year ms-2"></i></th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">Data <i class="bi bi-calendar ms-2"></i></th>
+                                    <th scope="col" style="font-size: 14px; text-align: left;">Resultado <i class="bi bi-check-circle ms-2"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $acertos = ultimasTentativasCertas($usuario_id, $conn);
 
-                              if (count($acertos) > 0) {
-                                  foreach ($acertos as $tentativa) {
-                                      echo '<tr style="border-bottom: 1px solid #ddd; transition: background-color 0.3s ease;">';
-                                      echo '<td>' . htmlspecialchars($tentativa['enunciado']) . '</td>';
-                                      echo '<td>' . htmlspecialchars($tentativa['materia']) . '</td>';
-                                      echo '<td>' . htmlspecialchars($tentativa['ano']) . '</td>';
-                                      echo '<td>' . date('d/m/Y H:i:s', strtotime($tentativa['data_tentativa'])) . '</td>';
-                                      echo '<td><i class="fa-solid fa-check text-success"></i></td>';
-                                      echo '</tr>';
-                                  }
-                              } else {
-                                  echo '<tr><td colspan="5" class="text-center">Nenhum acerto encontrado.</td></tr>';
-                              }
-                              ?>
-                          </tbody>
-                      </table>
-                  </div>
-                  <div class="modal-footer" style="border-top: 1px solid #ddd;">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 5px;">Fechar</button>
-                  </div>
-              </div>
-          </div>
-      </div>
+                                if (!empty($acertos)) {
+                                    foreach ($acertos as $tentativa) {
+                                        echo '<tr style="border-bottom: 1px solid #ddd; transition: background-color 0.3s ease;">';
+                                        echo '<td>' . htmlspecialchars($tentativa['enunciado']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tentativa['materia']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tentativa['ano']) . '</td>';
+                                        echo '<td>' . date('d/m/Y H:i:s', strtotime($tentativa['data_tentativa'])) . '</td>';
+                                        echo '<td><i class="fa-solid fa-check text-success"></i></td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="5" class="text-center">Nenhum acerto encontrado.</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid #ddd;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 5px;">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
       <div class="col-md-3">
           <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
               <div class="card-body d-flex flex-column align-items-start position-relative">
@@ -218,66 +218,67 @@ $tentativas = array_values($tentativasPorConcurso);
           </div>
       </div>
       <div class="modal fade" id="errosModal" tabindex="-1" aria-labelledby="errosModalLabel" aria-hidden="true">
-          <div class="modal-dialog" style="max-width: 90%; border-radius: 15px;">
-              <div class="modal-content" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                  <div class="modal-header" style="background-color: #FFC100; color: white; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                      <h5 class="modal-title" id="errosModalLabel" style="font-weight: 600;">Detalhes dos Erros</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border: none;"></button>
-                  </div>
-                  <div class="modal-body" style="font-size: 14px; padding: 30px;">
-                      <h6 class="fw-bold" style="font-size: 16px; color: #333;">Erros Recentes:</h6>
-                      <table class="table table-hover" style="border-collapse: collapse; margin-top: 20px;">
-                          <thead class="table-light" style="background-color: #f9f9f9; color: #333;">
-                              <tr>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Enunciado
-                                      <i class="bi bi-file-earmark-text ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Matéria
-                                      <i class="bi bi-book ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Ano
-                                      <i class="bi bi-calendar-year ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Data
-                                      <i class="bi bi-calendar ms-2"></i>
-                                  </th>
-                                  <th scope="col" style="font-size: 14px; text-align: left;">
-                                      Resultado
-                                      <i class="bi bi-x-circle ms-2"></i>
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <?php
-                              $erros = ultimas10TentativasErradasConcursos($usuario_id, $conn);
+        <div class="modal-dialog" style="max-width: 90%; border-radius: 15px;">
+            <div class="modal-content" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div class="modal-header" style="background-color: #FFC100; color: white; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <h5 class="modal-title" id="errosModalLabel" style="font-weight: 600;">Detalhes dos Erros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border: none;"></button>
+                </div>
+                <div class="modal-body" style="font-size: 14px; padding: 30px;">
+                    <h6 class="fw-bold" style="font-size: 16px; color: #333;">Erros Recentes:</h6>
+                    <table class="table table-hover" style="border-collapse: collapse; margin-top: 20px;">
+                        <thead class="table-light" style="background-color: #f9f9f9; color: #333;">
+                            <tr>
+                                <th scope="col" style="font-size: 14px; text-align: left;">
+                                    Enunciado
+                                    <i class="bi bi-file-earmark-text ms-2"></i>
+                                </th>
+                                <th scope="col" style="font-size: 14px; text-align: left;">
+                                    Matéria
+                                    <i class="bi bi-book ms-2"></i>
+                                </th>
+                                <th scope="col" style="font-size: 14px; text-align: left;">
+                                    Ano
+                                    <i class="bi bi-calendar-year ms-2"></i>
+                                </th>
+                                <th scope="col" style="font-size: 14px; text-align: left;">
+                                    Data
+                                    <i class="bi bi-calendar ms-2"></i>
+                                </th>
+                                <th scope="col" style="font-size: 14px; text-align: left;">
+                                    Resultado
+                                    <i class="bi bi-x-circle ms-2"></i>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $erros = ultimasTentativasErradas($usuario_id, $conn);
 
-                              if (count($erros) > 0) {
-                                  foreach ($erros as $tentativa) {
-                                      echo '<tr style="border-bottom: 1px solid #ddd; transition: background-color 0.3s ease;">';
-                                      echo '<td>' . htmlspecialchars($tentativa['enunciado']) . '</td>';
-                                      echo '<td>' . htmlspecialchars($tentativa['materia']) . '</td>';
-                                      echo '<td>' . htmlspecialchars($tentativa['ano']) . '</td>';
-                                      echo '<td>' . date('d/m/Y H:i:s', strtotime($tentativa['data_tentativa'])) . '</td>';
-                                      echo '<td><i class="fa-solid fa-times text-danger"></i></td>';
-                                      echo '</tr>';
-                                  }
-                              } else {
-                                  echo '<tr><td colspan="5" class="text-center">Nenhum erro encontrado.</td></tr>';
-                              }
-                              ?>
-                          </tbody>
-                      </table>
-                  </div>
-                  <div class="modal-footer" style="border-top: 1px solid #ddd;">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 5px;">Fechar</button>
-                  </div>
-              </div>
-          </div>
-      </div>
+                            if (!empty($erros)) {
+                                foreach ($erros as $tentativa) {
+                                    echo '<tr style="border-bottom: 1px solid #ddd; transition: background-color 0.3s ease;">';
+                                    echo '<td>' . htmlspecialchars($tentativa['enunciado']) . '</td>';
+                                    echo '<td>' . htmlspecialchars($tentativa['materia']) . '</td>';
+                                    echo '<td>' . htmlspecialchars($tentativa['ano']) . '</td>';
+                                    echo '<td>' . date('d/m/Y H:i:s', strtotime($tentativa['data_tentativa'])) . '</td>';
+                                    echo '<td><i class="fa-solid fa-times text-danger"></i></td>';
+                                    echo '</tr>';
+                                }
+                            } else {
+                                echo '<tr><td colspan="5" class="text-center">Nenhum erro encontrado.</td></tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #ddd;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 5px;">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
       <div class="col-md-3">
           <div class="card shadow-lg h-100 border-0 rounded-4 p-4 bg-light">
               <div class="card-body d-flex flex-column align-items-start position-relative">
@@ -295,78 +296,6 @@ $tentativas = array_values($tentativasPorConcurso);
               </div>
           </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="row g-4 mt-4">
         <div class="col-md-6">
             <div class="card shadow-sm border-0">
@@ -399,12 +328,13 @@ $tentativas = array_values($tentativasPorConcurso);
 
         <div class="col-lg-4">
             <div class="card shadow-sm border-0 h-100">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <h6 class="fw-bold mb-4">Últimas Questões Respondidas</h6>
-                    <canvas id="radarChart"></canvas>
+                <div class="card-body">
+                    <h6 class="fw-bold mb-4">Últimas 10 respostas</h6>
+                    <canvas id="pieChart"></canvas>
                 </div>
             </div>
         </div>
+
     </div>
 </main>
 
@@ -575,52 +505,46 @@ $tentativas = array_values($tentativasPorConcurso);
     echo "const erros = $erros;";
     ?>
     window.onload = function() {
-        const ctx = document.getElementById('radarChart').getContext('2d');
-        const radarChart = new Chart(ctx, {
-            type: 'radar', 
-            data: {
-                labels: ['Acertos', 'Erros'], 
-                datasets: [{
-                    label: 'Últimas Questões Respondidas',
-                    data: [acertos, erros], 
-                    backgroundColor: 'rgba(0, 26, 78, 0.2)', 
-                    borderColor: '#001A4E', 
-                    borderWidth: 2,
-                    pointBackgroundColor: '#001A4E', 
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4
-                }, {
-                    label: 'Erros',
-                    data: [erros, 0], 
-                    backgroundColor: 'rgba(255, 193, 0, 0.2)', 
-                    borderColor: '#FFC100',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#FFC100', 
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true, 
-                        },
-                        suggestedMin: 0, 
-                        suggestedMax: 10, 
-                    }
+    var acertos = <?php echo $acertos; ?>;
+    var erros = <?php echo $erros; ?>;
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    
+    const pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Acertos', 'Erros'],
+            datasets: [{
+                label: 'Distribuição de Acertos e Erros',
+                data: [acertos, erros],
+                backgroundColor: [
+                    'rgba(0, 26, 78, 0.6)',
+                    'rgba(255, 193, 0, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(0, 26, 78, 1)',
+                    'rgba(255, 193, 0, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
                 },
-                plugins: {
-                    legend: {
-                        position: 'top',
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
                     }
                 }
             }
-        });
-    }
+        }
+    });
+}
+
 </script>
 </body>
 </html>
