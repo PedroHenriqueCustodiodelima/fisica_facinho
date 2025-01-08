@@ -1,95 +1,91 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const forms = document.querySelectorAll("form");
-    forms.forEach((form) => {
-      form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Impede o envio padrão do formulário
-  
-        // Verifica se uma alternativa foi selecionada
-        const alternativaSelecionada = form.querySelector('input[name="resposta"]:checked');
-        if (!alternativaSelecionada) {
-          Swal.fire({
-            icon: "error",
-            title: "Erro",
-            text: "Por favor, selecione uma alternativa antes de responder.",
-          });
-          return; // Impede o envio do formulário
-        }
-  
-        const formData = new FormData(form);
-        fetch(form.action, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.status === "success") {
-              Swal.fire({
-                icon: "success",
-                title: data.message,
-                showConfirmButton: false,
-                timer: 3000,
-              });
+  $(document).ready(function() {
+    function filtrarQuestoes() {
+        var filtroTexto = $('#filtro').val().toLowerCase(); 
+        var filtroAno = $('#filtro-ano').val(); 
+        var filtroDificuldade = $('#filtro-dificuldade').val(); 
+        var questoes = $('.questao'); 
+
+        console.log("Filtro de Texto:", filtroTexto);
+        console.log("Filtro de Ano:", filtroAno);
+        console.log("Filtro de Dificuldade:", filtroDificuldade);
+
+        questoes.each(function() {
+            var questao = $(this);
+            var enunciado = questao.find('h6').text().toLowerCase(); 
+            var ano = questao.data('ano'); 
+            var dificuldade = questao.data('dificuldade'); 
+
+            console.log("Enunciado:", enunciado, "Ano:", ano, "Dificuldade:", dificuldade);
+            if (
+                enunciado.includes(filtroTexto) &&  
+                (filtroAno === '' || ano == filtroAno) && 
+                (filtroDificuldade === '' || dificuldade == filtroDificuldade) 
+            ) {
+                questao.show(); 
             } else {
-              Swal.fire({
-                icon: "error",
-                title: data.message,
-                showConfirmButton: false,
-                timer: 3000,
-              });
+                questao.hide(); 
             }
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Erro ao enviar a resposta",
-              text: error.message,
-            });
-          });
-      });
+        });
+    }
+    $('#filtro, #filtro-ano, #filtro-dificuldade').on('input change', function(event) {
+        event.preventDefault();  
+        filtrarQuestoes();
     });
+    $(".btn-resolucao").click(function(event) {
+        event.preventDefault();
+        $(this).closest('.questao').find('.explicacao').toggle();
+    });
+    $(".responder-form").submit(function(event) {
+      event.preventDefault();
+      var form = $(this);
+      var questaoId = form.find("input[name='questao_id']").val();
+      var alternativaId = form.find("input[name='alternativa']:checked").val();
   
-      filterByText();
-      document.querySelector("#searchEnunciado").focus();
-    });
-    function mostrarResolucao(id) {
-      var resolucao = document.getElementById('resolucao-' + id);
-      resolucao.style.display = resolucao.style.display === 'none' ? 'block' : 'none';
-    }
-    function verVideo(id) {
-      var videoDiv = document.getElementById('video-' + id);
-      if (videoDiv.style.display === 'none') {
-        videoDiv.style.display = 'block';
-      } else {
-        videoDiv.style.display = 'none';
+      if (!alternativaId) {
+          Swal.fire({
+              title: 'Selecione uma alternativa!',
+              icon: 'warning',
+          });
+          return;
       }
-    }
-    function filterByText() {
-      var input = document.getElementById('searchEnunciado');
-      var filter = input.value.toLowerCase();
-      var questoes = document.querySelectorAll('.questao');
-      questoes.forEach(function (questao) {
-        var enunciado = questao.querySelector('.enunciado').textContent.toLowerCase();
-        var materia = questao.querySelector('.materia').textContent.toLowerCase();
-        
-        if (enunciado.includes(filter) || materia.includes(filter)) {
-          questao.style.display = '';
-        } else {
-          questao.style.display = 'none';
-        }
+  
+      $.ajax({
+          url: "processar_resposta.php", // Endpoint para processar o formulário
+          method: "POST",
+          data: {
+              questao_id: questaoId,
+              alternativa_id: alternativaId
+          },
+          success: function(response) {
+              var data = JSON.parse(response || "{}");
+              if (data.status === "success") {
+                  Swal.fire({
+                      title: data.message,
+                      icon: "success",
+                  });
+              } else {
+                  Swal.fire({
+                      title: "Erro ao registrar resposta.",
+                      icon: "error",
+                  });
+              }
+          },
+          error: function() {
+              Swal.fire({
+                  title: "Erro inesperado!",
+                  icon: "error",
+              });
+          }
       });
-    }
-    function filterByYear(ano) {
-      var input = document.getElementById('searchEnunciado');
-      var filter = input.value.toLowerCase();
-      var questoes = document.querySelectorAll('.questao');
-      questoes.forEach(function (questao) {
-        var questaoAno = questao.getAttribute('data-ano');
-        var enunciado = questao.querySelector('.enunciado').textContent.toLowerCase();
-        var materia = questao.querySelector('.materia').textContent.toLowerCase();
-        if ((questaoAno == ano) && (enunciado.includes(filter) || materia.includes(filter))) {
-          questao.style.display = '';
-        } else {
-          questao.style.display = 'none';
-        }
-      });
-    }
+  });
+  
+    filtrarQuestoes();
+});
+
+    $(document).ready(function () {
+        $('input, select').on('keypress', function (e) {
+            if (e.which == 13) {  
+                $(this).closest('form').submit(); 
+            }
+        });
+    });

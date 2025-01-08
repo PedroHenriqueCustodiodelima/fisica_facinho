@@ -1,12 +1,13 @@
 <?php
 include("funcoes_php/funcoes_inicio.php");
+include 'header.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configurações</title>
+  <title>concurso</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -14,17 +15,6 @@ include("funcoes_php/funcoes_inicio.php");
 </head>
 <body>
   <div class="page-container">
-    <header class="d-flex justify-content-between align-items-center">
-      <a href="inicio.php">
-        <img src="img/logo.png" width="200px" alt="Logo">
-      </a>
-      <div class="perfil-header d-flex align-items-center">
-        <a href="configuracoes.php" class="d-flex align-items-center" style="text-decoration: none;">
-          <img id="avatar-imagem" src="<?php echo htmlspecialchars($imagemPerfil); ?>" alt="Avatar" width="50px" height="50px" class="ml-3">
-          <p class="m-0 ml-2" ><span id="usuario-nome"><?php echo htmlspecialchars($nomeUsuario); ?></span></p>
-        </a>
-      </div>
-    </header>
 
     <main class="container">
       <div class="container mt-5">
