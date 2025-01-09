@@ -13,6 +13,7 @@ include "header.php";
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="css/inicio.css">
+  <link rel="icon" type="img/png" href="img/cara.png">
   <script src="js/inicio.js"></script>
 </head>
 <body>
