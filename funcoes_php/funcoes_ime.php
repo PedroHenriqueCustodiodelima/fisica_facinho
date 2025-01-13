@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once('./conexao.php');
 
@@ -24,7 +23,8 @@ $total_questoes = $total_questoes_row['total'];
 $total_paginas = ceil($total_questoes / $questoes_por_pagina);
 
 // Consulta das questões
-$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, concurso FROM $tabela_questoes WHERE concurso = 'IME' LIMIT $questoes_por_pagina OFFSET $offset";
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, concurso, video 
+                FROM $tabela_questoes WHERE concurso = 'IME' LIMIT $questoes_por_pagina OFFSET $offset";
 $questao_result = $conn->query($questao_sql);
 $questoes_data = [];
 
@@ -37,6 +37,7 @@ if ($questao_result->num_rows > 0) {
         $materia = $questao['materia']; 
         $ano = $questao['ano']; 
         $concurso = $questao['concurso'];
+        $video = $questao['video'];
 
         $alternativas_sql = "SELECT id, texto FROM $tabela_alternativas WHERE id_questao = $questao_id";
         $alternativas_result = $conn->query($alternativas_sql);
@@ -48,6 +49,7 @@ if ($questao_result->num_rows > 0) {
             'materia' => $materia,  
             'ano' => $ano,          
             'concurso' => $concurso,
+            'video' => $video,
             'alternativas' => []
         ];
 
@@ -113,6 +115,7 @@ if ($anos_distinct_result->num_rows > 0) {
         $anos_distinct[] = $row['ano'];
     }
 }
+
 // Obter as matérias únicas disponíveis no banco de dados
 $materias_distinct_sql = "SELECT DISTINCT materia FROM $tabela_questoes WHERE concurso = 'IME' ORDER BY materia ASC";
 $materias_distinct_result = $conn->query($materias_distinct_sql);
@@ -122,7 +125,6 @@ if ($materias_distinct_result->num_rows > 0) {
         $materias_distinct[] = $row['materia'];
     }
 }
-
 
 // Contar questões de acordo com os filtros
 $count_sql = "SELECT COUNT(*) AS total FROM $tabela_questoes WHERE concurso = 'IME'";
@@ -150,7 +152,8 @@ $total_questoes = $count_result->fetch_assoc()['total'];
 
 $total_paginas = ceil($total_questoes / $questoes_por_pagina);
 
-$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, concurso FROM $tabela_questoes WHERE concurso = 'IME'";
+$questao_sql = "SELECT id, enunciado, resolucao, foto_enunciado, materia, ano, concurso, video 
+                FROM $tabela_questoes WHERE concurso = 'IME'";
 if (count($conditions) > 0) {
     $questao_sql .= " AND " . implode(" AND ", $conditions);
 }

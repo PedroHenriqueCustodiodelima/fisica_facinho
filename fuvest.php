@@ -76,41 +76,49 @@ include 'header.php';
                 </div>
             </form>
         </div>
-        <div class="questoes-container">
-            <?php foreach ($questoes_data as $questao): ?>
-                <div class="questao card p-4 mb-3 container-fluid" data-ano="<?php echo htmlspecialchars($questao['ano']); ?>" data-enunciado="<?php echo htmlspecialchars($questao['enunciado']); ?>">
-                    <p class="font-weight-bold text-muted">Q<?php echo htmlspecialchars($questao['id']); ?></p>
-                    <div class="d-flex justify-content-between mb-3">
-                        <div>
-                            <span class="badge badge-dark py-2 px-3 mr-2"><?php echo htmlspecialchars($questao['materia']); ?></span>
-                            <span class="badge badge-dark py-2 px-3"><?php echo htmlspecialchars($questao['ano']); ?></span>
+        <?php foreach ($questoes_data as $questao): ?>
+            <div class="questao card p-4 mb-3 container-fluid" data-ano="<?php echo htmlspecialchars($questao['ano']); ?>" data-enunciado="<?php echo htmlspecialchars($questao['enunciado']); ?>">
+                <p class="font-weight-bold text-muted">Q<?php echo htmlspecialchars($questao['id']); ?></p>
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <span class="badge badge-dark py-2 px-3 mr-2"><?php echo htmlspecialchars($questao['materia']); ?></span>
+                        <span class="badge badge-dark py-2 px-3"><?php echo htmlspecialchars($questao['ano']); ?></span>
+                    </div>
+                </div>
+                <hr class="my-3 hr-dark">
+                <h6 class="font-weight-bold mb-3 text-dark"><?php echo htmlspecialchars($questao['enunciado']); ?></h6>
+
+                <form class="responder-form" method="POST" action="javascript:void(0);">
+                    <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
+                    <ul class="list-unstyled">
+                        <?php foreach ($questao['alternativas'] as $key => $alternativa): ?>
+                            <li class="mb-2">
+                                <label>
+                                    <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
+                                    <strong><?php echo chr(65 + $key); ?>.</strong> <?php echo htmlspecialchars($alternativa['texto']); ?>
+                                </label>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-sm btn-responder">Responder</button>
+                        <div class="d-inline-flex">
+                            <button class="btn btn-info btn-sm btn-resolucao mr-2" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
+                            <?php if (!empty($questao['video'])): ?>
+                                <a href="<?php echo htmlspecialchars($questao['video']); ?>" target="_blank" class="btn btn-sm btn-video">
+                                    Ver Vídeo
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
-                    <hr class="my-3 hr-dark">
-                    <h6 class="font-weight-bold mb-3 text-dark"><?php echo htmlspecialchars($questao['enunciado']); ?></h6>
 
-                    <form class="responder-form" method="POST" action="javascript:void(0);">
-                        <input type="hidden" name="questao_id" value="<?php echo $questao['id']; ?>">
-                        <ul class="list-unstyled">
-                            <?php foreach ($questao['alternativas'] as $key => $alternativa): ?>
-                                <li class="mb-2">
-                                    <label>
-                                        <input type="radio" name="alternativa" value="<?php echo $alternativa['id']; ?>" required>
-                                        <strong><?php echo chr(65 + $key); ?>.</strong> <?php echo htmlspecialchars($alternativa['texto']); ?>
-                                    </label>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+                </form>
 
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-sm btn-responder">Responder</button>
-                            <button class="btn btn-info btn-sm btn-resolucao" data-questao-id="<?php echo $questao['id']; ?>">Ver Resolução</button>
-                        </div>
-                    </form>
+                <p class="explicacao mt-3" style="display: none;"><?php echo htmlspecialchars($questao['resolucao']); ?></p>
+            </div>
+        <?php endforeach; ?>
 
-                    <p class="explicacao mt-3" style="display: none;"><?php echo htmlspecialchars($questao['resolucao']); ?></p>
-                </div>
-            <?php endforeach; ?>
         </div>
 
         <nav>
@@ -196,7 +204,7 @@ include 'header.php';
         }
 
         $.ajax({
-            url: "funcoes_fuvest.php",
+            url: "funcoes_enem.php",
             method: "POST",
             data: {
                 action: "responder",
